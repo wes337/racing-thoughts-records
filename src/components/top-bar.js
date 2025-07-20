@@ -157,7 +157,7 @@ export default function TopBar({ hideMenu }) {
                 />
               </Link>
               <Link
-                className="flex items-center justify-center w-auto p-2.5 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
+                className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
                 href="/collections/4"
               >
                 <Image
