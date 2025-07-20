@@ -76,7 +76,7 @@ export default function TopBar({ hideMenu }) {
           {!hideMenu && (
             <div className="hidden md:flex h-full w-[33%] justify-end gap-8">
               <Link
-                className="p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
+                className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
                 href="/collections/1"
               >
                 <Image
@@ -88,7 +88,7 @@ export default function TopBar({ hideMenu }) {
                 />
               </Link>
               <Link
-                className="p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
+                className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
                 href="/collections/2"
               >
                 <Image
@@ -102,7 +102,7 @@ export default function TopBar({ hideMenu }) {
             </div>
           )}
           <Link
-            className="relative h-full w-auto opacity-90 hover:scale-[1.1] hover:opacity-100"
+            className="relative h-full flex items-center justify-center w-auto opacity-90 hover:scale-[1.1] hover:opacity-100"
             href="/"
           >
             <Image
@@ -145,7 +145,7 @@ export default function TopBar({ hideMenu }) {
           {!hideMenu && (
             <div className="hidden md:flex h-full w-[33%] justify-start gap-8">
               <Link
-                className="p-2.5 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
+                className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
                 href="/collections/3"
               >
                 <Image
@@ -157,7 +157,7 @@ export default function TopBar({ hideMenu }) {
                 />
               </Link>
               <Link
-                className="p-2.5 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
+                className="flex items-center justify-center w-auto p-2.5 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75"
                 href="/collections/4"
               >
                 <Image
