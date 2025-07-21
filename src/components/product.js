@@ -1,35 +1,55 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Product({ product }) {
   const longTitle = product.title.length > 21;
 
   return (
-    <Link
-      className="group flex flex-col w-full h-full max-w-[500px] m-auto cursor-pointer"
-      href={`/products/${product.id}`}
-    >
-      <div className="w-full h-full aspect-square bg-gray-500/10 overflow-hidden">
+    <div className="flex flex-col md:flex-row lg:w-4xl xl:w-full">
+      <div className="h-[40vh] md:h-auto w-full md:w-[40vw] 2xl:w-[45vw] bg-white/75 border-t-3 border-b-3 md:border-l-3 md:border-r-3 md:rounded-md border-black/50">
         <Image
-          className="w-full h-full object-contain mix-blend-multiply group-hover:scale-[1.1]"
-          src={product.photo}
+          className="w-full h-full object-contain mix-blend-multiply"
+          src={product.images[0]}
+          width={1024}
+          height={1024}
           alt=""
-          width={2672}
-          height={2672}
         />
       </div>
-      <div>
-        <div
-          className={`flex items-center font-display font-bold h-[36px] leading-8 tracking-tight ${
-            longTitle ? "text-lg leading-none" : "text-2xl"
-          } md:text-4xl xl:tracking-normal [text-shadow:1px_0px_0px_currentColor] opacity-80 group-hover:opacity-100`}
+      <div className="flex flex-col p-4">
+        <h2
+          className={`font-display font-bold text-4xl xl:text-5xl ${
+            longTitle ? "text-3xl tracking-tighter xl:text-5xl" : ""
+          } [text-shadow:1px_0px_0px_currentColor]`}
         >
           {product.title}
-        </div>
-        <div className="font-sans font-bold text-xl md:text-2xl h-full opacity-80">
-          $20
+        </h2>
+        <h3 className="font-sans font-bold text-2xl mt-2">{product.price}</h3>
+        <p className="font-sans font-light py-4 md:my-4 text-md">
+          {product.description}
+        </p>
+        <div className="flex items-start gap-4">
+          <button className="cursor-pointer h-[64px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05]">
+            <Image
+              className="w-full h-full object-contain"
+              src={`/images/add-to-cart.png`}
+              width={997}
+              height={224}
+              alt="Add to Cart"
+            />
+          </button>
+          <button className="cursor-pointer h-[64px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05]">
+            <Image
+              className="w-full h-full object-contain"
+              src={`/images/buy-now.png`}
+              width={797}
+              height={225}
+              alt="Buy Now"
+            />
+          </button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

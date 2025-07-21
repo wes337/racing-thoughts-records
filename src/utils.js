@@ -21,3 +21,10 @@ export function eventTargetInsideElementTag(
 
   return false;
 }
+
+export const COLLECTION_IDS = {
+  CDS: "441026969915",
+  VINYL: "441026969915",
+  CASSETTES: "441026969915",
+  OTHER: "441026969915",
+};

@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Footer({ fixed, hideLinks }) {
   return (
     <div
-      className={`flex flex-col items-center justify-center w-full h-[64px] z-1 ${
+      className={`flex flex-col items-center justify-center w-full h-[64px] pb-2 z-1 ${
         fixed ? "fixed bottom-0 left-0" : "mt-auto"
       }`}
     >
