@@ -56,7 +56,6 @@ export default function MobileMenu() {
           />
         </button>
       )}
-
       {mobileMenuOpen &&
         createPortal(
           <div className="mobile-menu-bg md:hidden fixed top-0 left-0 w-full h-full bg-white z-5">
