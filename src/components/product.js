@@ -7,7 +7,9 @@ import Shopify from "@/shopify";
 import { useCart } from "@/state";
 
 export default function Product({ product }) {
-  const [cart] = useCart(useShallow((state) => [state.cart]));
+  const [cart, setCartOpen] = useCart(
+    useShallow((state) => [state.cart, state.setOpen])
+  );
   const [selectedVariant, setSelectedVariant] = useState(
     product.variants.length === 1 ? product.variants[0].id : ""
   );
@@ -32,6 +34,16 @@ export default function Product({ product }) {
     if (product.variants.length > 1) {
       setSelectedVariant("");
     }
+
+    setCartOpen(true);
+  };
+
+  const onBuyItNow = async () => {
+    if (soldOut || !selectedVariant) {
+      return;
+    }
+
+    await Shopify.buyItNow([{ merchandiseId: selectedVariant, quantity: 1 }]);
   };
 
   return (
@@ -74,7 +86,10 @@ export default function Product({ product }) {
               alt="Add to Cart"
             />
           </button>
-          <button className="cursor-pointer h-[64px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]">
+          <button
+            className="cursor-pointer h-[64px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
+            onClick={onBuyItNow}
+          >
             <Image
               className="w-full h-full object-contain select-none"
               src={`/images/buy-now.png`}

@@ -331,6 +331,12 @@ export default class Shopify {
     return data.cartCreate.cart;
   }
 
+  static async buyItNow(lines) {
+    const cart = await Shopify.createCart();
+    const updatedCart = await Shopify.addToCart(cart.id, lines);
+    window.location.href = updatedCart.checkoutUrl;
+  }
+
   static async addToCart(cartId, lines) {
     const { data } = await Shopify.client.request(
       `mutation AddToCart($cartId: ID!, $lines: [CartLineInput!]!) {

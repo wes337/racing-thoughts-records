@@ -48,3 +48,8 @@ body {
 .no-scroll {
   overflow: hidden !important;
 }
+
+#cart {
+  background-image: url("/textures/lined-paper-2.png");
+  background-repeat: repeat;
+}
