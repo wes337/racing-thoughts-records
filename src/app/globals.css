@@ -3,8 +3,7 @@
 
 @font-face {
   font-family: "Leo Hates School";
-  src: url("https://w-img.b-cdn.net/lil-darkie/fonts/leo.ttf")
-    format("truetype");
+  src: url("https://w-img.b-cdn.net/rtr/fonts/leo.ttf") format("truetype");
 }
 
 :root {
@@ -29,19 +28,19 @@
 
 body {
   background: var(--background);
-  background-image: url("/textures/exclusive-paper-60.png");
+  background-image: url("https://w-img.b-cdn.net/rtr/textures/exclusive-paper-60.png");
   background-repeat: repeat;
   color: var(--foreground);
 }
 
 .top-bar-bg {
-  background-image: url("/textures/exclusive-paper-60.png");
+  background-image: url("https://w-img.b-cdn.net/rtr/textures/exclusive-paper-60.png");
   background-repeat: repeat;
   opacity: 0.66;
 }
 
 .mobile-menu-bg {
-  background-image: url("/textures/lined-paper-2.png");
+  background-image: url("https://w-img.b-cdn.net/rtr/textures/lined-paper-2.png");
   background-repeat: repeat;
 }
 
@@ -50,6 +49,6 @@ body {
 }
 
 #cart {
-  background-image: url("/textures/lined-paper-2.png");
+  background-image: url("https://w-img.b-cdn.net/rtr/textures/lined-paper-2.png");
   background-repeat: repeat;
 }
