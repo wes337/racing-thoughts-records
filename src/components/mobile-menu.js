@@ -1,19 +1,19 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useShallow } from "zustand/react/shallow";
 import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import useGlobalState from "@/global-state";
+import { useLayout } from "@/state";
 import { COLLECTION_IDS } from "@/utils";
 
 export default function MobileMenu() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [mobileMenuOpen, toggleMobileMenuOpen] = useGlobalState(
+  const [mobileMenuOpen, toggleMobileMenuOpen] = useLayout(
     useShallow((state) => [state.mobileMenuOpen, state.toggleMobileMenuOpen])
   );
 
@@ -31,7 +31,7 @@ export default function MobileMenu() {
     <>
       {showBackButton ? (
         <button
-          className="md:hidden absolute left-[16px] md:left-[32px] h-[32px] md:h-[40px] cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 z-1"
+          className="md:hidden absolute left-[16px] md:left-[32px] h-[32px] md:h-[40px] cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 z-1 active:scale-[1.2]"
           onClick={() => router.back()}
         >
           <Image
@@ -44,7 +44,7 @@ export default function MobileMenu() {
         </button>
       ) : (
         <button
-          className="md:hidden absolute left-[16px] md:left-[32px] h-[32px] md:h-[40px] cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 z-1"
+          className="md:hidden absolute left-[16px] md:left-[32px] h-[32px] md:h-[40px] cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 z-1 active:scale-[1.2]"
           onClick={toggleMobileMenuOpen}
         >
           <Image
@@ -60,7 +60,7 @@ export default function MobileMenu() {
         createPortal(
           <div className="mobile-menu-bg md:hidden fixed top-0 left-0 w-full h-full bg-white z-5">
             <button
-              className="absolute top-[12px] left-[16px] h-[32px] z-1 opacity-85"
+              className="absolute top-[12px] left-[16px] h-[32px] z-1 opacity-85 active:scale-[1.2]"
               onClick={toggleMobileMenuOpen}
             >
               <Image

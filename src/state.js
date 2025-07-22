@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const useGlobalState = create((set) => ({
+export const useLayout = create((set) => ({
   cartOpen: false,
   setCartOpen: (cartOpen) => set(() => ({ cartOpen })),
   toggleCartOpen: () => set((state) => ({ cartOpen: !state.cartOpen })),
@@ -12,4 +12,12 @@ const useGlobalState = create((set) => ({
     set((state) => ({ mobileMenuOpen: !state.mobileMenuOpen })),
 }));
 
-export default useGlobalState;
+export const useCart = create((set) => ({
+  cart: null,
+  setCart: (cart) => set(() => ({ cart })),
+  open: false,
+  setOpen: (open) => set(() => ({ open })),
+  toggleOpen: () => set((state) => ({ open: !state.open })),
+  show: true,
+  setShow: (show) => set(() => ({ show })),
+}));

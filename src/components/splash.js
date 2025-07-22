@@ -32,7 +32,7 @@ export default function Splash() {
         </div>
       </div>
       <div className="w-[40vw] max-w-[300px]">
-        <button className="group relative cursor-pointer">
+        <button className="group relative cursor-pointer active:opacity-100 active:brightness-50 active:scale-[1.1]">
           <Image
             className="w-full h-full object-contain opacity-0 md:opacity-100 group-hover:opacity-0"
             src={"/images/enter.png"}

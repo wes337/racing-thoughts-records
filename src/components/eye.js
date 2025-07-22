@@ -46,7 +46,7 @@ export default function Eye() {
 
   return (
     <Link
-      className="relative h-full flex items-center justify-center w-auto opacity-90 hover:scale-[1.1] hover:opacity-100"
+      className="relative h-full flex items-center justify-center w-auto opacity-90 hover:scale-[1.1] hover:opacity-100 active:opacity-100 active:scale-[1.2]"
       href={pathname.match("/shop") ? "/" : "/shop"}
     >
       <Image
