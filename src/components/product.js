@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
+import { CDN_URL } from "@/utils";
 
 export default function Product({ product }) {
   const [cart, setCartOpen] = useCart(
@@ -80,7 +81,7 @@ export default function Product({ product }) {
           >
             <Image
               className="w-full h-full object-contain select-none"
-              src={`/images/add-to-cart.png`}
+              src={`${CDN_URL}/images/add-to-cart.png`}
               width={997}
               height={224}
               alt="Add to Cart"
@@ -92,7 +93,7 @@ export default function Product({ product }) {
           >
             <Image
               className="w-full h-full object-contain select-none"
-              src={`/images/buy-now.png`}
+              src={`${CDN_URL}/images/buy-now.png`}
               width={797}
               height={225}
               alt="Buy Now"

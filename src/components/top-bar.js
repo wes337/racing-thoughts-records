@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { COLLECTION_IDS } from "@/utils";
+import { CDN_URL, COLLECTION_IDS } from "@/utils";
 import Eye from "@/components/eye";
 import MobileMenu from "@/components/mobile-menu";
 import Cart from "@/components/cart";
@@ -28,7 +28,7 @@ export default function TopBar({ hideMenu }) {
           >
             <Image
               className="w-auto h-full object-contain"
-              src={`/images/cds.png`}
+              src={`${CDN_URL}/images/cds.png`}
               alt="CDs"
               width={628}
               height={212}
@@ -40,7 +40,7 @@ export default function TopBar({ hideMenu }) {
           >
             <Image
               className="w-auto h-full object-contain"
-              src={`/images/vinyl.png`}
+              src={`${CDN_URL}/images/vinyl.png`}
               alt="Vinyl"
               width={816}
               height={207}
@@ -55,7 +55,7 @@ export default function TopBar({ hideMenu }) {
           >
             <Image
               className="w-auto h-full object-contain"
-              src={`/images/cassettes.png`}
+              src={`${CDN_URL}/images/cassettes.png`}
               alt="Cassettes"
               width={1223}
               height={187}
@@ -67,7 +67,7 @@ export default function TopBar({ hideMenu }) {
           >
             <Image
               className="w-auto h-full object-contain"
-              src={`/images/other.png`}
+              src={`${CDN_URL}/images/other.png`}
               alt="Other"
               width={1170}
               height={235}

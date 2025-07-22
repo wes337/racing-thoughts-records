@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CDN_URL } from "@/utils";
 
 export default function Footer({ fixed, hideLinks }) {
   return (
@@ -21,7 +22,7 @@ export default function Footer({ fixed, hideLinks }) {
       <div className="h-[16px] md:h-[24px]">
         <Image
           className="w-full h-full object-contain select-none"
-          src={`/images/copy.png`}
+          src={`${CDN_URL}/images/copy.png`}
           alt="Copyright Racing Thought Records."
           width={1450}
           height={72}

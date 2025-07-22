@@ -28,3 +28,5 @@ export const COLLECTION_IDS = {
   CASSETTES: "441026969915",
   OTHER: "441026969915",
 };
+
+export const CDN_URL = "https://w-img.b-cdn.net/rtr";

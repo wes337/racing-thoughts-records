@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { CDN_URL } from "@/utils";
 
 export default function Splash() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function Splash() {
         <div className="w-[40vw] max-w-[300px]">
           <Image
             className="w-full h-full object-contain"
-            src={`/images/logo-text.png`}
+            src={`${CDN_URL}/images/logo-text.png`}
             alt="Racing Thought Records."
             width={980}
             height={790}
@@ -24,7 +25,7 @@ export default function Splash() {
         <div className="w-[40vw] max-w-[300px]">
           <Image
             className="w-full h-full object-contain opacity-90"
-            src={`/images/logo-gray.png`}
+            src={`${CDN_URL}/images/logo-gray.png`}
             alt=""
             width={652}
             height={471}
@@ -35,14 +36,14 @@ export default function Splash() {
         <button className="group relative cursor-pointer active:opacity-100 active:brightness-50 active:scale-[1.1]">
           <Image
             className="w-full h-full object-contain opacity-0 md:opacity-100 group-hover:opacity-0"
-            src={"/images/enter.png"}
+            src={`${CDN_URL}/images/enter.png`}
             alt="Enter"
             width={1154}
             height={386}
           />
           <Image
             className="absolute top-0 left-0 w-full h-full object-contain opacity-100 md:opacity-0 group-hover:opacity-100"
-            src={"/images/enter-hover.png"}
+            src={`${CDN_URL}/images/enter-hover.png`}
             alt="Enter"
             width={1154}
             height={386}

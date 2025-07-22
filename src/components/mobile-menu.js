@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { useShallow } from "zustand/react/shallow";
 import { usePathname, useRouter } from "next/navigation";
 import { useLayout } from "@/state";
-import { COLLECTION_IDS } from "@/utils";
+import { CDN_URL, COLLECTION_IDS } from "@/utils";
 
 export default function MobileMenu() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function MobileMenu() {
         >
           <Image
             className="w-auto h-full object-contain"
-            src={"/images/back.png"}
+            src={`${CDN_URL}/images/back.png`}
             alt="Back"
             width={250}
             height={209}
@@ -49,7 +49,11 @@ export default function MobileMenu() {
         >
           <Image
             className="w-auto h-full object-contain"
-            src={mobileMenuOpen ? "/images/close.png" : `/images/menu.png`}
+            src={
+              mobileMenuOpen
+                ? `${CDN_URL}/images/close.png`
+                : `${CDN_URL}/images/menu.png`
+            }
             alt="Menu"
             width={138}
             height={112}
@@ -65,7 +69,11 @@ export default function MobileMenu() {
             >
               <Image
                 className="w-auto h-full object-contain"
-                src={mobileMenuOpen ? "/images/close.png" : `/images/menu.png`}
+                src={
+                  mobileMenuOpen
+                    ? `${CDN_URL}/images/close.png`
+                    : `${CDN_URL}/images/menu.png`
+                }
                 alt="Menu"
                 width={138}
                 height={112}
@@ -74,7 +82,7 @@ export default function MobileMenu() {
             <div className="ml-[56px] flex p-4 opacity-85">
               <Image
                 className="h-[24px] w-auto object-contain"
-                src={`/images/logo-text-horizontal.png`}
+                src={`${CDN_URL}/images/logo-text-horizontal.png`}
                 alt="Racing Thoughts Records."
                 width={2085}
                 height={136}
@@ -87,14 +95,14 @@ export default function MobileMenu() {
               >
                 <Image
                   className="w-[28px] h-auto object-contain opacity-80"
-                  src={`/images/arrow-right.png`}
+                  src={`${CDN_URL}/images/arrow-right.png`}
                   alt=""
                   width={300}
                   height={122}
                 />
                 <Image
                   className="w-auto h-full object-contain"
-                  src={`/images/cds.png`}
+                  src={`${CDN_URL}/images/cds.png`}
                   alt="CDs"
                   width={628}
                   height={212}
@@ -106,14 +114,14 @@ export default function MobileMenu() {
               >
                 <Image
                   className="w-[28px] h-auto object-contain opacity-80"
-                  src={`/images/arrow-right.png`}
+                  src={`${CDN_URL}/images/arrow-right.png`}
                   alt=""
                   width={300}
                   height={122}
                 />
                 <Image
                   className="w-auto h-full object-contain"
-                  src={`/images/vinyl.png`}
+                  src={`${CDN_URL}/images/vinyl.png`}
                   alt="Vinyl"
                   width={816}
                   height={207}
@@ -125,14 +133,14 @@ export default function MobileMenu() {
               >
                 <Image
                   className="w-[28px] h-auto object-contain opacity-80"
-                  src={`/images/arrow-right.png`}
+                  src={`${CDN_URL}/images/arrow-right.png`}
                   alt=""
                   width={300}
                   height={122}
                 />
                 <Image
                   className="w-auto h-full object-contain"
-                  src={`/images/cassettes.png`}
+                  src={`${CDN_URL}/images/cassettes.png`}
                   alt="Cassettes"
                   width={1223}
                   height={187}
@@ -144,14 +152,14 @@ export default function MobileMenu() {
               >
                 <Image
                   className="w-[28px] h-auto object-contain opacity-80"
-                  src={`/images/arrow-right.png`}
+                  src={`${CDN_URL}/images/arrow-right.png`}
                   alt=""
                   width={300}
                   height={122}
                 />
                 <Image
                   className="w-auto h-full object-contain"
-                  src={`/images/other.png`}
+                  src={`${CDN_URL}/images/other.png`}
                   alt="Other"
                   width={1170}
                   height={235}

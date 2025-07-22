@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { getRandomNumberBetween } from "@/utils";
+import { CDN_URL, getRandomNumberBetween } from "@/utils";
 
 export default function Eye() {
   const pathname = usePathname();
@@ -53,7 +53,7 @@ export default function Eye() {
         className={`w-auto h-full object-contain ${
           eye === "open" ? "opacity-100" : "opacity-0"
         }`}
-        src={`/images/eye-open.png`}
+        src={`${CDN_URL}/images/eye-open.png`}
         alt="Racing Thought Records"
         width={357}
         height={249}
@@ -62,7 +62,7 @@ export default function Eye() {
         className={`absolute top-0 w-auto h-full object-contain ${
           eye === "close" ? "opacity-100" : "opacity-0"
         }`}
-        src={`/images/eye-close.png`}
+        src={`${CDN_URL}/images/eye-close.png`}
         alt=""
         width={357}
         height={249}
@@ -71,7 +71,7 @@ export default function Eye() {
         className={`absolute top-0 w-auto h-full object-contain ${
           eye === "left" ? "opacity-100" : "opacity-0"
         }`}
-        src={`/images/eye-left.png`}
+        src={`${CDN_URL}/images/eye-left.png`}
         alt=""
         width={357}
         height={249}
@@ -80,7 +80,7 @@ export default function Eye() {
         className={`absolute top-0 w-auto h-full object-contain ${
           eye === "right" ? "opacity-100" : "opacity-0"
         }`}
-        src={`/images/eye-right.png`}
+        src={`${CDN_URL}/images/eye-right.png`}
         alt=""
         width={357}
         height={249}

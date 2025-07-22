@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { eventTargetInsideElementTag } from "@/utils";
+import { CDN_URL, eventTargetInsideElementTag } from "@/utils";
 
 export default function Cursor() {
   const [hide, setHide] = useState(false);
@@ -27,7 +27,7 @@ export default function Cursor() {
     <>
       <Image
         className="hidden md:block fixed w-[20px] h-[27px] pointer-events-none z-25 drop-shadow-lg"
-        src={`/images/cursor.png`}
+        src={`${CDN_URL}/images/cursor.png`}
         alt=""
         width={109}
         height={149}

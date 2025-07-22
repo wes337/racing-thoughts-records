@@ -3,10 +3,11 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useShallow } from "zustand/react/shallow";
+import { CDN_URL } from "@/utils";
+import { useCart } from "@/state";
 import Shopify from "@/shopify";
 import Cache from "@/cache";
-import { useShallow } from "zustand/react/shallow";
-import { useCart } from "@/state";
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -130,14 +131,14 @@ export default function Cart() {
       >
         <Image
           className="hidden xl:block w-auto h-full object-contain"
-          src={`/images/cart-white.png`}
+          src={`${CDN_URL}/images/cart-white.png`}
           alt="Cart"
           width={603}
           height={173}
         />
         <Image
           className="xl:hidden w-auto h-full object-contain ml-auto"
-          src={`/images/cart-icon.png`}
+          src={`${CDN_URL}/images/cart-icon.png`}
           alt="Cart"
           width={603}
           height={173}
@@ -160,7 +161,7 @@ export default function Cart() {
               >
                 <Image
                   className="w-auto h-full object-contain"
-                  src={"/images/close.png"}
+                  src={`${CDN_URL}/images/close.png`}
                   alt="Close"
                   width={138}
                   height={112}
@@ -169,7 +170,7 @@ export default function Cart() {
               <div className="w-full h-[32px] mt-2.5">
                 <Image
                   className="w-auto h-full object-contain m-auto"
-                  src={"/images/cart.png"}
+                  src={`${CDN_URL}/images/cart.png`}
                   alt="Cart"
                   width={603}
                   height={173}
@@ -210,7 +211,7 @@ export default function Cart() {
                               onClick={() => onRemoveCartItem(cartItem)}
                             >
                               <Image
-                                src={`/images/close-box.png`}
+                                src={`${CDN_URL}/images/close-box.png`}
                                 width={152}
                                 height={136}
                                 alt=""
@@ -240,7 +241,7 @@ export default function Cart() {
                       Check Out
                       <Image
                         className="w-[48px] h-full object-contain"
-                        src={`/images/arrow-right.png`}
+                        src={`${CDN_URL}/images/arrow-right.png`}
                         width={300}
                         height={122}
                         alt=""
