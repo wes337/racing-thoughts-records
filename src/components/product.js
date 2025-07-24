@@ -49,18 +49,27 @@ export default function Product({ product }) {
 
   return (
     <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[75vw] md:mx-auto">
-      <div className="h-[40vh] md:h-auto w-full md:w-[40vw] 2xl:w-[45vw] bg-white/75 border-t-3 border-b-3 md:border-l-3 md:border-r-3 md:rounded-md border-black/50">
+      <div className="relative h-[40vh] md:h-auto w-full md:w-[40vw] 2xl:w-[45vw]">
         <Image
-          className="w-full h-full object-contain mix-blend-multiply"
-          src={product.images[0]}
-          width={1024}
-          height={1024}
+          className="absolute top-0 left-0 w-full h-full mix-blend-multiply z-0 opacity-100 group-hover:opacity-100"
+          src={`/images/box-large.png`}
+          width={1011}
+          height={982}
           alt=""
         />
+        <div className="w-[calc(100%-8px)] h-[calc(100%-8px)] md:w-[calc(100%-16px)] md:h-[calc(100%-16px)] bg-gray-500/10 m-1 md:m-2 rounded-lg">
+          <Image
+            className="w-full h-full object-contain mix-blend-multiply z-1"
+            src={product.images[0]}
+            width={1024}
+            height={1024}
+            alt=""
+          />
+        </div>
       </div>
       <div className="flex flex-col p-4">
         <h2
-          className={`font-mono font-bold leading-8 text-xl xl:text-4xl xl:leading-10 ${
+          className={`font-mono font-bold leading-8 text-[2rem] xl:text-4xl xl:leading-10 ${
             longTitle
               ? "text-[2rem] tracking-[-2px] lg:tracking-tight xl:tracking-tight xl:text-4xl"
               : ""
