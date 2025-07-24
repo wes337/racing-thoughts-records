@@ -48,7 +48,7 @@ export default function Product({ product }) {
   };
 
   return (
-    <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)]">
+    <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[75vw] md:mx-auto">
       <div className="h-[40vh] md:h-auto w-full md:w-[40vw] 2xl:w-[45vw] bg-white/75 border-t-3 border-b-3 md:border-l-3 md:border-r-3 md:rounded-md border-black/50">
         <Image
           className="w-full h-full object-contain mix-blend-multiply"
@@ -60,18 +60,18 @@ export default function Product({ product }) {
       </div>
       <div className="flex flex-col p-4">
         <h2
-          className={`font-display font-bold text-4xl xl:text-5xl ${
+          className={`font-mono font-bold leading-8 text-xl xl:text-4xl xl:leading-10 ${
             longTitle
-              ? "text-[2.6rem] tracking-[-4px] lg:tracking-tight xl:tracking-normal xl:text-5xl"
+              ? "text-[2rem] tracking-[-2px] lg:tracking-tight xl:tracking-tight xl:text-4xl"
               : ""
-          } [text-shadow:1px_0px_0px_currentColor] opacity-80`}
+          } opacity-90`}
         >
           {product.title}
         </h2>
-        <h3 className="font-sans font-bold text-2xl mt-2 opacity-80">
+        <h3 className="font-sans font-medium text-2xl mt-2 opacity-80">
           {product.price}
         </h3>
-        <p className="font-sans py-4 md:my-4 text-md opacity-80">
+        <p className="font-sans font-light py-4 text-sm md:my-4 md:text-md opacity-80">
           {product.description}
         </p>
         <div className="flex items-start gap-4">

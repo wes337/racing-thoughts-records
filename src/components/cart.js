@@ -194,20 +194,20 @@ export default function Cart() {
                               height={80}
                             />
                           </div>
-                          <div className="flex flex-col justify-center">
-                            <div className="font-display font-bold flex items-center gap-2 tracking-tight text-xl md:text-3xl whitespace-nowrap overflow-hidden text-ellipsis">
-                              <span className="text-xl">
+                          <div className="flex flex-col justify-center w-[calc(100%-128px)]">
+                            <div className="font-sans font-medium flex items-center gap-2 tracking-tighter text-sm md:text-lg whitespace-nowrap overflow-hidden text-ellipsis">
+                              <span className="font-light italic text-xs">
                                 {cartItem.quantity}x
                               </span>
                               {cartItem.productTitle}
                             </div>
-                            <div className="text-xl font-medium">
-                              ${cartItem.price * cartItem.quantity}
+                            <div className="text-xl font-light opacity-80">
+                              ${(cartItem.price * cartItem.quantity).toFixed(2)}
                             </div>
                           </div>
                           <div className="absolute top-0 right-0 m-4">
                             <button
-                              className="cursor-pointer w-[32px] h-[32px] opacity-80 hover:opacity-100 hover:scale-[1.1]"
+                              className="cursor-pointer w-[28px] h-[28px] opacity-80 hover:opacity-100 hover:scale-[1.1]"
                               onClick={() => onRemoveCartItem(cartItem)}
                             >
                               <Image
@@ -223,24 +223,26 @@ export default function Cart() {
                     })}
                   </div>
                   <div className="p-4">
-                    <div className="font-display font-bold text-2xl tracking-wide">
+                    <div className="font-sans font-light text-sm opacity-80">
                       Subtotal
                     </div>
-                    <div className="font-sans font-bold text-3xl">
+                    <div className="font-sans font-bold text-3xl opacity-90">
                       ${getSubtotal().toFixed(2)} {currencyCode}
                     </div>
                   </div>
-                  <div className="mt-auto font-display font-bold tracking-tight text-2xl md:tracking-normal flex items-center justify-center text-center opacity-80  p-2">
+                  <div className="mt-auto font-sans tracking-tighter text-xs xl:text-md flex items-center justify-center text-center opacity-80 p-2">
                     Shipping & taxes calculated at checkout
                   </div>
                   <div className="flex items-center justify-center bg-gray-300/50">
                     <button
-                      className="flex items-center justify-center gap-4 h-[112px] w-full cursor-pointer font-display font-bold text-6xl tracking-wide hover:brightness-50 hover:scale-[1.1] active:scale-[1.2]"
+                      className="group flex items-center justify-center gap-4 h-[112px] w-full cursor-pointer font-display font-bold text-6xl [text-shadow:1px_0px_0px_currentColor] tracking-wide hover:brightness-50 border-t-4 border-b-4 border-black/60 md:border-b-0"
                       onClick={onClickCheckout}
                     >
-                      Check Out
+                      <span className="group-hover:scale-[1.1] group-active:scale-[1.2]">
+                        Check Out
+                      </span>
                       <Image
-                        className="w-[48px] h-full object-contain"
+                        className="w-[48px] h-full object-contain group-hover:scale-[1.1] group-active:scale-[1.2]"
                         src={`${CDN_URL}/images/arrow-right.png`}
                         width={300}
                         height={122}

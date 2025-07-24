@@ -20,14 +20,14 @@ export default function ProductListItem({ product }) {
       </div>
       <div>
         <div
-          className={`flex items-center font-display font-bold h-[36px] leading-8 tracking-tight ${
-            longTitle ? "text-lg leading-none" : "text-2xl"
-          } md:text-4xl xl:tracking-normal [text-shadow:1px_0px_0px_currentColor] opacity-80 group-hover:opacity-100`}
+          className={`flex items-center font-mono font-bold h-[36px] leading-4  ${
+            longTitle ? "text-md tracking-[-2px]" : "text-lg tracking-tighter"
+          }  md:text-xl xl:tracking-normal opacity-90 group-hover:opacity-100`}
         >
           {product.title}
         </div>
-        <div className="font-sans font-bold text-xl md:text-2xl h-full opacity-80">
-          $20
+        <div className="font-sans font-medium text-xl md:text-2xl h-full opacity-80">
+          ${Number(product.price).toFixed(2)}
         </div>
       </div>
     </Link>

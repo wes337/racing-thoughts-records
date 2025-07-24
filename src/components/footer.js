@@ -10,7 +10,7 @@ export default function Footer({ fixed, hideLinks }) {
       }`}
     >
       {!hideLinks && (
-        <div className="flex gap-10 font-display font-bold text-xl tracking-wide">
+        <div className="flex gap-10 font-sans font-medium text-sm">
           <Link className="opacity-75 hover:opacity-100" href="/privacy">
             Privacy
           </Link>
