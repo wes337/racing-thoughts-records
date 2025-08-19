@@ -51,15 +51,15 @@ export default function Product({ product }) {
     <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[75vw] md:mx-auto">
       <div className="relative h-[40vh] md:h-auto w-full md:w-[40vw] 2xl:w-[45vw]">
         <Image
-          className="absolute top-0 left-0 w-full h-full mix-blend-multiply z-0 opacity-100 group-hover:opacity-100"
+          className="absolute top-0 left-0 w-full h-full z-2"
           src={`/images/box-large.png`}
           width={1011}
           height={982}
           alt=""
         />
-        <div className="w-[calc(100%-8px)] h-[calc(100%-8px)] md:w-[calc(100%-16px)] md:h-[calc(100%-16px)] bg-gray-500/10 m-1 md:m-2 rounded-lg">
+        <div className="w-[calc(100%-8px)] h-[calc(100%-8px)] md:w-[calc(100%-16px)] md:h-[calc(100%-16px)] bg-gray-500/10 m-1 md:m-2 rounded-lg overflow-hidden">
           <Image
-            className="w-full h-full object-contain mix-blend-multiply z-1"
+            className="w-full h-full object-contain z-1"
             src={product.images[0]}
             width={1024}
             height={1024}

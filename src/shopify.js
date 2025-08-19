@@ -14,6 +14,50 @@ export default class Shopify {
     });
   }
 
+  static async getCollections() {
+    const cachedCollections = await Cache.getItem("collections");
+
+    if (cachedCollections) {
+      return cachedCollections;
+    }
+
+    const { data } = await Shopify.client.request(
+      `query CollectionsQuery {
+      collections(first: 250) {
+        edges {
+          node {
+            id
+            title
+            handle
+            description
+            descriptionHtml
+            image {
+              url
+              altText
+            }
+          }
+        }
+      }
+    }`
+    );
+
+    const collections = data.collections.edges.map(({ node }) => ({
+      id: node.id,
+      title: node.title,
+      handle: node.handle,
+      description: node.description,
+      descriptionHtml: node.descriptionHtml,
+      image: node.image?.url || "",
+      imageAlt: node.image?.altText || "",
+    }));
+
+    if (collections && collections.length > 0) {
+      Cache.setItem("collections", collections, 120);
+    }
+
+    return collections;
+  }
+
   static async getProduct(handle) {
     const cachedProduct = await Cache.getItem(`product:${handle}`);
 
