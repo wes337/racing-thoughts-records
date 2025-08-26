@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { CDN_URL, isLive } from "@/utils";
+import { CDN_URL } from "@/utils";
 import Password from "@/components/password";
 
-export default function Splash() {
+export default function Splash({ showPassword }) {
   const router = useRouter();
   const [password, setPassword] = useState("");
 
-  const onClick = () => {
+  const onEnter = () => {
     router.push(
       `/shop${
         password ? `?password=${Buffer.from(password).toString("base64")}` : ""
@@ -22,11 +22,11 @@ export default function Splash() {
     <div
       className="fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center h-screen m-auto gap-12"
       onClick={() => {
-        if (!isLive()) {
+        if (showPassword) {
           return;
         }
 
-        onClick();
+        onEnter();
       }}
     >
       <div className="flex items-center justify-center">
@@ -49,18 +49,25 @@ export default function Splash() {
           />
         </div>
       </div>
-      <div className="w-[40vw] max-w-[300px]">
-        {!isLive() && (
+      <form
+        className="w-[40vw] max-w-[300px]"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onEnter();
+        }}
+      >
+        {showPassword && (
           <Password password={password} setPassword={setPassword} />
         )}
         <button
           className="group relative cursor-pointer active:opacity-100 active:brightness-50 active:scale-[1.1]"
+          type={showPassword ? "submit" : "button"}
           onClick={() => {
-            if (isLive()) {
+            if (!showPassword) {
               return;
             }
 
-            onClick();
+            onEnter();
           }}
         >
           <Image
@@ -78,7 +85,7 @@ export default function Splash() {
             height={386}
           />
         </button>
-      </div>
+      </form>
     </div>
   );
 }
