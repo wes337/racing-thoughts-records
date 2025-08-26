@@ -18,7 +18,7 @@ export default async function CollectionPage({ params }) {
       <>
         <TopBar />
         <div className="flex flex-col lg:w-4xl xl:w-7xl m-auto mt-8 text-center font-bold opacity-75 font-display text-6xl">
-          Sorry, we couldn't find that page.
+          Sorry, we couldn&apos;t find that page.
         </div>
         <Footer fixed />
       </>
