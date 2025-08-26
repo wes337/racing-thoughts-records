@@ -749,4 +749,55 @@ export default class Shopify {
       };
     });
   }
+
+  static async getPolicies() {
+    const cachedPolicies = await Cache.getItem("policies");
+
+    if (cachedPolicies) {
+      return cachedPolicies;
+    }
+
+    const { data } = await Shopify.client.request(`
+      {
+        shop {
+          privacyPolicy {
+            handle
+            title
+            body
+          }
+          refundPolicy {
+            handle
+            title
+            body
+          }
+          shippingPolicy {
+            handle
+            title
+            body
+          }
+          termsOfService {
+            handle
+            title
+            body
+          }
+        }
+      }
+    `);
+
+    const policies = data.shop;
+
+    Cache.setItem("policies", policies);
+
+    return policies;
+  }
+
+  static async getPolicy(policyHandle) {
+    const policies = await Shopify.getPolicies();
+
+    const policy = Object.values(policies).find(
+      ({ handle }) => policyHandle === handle
+    );
+
+    return policy;
+  }
 }

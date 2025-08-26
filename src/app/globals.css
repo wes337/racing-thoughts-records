@@ -46,3 +46,25 @@ body {
   background-image: url("https://w-img.b-cdn.net/rtr/textures/lined-paper-2.png");
   background-repeat: repeat;
 }
+
+.policy p {
+  margin: 16px 0;
+}
+
+.policy h2 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.policy ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 24px;
+  padding-bottom: 16px;
+}
+
+.policy li {
+  list-style-type: decimal;
+  margin-left: 24px;
+}
