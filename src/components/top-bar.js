@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CDN_URL, COLLECTION_IDS } from "@/utils";
+import { CDN_URL } from "@/utils";
 import Eye from "@/components/eye";
 import MobileMenu from "@/components/mobile-menu";
 import Cart from "@/components/cart";
@@ -24,7 +24,8 @@ export default function TopBar({ hideMenu }) {
         <div className="hidden md:flex h-full w-[33%] justify-end gap-4 xl:gap-8">
           <Link
             className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75 active:opacity-100 active:scale-[1.2]"
-            href={`/collections/${COLLECTION_IDS.CDS}`}
+            href={`/collections/cds`}
+            prefetch
           >
             <Image
               className="w-auto h-full object-contain"
@@ -36,7 +37,8 @@ export default function TopBar({ hideMenu }) {
           </Link>
           <Link
             className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75 active:scale-[1.2]"
-            href={`/collections/${COLLECTION_IDS.VINYL}`}
+            href={`/collections/vinyl`}
+            prefetch
           >
             <Image
               className="w-auto h-full object-contain"
@@ -51,7 +53,8 @@ export default function TopBar({ hideMenu }) {
         <div className="hidden md:flex h-full w-[33%] justify-start gap-4 xl:gap-8">
           <Link
             className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75 active:scale-[1.2]"
-            href={`/collections/${COLLECTION_IDS.CASSETTES}`}
+            href={`/collections/cassettes`}
+            prefetch
           >
             <Image
               className="w-auto h-full object-contain"
@@ -63,7 +66,8 @@ export default function TopBar({ hideMenu }) {
           </Link>
           <Link
             className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75 active:scale-[1.2]"
-            href={`/collections/${COLLECTION_IDS.OTHER}`}
+            href={`/collections/other`}
+            prefetch
           >
             <Image
               className="w-auto h-full object-contain"

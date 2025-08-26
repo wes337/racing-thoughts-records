@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { useShallow } from "zustand/react/shallow";
 import { usePathname, useRouter } from "next/navigation";
 import { useLayout } from "@/state";
-import { CDN_URL, COLLECTION_IDS } from "@/utils";
+import { CDN_URL } from "@/utils";
 
 export default function MobileMenu() {
   const router = useRouter();
@@ -91,7 +91,8 @@ export default function MobileMenu() {
             <div className="flex flex-col gap-10 p-8">
               <Link
                 className="flex h-[28px] w-full gap-4"
-                href={`/collections/${COLLECTION_IDS.CDS}`}
+                href={`/collections/cds`}
+                prefetch
               >
                 <Image
                   className="w-[28px] h-auto object-contain opacity-80"
@@ -110,7 +111,8 @@ export default function MobileMenu() {
               </Link>
               <Link
                 className="flex h-[28px] w-full gap-4"
-                href={`/collections/${COLLECTION_IDS.VINYL}`}
+                href={`/collections/vinyl`}
+                prefetch
               >
                 <Image
                   className="w-[28px] h-auto object-contain opacity-80"
@@ -129,7 +131,8 @@ export default function MobileMenu() {
               </Link>
               <Link
                 className="flex h-[28px] w-full gap-4"
-                href={`/collections/${COLLECTION_IDS.CASSETTES}`}
+                href={`/collections/cassettes`}
+                prefetch
               >
                 <Image
                   className="w-[28px] h-auto object-contain opacity-80"
@@ -148,7 +151,8 @@ export default function MobileMenu() {
               </Link>
               <Link
                 className="flex h-[28px] w-full gap-4"
-                href={`/collections/${COLLECTION_IDS.OTHER}`}
+                href={`/collections/other`}
+                prefetch
               >
                 <Image
                   className="w-[28px] h-auto object-contain opacity-80"

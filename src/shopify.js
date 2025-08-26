@@ -3,8 +3,8 @@ import Cache from "./cache.js";
 
 export default class Shopify {
   static client;
-  static domain = "small-dark-one.myshopify.com";
-  static storefrontAccessToken = "a65abf60d3c4203455843d672e0ac212";
+  static domain = "p0enpg-gn.myshopify.com";
+  static storefrontAccessToken = "b1ff7732ccb7ec95b9ae1b1757cff0a4";
 
   static {
     Shopify.client = createStorefrontApiClient({
@@ -21,8 +21,8 @@ export default class Shopify {
       return cachedCollections;
     }
 
-    const { data } = await Shopify.client.request(
-      `query CollectionsQuery {
+    const { data } = await Shopify.client.request(`
+      query CollectionsQuery {
       collections(first: 250) {
         edges {
           node {
@@ -38,8 +38,7 @@ export default class Shopify {
           }
         }
       }
-    }`
-    );
+    }`);
 
     const collections = data.collections.edges.map(({ node }) => ({
       id: node.id,
@@ -66,7 +65,8 @@ export default class Shopify {
     }
 
     const { data } = await Shopify.client.request(
-      `query ProductQuery($handle: String!) {
+      `
+        query ProductQuery($handle: String!) {
         product(handle: $handle) {
           id
           title
@@ -155,7 +155,8 @@ export default class Shopify {
     }
 
     const { data } = await Shopify.client.request(
-      `query ProductsQuery($first: Int!, $after: String) {
+      `
+        query ProductsQuery($first: Int!, $after: String) {
         products(first: $first, after: $after) {
           pageInfo {
             hasNextPage
@@ -224,21 +225,6 @@ export default class Shopify {
           ({ node }) => node.availableForSale
         );
 
-        // For testing purposes, remove this later
-        const collectionIds =
-          node.collections?.edges?.length > 0
-            ? node.collections.edges.map(({ node }) => node.id)
-            : [];
-
-        const testProduct = collectionIds.some(
-          (collectionId) =>
-            collectionId === "gid://shopify/Collection/441026969915"
-        );
-
-        if (!testProduct) {
-          return null;
-        }
-
         return {
           id: node.id,
           handle: node.handle,
@@ -280,9 +266,161 @@ export default class Shopify {
     return products;
   }
 
+  static async getCollectionProducts(
+    collectionHandle,
+    first = 100,
+    after = null
+  ) {
+    const cachedProducts = await Cache.getItem(
+      `collection:${collectionHandle}:products:${first}${
+        after ? `:${after}` : ""
+      }`
+    );
+
+    if (cachedProducts) {
+      return cachedProducts;
+    }
+
+    const { data } = await Shopify.client.request(
+      `
+        query CollectionProductsQuery($collectionHandle: String!, $first: Int!, $after: String) {
+        collection(handle: $collectionHandle) {
+          id
+          title
+          handle
+          description
+          descriptionHtml
+          image {
+            url
+            altText
+          }
+          products(first: $first, after: $after) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            edges {
+              node {
+                id
+                title
+                handle
+                description
+                descriptionHtml
+                variants(first: 25) {
+                  edges {
+                    node {
+                      id
+                      title
+                      price {
+                        amount
+                        currencyCode
+                      }
+                      availableForSale
+                    }
+                  }
+                }
+                priceRange {
+                  minVariantPrice {
+                    amount
+                    currencyCode
+                  }
+                }
+                images(first: 3) {
+                  edges {
+                    node {
+                      url
+                      altText
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`,
+      {
+        variables: { collectionHandle, first, after },
+      }
+    );
+
+    if (!data.collection) {
+      return {
+        collection: null,
+        products: null,
+      };
+    }
+
+    const results = data.collection.products.edges
+      .map(({ node }) => {
+        const images =
+          node.images?.edges?.length > 0
+            ? node.images.edges.map(({ node }) => node.url || "")
+            : [];
+
+        const soldOut = !node.variants.edges.some(
+          ({ node }) => node.availableForSale
+        );
+
+        return {
+          id: node.id,
+          handle: node.handle,
+          title: node.title,
+          description: node.description,
+          descriptionHtml: node.descriptionHtml,
+          images,
+          price: node.priceRange.minVariantPrice.amount,
+          currencyCode: node.priceRange.minVariantPrice.currencyCode,
+          variants:
+            node.variants?.edges?.length > 0
+              ? node.variants.edges.map(({ node }) => ({
+                  id: node.id,
+                  title: node.title,
+                  availableForSale: node.availableForSale,
+                  price: node.price.amount,
+                }))
+              : [],
+          soldOut,
+        };
+      })
+      .filter(Boolean);
+
+    const hasMore = data.collection.products.pageInfo?.hasNextPage || false;
+    const endCursor = data.collection.products.pageInfo?.endCursor || null;
+
+    const collectionProducts = {
+      collection: {
+        id: data.collection.id,
+        title: data.collection.title,
+        handle: data.collection.handle,
+        description: data.collection.description,
+        descriptionHtml: data.collection.descriptionHtml,
+        image: data.collection.image?.url || null,
+        imageAlt: data.collection.image?.altText || null,
+      },
+      products: {
+        results,
+        hasMore,
+        endCursor,
+      },
+    };
+
+    if (collectionProducts && collectionProducts.products.results.length > 0) {
+      Cache.setItem(
+        `collection:${collectionHandle}:products:${first}${
+          after ? `:${after}` : ""
+        }`,
+        collectionProducts,
+        120
+      );
+    }
+
+    return collectionProducts;
+  }
+
   static async getCart(cartId) {
     const { data } = await Shopify.client.request(
-      `query CartQuery($cartId: ID!) {
+      `
+        query CartQuery($cartId: ID!) {
         cart(id: $cartId) {
           id
           checkoutUrl
@@ -339,7 +477,8 @@ export default class Shopify {
   static async isCartValid(cartId) {
     try {
       const { data } = await Shopify.client.request(
-        `query CartQuery($cartId: ID!) {
+        `
+          query CartQuery($cartId: ID!) {
           cart(id: $cartId) {
             id
             checkoutUrl
@@ -383,7 +522,8 @@ export default class Shopify {
 
   static async addToCart(cartId, lines) {
     const { data } = await Shopify.client.request(
-      `mutation AddToCart($cartId: ID!, $lines: [CartLineInput!]!) {
+      `
+        mutation AddToCart($cartId: ID!, $lines: [CartLineInput!]!) {
         cartLinesAdd(cartId: $cartId, lines: $lines) {
           cart {
             id
@@ -431,7 +571,8 @@ export default class Shopify {
 
   static async removeFromCart(cartId, lineIds) {
     const { data } = await Shopify.client.request(
-      `mutation RemoveFromCart($cartId: ID!, $lineIds: [ID!]!) {
+      `
+        mutation RemoveFromCart($cartId: ID!, $lineIds: [ID!]!) {
         cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
           cart {
             id
@@ -477,7 +618,8 @@ export default class Shopify {
 
   static async updateQuantity(cartId, lineId, quantity) {
     const { data } = await Shopify.client.request(
-      `mutation UpdateCartLineQuantity($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+      `
+        mutation UpdateCartLineQuantity($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
         cartLinesUpdate(cartId: $cartId, lines: $lines) {
           cart {
             id
@@ -537,7 +679,8 @@ export default class Shopify {
     const lineIds = cart.lines.edges.map((edge) => edge.node.id);
 
     await Shopify.client.request(
-      `mutation RemoveFromCart($cartId: ID!, $lineIds: [ID!]!) {
+      `
+        mutation RemoveFromCart($cartId: ID!, $lineIds: [ID!]!) {
         cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
           cart {
             id

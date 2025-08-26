@@ -1,9 +1,15 @@
 import Shopify from "@/shopify";
+import { isLive } from "@/utils";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 import ProductListItem from "@/components/product-list-item";
+import ComingSoon from "@/components/coming-soon";
 
 export default async function ShopPage() {
+  if (!isLive()) {
+    return <ComingSoon />;
+  }
+
   const products = await Shopify.getProducts();
 
   return (

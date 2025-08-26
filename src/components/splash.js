@@ -1,16 +1,33 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { CDN_URL } from "@/utils";
+import { CDN_URL, isLive } from "@/utils";
+import Password from "@/components/password";
 
 export default function Splash() {
   const router = useRouter();
+  const [password, setPassword] = useState("");
+
+  const onClick = () => {
+    router.push(
+      `/shop${
+        password ? `?password=${Buffer.from(password).toString("base64")}` : ""
+      }`
+    );
+  };
 
   return (
     <div
       className="fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center h-screen m-auto gap-12"
-      onClick={() => router.push("/shop")}
+      onClick={() => {
+        if (!isLive()) {
+          return;
+        }
+
+        onClick();
+      }}
     >
       <div className="flex items-center justify-center">
         <div className="w-[40vw] max-w-[300px]">
@@ -33,7 +50,19 @@ export default function Splash() {
         </div>
       </div>
       <div className="w-[40vw] max-w-[300px]">
-        <button className="group relative cursor-pointer active:opacity-100 active:brightness-50 active:scale-[1.1]">
+        {!isLive() && (
+          <Password password={password} setPassword={setPassword} />
+        )}
+        <button
+          className="group relative cursor-pointer active:opacity-100 active:brightness-50 active:scale-[1.1]"
+          onClick={() => {
+            if (isLive()) {
+              return;
+            }
+
+            onClick();
+          }}
+        >
           <Image
             className="w-full h-full object-contain opacity-0 md:opacity-100 group-hover:opacity-0"
             src={`${CDN_URL}/images/enter.png`}
