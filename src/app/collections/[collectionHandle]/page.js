@@ -29,7 +29,7 @@ export default async function CollectionPage({ params }) {
     return (
       <>
         <TopBar />
-        <div className="flex flex-col lg:w-4xl xl:w-7xl m-auto mt-8 text-center font-bold opacity-75 font-display text-6xl">
+        <div className="flex flex-col lg:w-4xl xl:w-7xl m-auto mt-8 text-center font-bold opacity-75 font-display text-6xl fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
           No products found...
         </div>
         <Footer fixed />

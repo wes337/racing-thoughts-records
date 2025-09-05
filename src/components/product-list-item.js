@@ -6,7 +6,7 @@ export default function ProductListItem({ product }) {
 
   return (
     <Link
-      className="group flex flex-col w-full h-full max-w-[500px] m-auto cursor-pointer"
+      className="group flex flex-col w-full h-full max-w-[600px] m-auto cursor-pointer"
       href={`/products/${product.handle}`}
     >
       <div className="relative w-full h-full aspect-square overflow-hidden">
@@ -31,7 +31,7 @@ export default function ProductListItem({ product }) {
         <div
           className={`flex items-center leading-none font-mono font-bold h-[36px] lg:h-[40px] leading-6  ${
             longTitle ? "text-md tracking-[-2px]" : "text-lg tracking-tighter"
-          }  md:text-xl lg:text-2xl xl:tracking-normal opacity-90 group-hover:opacity-100`}
+          }  md:text-xl lg:text-2xl xl:tracking-[-2px] opacity-90 group-hover:opacity-100`}
         >
           {product.title}
         </div>
