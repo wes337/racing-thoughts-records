@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
@@ -14,6 +14,7 @@ export default function Product({ product }) {
   const [selectedVariant, setSelectedVariant] = useState(
     product.variants.length === 1 ? product.variants[0].id : ""
   );
+  const [imageIndex, setImageIndex] = useState(0);
 
   const soldOut =
     product.soldOut ||
@@ -47,25 +48,116 @@ export default function Product({ product }) {
     await Shopify.buyItNow([{ merchandiseId: selectedVariant, quantity: 1 }]);
   };
 
+  const gotoNextImage = () => {
+    setImageIndex((index) => {
+      const nextIndex = index + 1;
+
+      if (nextIndex > product.images.length - 1) {
+        return 0;
+      }
+
+      return nextIndex;
+    });
+  };
+
+  const gotoPreviousImage = () => {
+    setImageIndex((index) => {
+      const previousIndex = index - 1;
+
+      if (previousIndex < 0) {
+        return product.images.length - 1;
+      }
+
+      return previousIndex;
+    });
+  };
+
   return (
     <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[75vw] md:mx-auto">
-      <div className="relative h-[40vh] md:h-auto w-full md:w-[40vw] 2xl:w-[45vw]">
-        <Image
-          className="absolute top-0 left-0 w-full h-full z-2"
-          src={`/images/box-large.png`}
-          width={1011}
-          height={982}
-          alt=""
-        />
-        <div className="w-[calc(100%-8px)] h-[calc(100%-8px)] md:w-[calc(100%-16px)] md:h-[calc(100%-16px)] bg-gray-500/10 m-1 md:m-2 rounded-lg overflow-hidden">
+      <div className="w-full h-full">
+        <div className="relative h-[40vh] md:h-[70vh] rounded-xl w-full md:w-[40vw] 2xl:w-[40vw] overflow-hidden bg-gray-300/10">
           <Image
-            className="w-full h-full object-contain z-1"
-            src={product.images[0]}
-            width={1024}
-            height={1024}
+            className="absolute top-0 left-0 w-full h-full z-2"
+            src={`/images/box-large.png`}
+            width={1011}
+            height={982}
             alt=""
           />
+          <div className="relative w-[calc(100%-8px)] h-[calc(100%-8px)] md:w-[calc(100%-16px)] md:h-[calc(100%-16px)] bg-gray-500/10 m-1 md:m-2 rounded-lg overflow-hidden">
+            {product.images.map((image, index) => {
+              return (
+                <Image
+                  key={`main-${image}`}
+                  className={`absolute w-full h-full object-contain z-1 ${
+                    index === imageIndex ? "opacity-100" : "opacity-0"
+                  }`}
+                  src={image}
+                  width={1024}
+                  height={1024}
+                  alt=""
+                />
+              );
+            })}
+          </div>
+          {product.images.length > 1 && (
+            <>
+              <button
+                className="absolute top-0 left-0 z-10 h-full w-[20%] flex md:hidden items-center justify-center cursor-pointer"
+                onClick={gotoPreviousImage}
+              >
+                <Image
+                  className="w-[48px] h-auto object-contain scale-x-[-1]"
+                  src={`${CDN_URL}/images/arrow-right.png`}
+                  alt=""
+                  width={300}
+                  height={122}
+                />
+              </button>
+              <button
+                className="absolute top-0 right-0 z-10 h-full w-[20%] flex md:hidden items-center justify-center cursor-pointer"
+                onClick={gotoNextImage}
+              >
+                <Image
+                  className="w-[48px] h-auto object-contain"
+                  src={`${CDN_URL}/images/arrow-right.png`}
+                  alt=""
+                  width={300}
+                  height={122}
+                />
+              </button>
+            </>
+          )}
         </div>
+        {product.images.length > 1 && (
+          <div className="hidden md:flex justify-evenly w-full h-[80px] z-5">
+            {product.images.map((image, index) => {
+              return (
+                <button
+                  key={`select-${image}`}
+                  className="relative flex w-auto h-full cursor-pointer"
+                  onClick={() => setImageIndex(index)}
+                >
+                  <Image
+                    className={`w-full m-auto h-full object-contain rounded-md`}
+                    src={image}
+                    width={1024}
+                    height={1024}
+                    alt=""
+                  />
+                  <Image
+                    className={`absolute top-0 left-0 w-full h-full z-2 pointer-events-none ${
+                      index === imageIndex ? "opacity-100" : "opacity-50"
+                    }`}
+                    src={`/images/box-large.png`}
+                    width={1011}
+                    height={982}
+                    alt=""
+                  />
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
       <div className="flex flex-col p-4">
         <h2

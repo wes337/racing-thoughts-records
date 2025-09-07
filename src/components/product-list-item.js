@@ -3,6 +3,7 @@ import Link from "next/link";
 
 export default function ProductListItem({ product }) {
   const longTitle = product.title.length > 21;
+  const image = product.images.length > 0 ? product.images[0] : "";
 
   return (
     <Link
@@ -17,20 +18,26 @@ export default function ProductListItem({ product }) {
           height={982}
           alt=""
         />
-        <div className="bg-gray-500/10 m-1 md:m-2 rounded-lg overflow-hidden">
-          <Image
-            className="w-full h-full object-contain group-hover:scale-[1.1]"
-            src={product.images[0]}
-            alt=""
-            width={2672}
-            height={2672}
-          />
+        <div className="bg-gray-500/10 m-1 md:m-2 rounded-lg overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center">
+          {image ? (
+            <Image
+              className="w-full h-full object-contain group-hover:scale-[1.1]"
+              src={product.images[0]}
+              alt=""
+              width={2672}
+              height={2672}
+            />
+          ) : (
+            <span className="italic text-xs text-red-500">Missing image</span>
+          )}
         </div>
       </div>
       <div>
         <div
           className={`flex items-center leading-none font-mono font-bold h-[36px] lg:h-[40px] leading-6  ${
-            longTitle ? "text-md tracking-[-2px]" : "text-lg tracking-tighter"
+            longTitle
+              ? "text-sm md:text-md tracking-[-2px]"
+              : "text-md tracking-tighter"
           }  md:text-xl lg:text-2xl xl:tracking-[-2px] opacity-90 group-hover:opacity-100`}
         >
           {product.title}
