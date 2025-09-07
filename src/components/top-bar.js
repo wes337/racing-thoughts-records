@@ -17,7 +17,7 @@ export default function TopBar({ hideMenu }) {
   }
 
   return (
-    <div className="sticky top-0 left-0 flex items-center w-full h-[64px] md:h-[72px] 2xl:h-[96px] z-2">
+    <div className="sticky top-0 left-0 flex items-center w-full h-[64px] md:h-[72px] 2xl:h-[96px] z-4">
       <div className="top-bar-bg w-full h-full bg-white" />
       <MobileMenu />
       <div className="flex items-center justify-center gap-4 xl:gap-8 absolute left-[50%] translate-x-[-50%] h-[40px] md:h-[48px] w-full">

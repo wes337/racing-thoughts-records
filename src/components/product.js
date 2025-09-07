@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
@@ -21,6 +21,10 @@ export default function Product({ product }) {
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
   const longTitle = product.title.length > 21;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
+  }, []);
 
   const onAddToCart = async () => {
     if (!cart || soldOut || !selectedVariant || quantity <= 0) {
@@ -171,9 +175,9 @@ function MobilePhotos({
       const isLeftSwipe = distance > minSwipeDistance;
       const isRightSwipe = distance < -minSwipeDistance;
 
-      if (isLeftSwipe) {
+      if (isRightSwipe) {
         gotoPreviousImage();
-      } else if (isRightSwipe) {
+      } else if (isLeftSwipe) {
         gotoNextImage();
       }
     } catch {
@@ -183,7 +187,7 @@ function MobilePhotos({
 
   return (
     <div
-      className="block md:hidden w-full h-full"
+      className="block md:hidden w-[calc(100%-24px)] h-full mt-2"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -203,7 +207,6 @@ function MobilePhotos({
           height={1024}
           alt=""
         />
-
         {product.images.map((image, index) => {
           return (
             <div
@@ -222,33 +225,16 @@ function MobilePhotos({
             </div>
           );
         })}
-
         {product.images.length > 1 && (
           <>
             <button
-              className="absolute top-0 left-0 z-3 h-full w-[20%] flex items-center justify-center cursor-pointer"
+              className="absolute top-0 left-0 z-3 h-full w-[50%] flex items-center justify-center cursor-pointer"
               onClick={gotoPreviousImage}
-            >
-              <Image
-                className="w-[48px] h-auto object-contain scale-x-[-1]"
-                src={`${CDN_URL}/images/arrow-right.png`}
-                alt=""
-                width={300}
-                height={122}
-              />
-            </button>
+            />
             <button
-              className="absolute top-0 right-0 z-3 h-full w-[20%] flex items-center justify-center cursor-pointer"
+              className="absolute top-0 right-0 z-3 h-full w-[50%] flex items-center justify-center cursor-pointer"
               onClick={gotoNextImage}
-            >
-              <Image
-                className="w-[48px] h-auto object-contain"
-                src={`${CDN_URL}/images/arrow-right.png`}
-                alt=""
-                width={300}
-                height={122}
-              />
-            </button>
+            />
           </>
         )}
         <div className="absolute bottom-[16px] left-[50%] translate-x-[-50%] flex items-center justify-center w-[64px] z-2 text-center tracking-[-2px] bg-black text-white text-sm px-2 py-1 rounded-xl">
