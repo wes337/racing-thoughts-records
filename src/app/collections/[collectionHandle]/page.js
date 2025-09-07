@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Shopify from "@/shopify";
-import { isLive } from "@/utils";
+import { isLive, CDN_URL } from "@/utils";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 import ProductListItem from "@/components/product-list-item";
@@ -29,8 +30,17 @@ export default async function CollectionPage({ params }) {
     return (
       <>
         <TopBar />
-        <div className="flex flex-col lg:w-4xl xl:w-7xl m-auto mt-8 text-center font-bold opacity-75 font-display text-6xl fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-          Coming Soon
+        <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center">
+          <Image
+            className="opacity-75"
+            src={`${CDN_URL}/images/logo-black.png`}
+            width={652}
+            height={471}
+            alt=""
+          />
+          <div className="font-bold font-display text-9xl opacity-75 [text-shadow:5px_1px_0px_currentColor] tracking-wide leading-20 mt-8">
+            Coming Soon
+          </div>
         </div>
         <Footer />
       </>
