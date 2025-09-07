@@ -7,6 +7,8 @@ import Shopify from "@/shopify";
 import { useCart } from "@/state";
 import { CDN_URL } from "@/utils";
 
+const minSwipeDistance = 50;
+
 export default function Product({ product }) {
   const [cart, setCartOpen] = useCart(
     useShallow((state) => [state.cart, state.setOpen])
@@ -15,6 +17,8 @@ export default function Product({ product }) {
     product.variants.length === 1 ? product.variants[0].id : ""
   );
   const [imageIndex, setImageIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   const soldOut =
     product.soldOut ||
@@ -72,9 +76,51 @@ export default function Product({ product }) {
     });
   };
 
+  const onTouchStart = (event) => {
+    try {
+      setTouchEnd(null);
+      setTouchStart(event.targetTouches[0].clientX);
+    } catch {
+      // Do nothing
+    }
+  };
+
+  const onTouchMove = (event) => {
+    try {
+      setTouchEnd(event.targetTouches[0].clientX);
+    } catch {
+      // Do nothing
+    }
+  };
+
+  const onTouchEnd = () => {
+    try {
+      if (!touchStart || !touchEnd) {
+        return;
+      }
+
+      const distance = touchStart - touchEnd;
+      const isLeftSwipe = distance > minSwipeDistance;
+      const isRightSwipe = distance < -minSwipeDistance;
+
+      if (isLeftSwipe) {
+        gotoPreviousImage();
+      } else if (isRightSwipe) {
+        gotoNextImage();
+      }
+    } catch {
+      // Do nothing
+    }
+  };
+
   return (
     <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[75vw] md:mx-auto">
-      <div className="w-full md:w-auto h-full">
+      <div
+        className="w-full md:w-auto h-full"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div className="relative h-[40vh] md:h-[33vw] rounded-xl w-full md:w-[33vw] overflow-hidden bg-gray-300/10">
           <Image
             className="absolute top-0 left-0 w-full h-full z-2"

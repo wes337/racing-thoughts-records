@@ -19,17 +19,19 @@ export default function ProductListItem({ product }) {
           height={982}
           alt=""
         />
-        <div className="bg-gray-500/10 m-1 md:m-2 rounded-lg overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center">
+        <div className="bg-gray-500/10 m-0 md:m-2 rounded-lg overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center">
           {image ? (
             <Image
-              className="w-full h-full object-contain group-hover:scale-[1.1]"
+              className="w-[calc(100%-4px)] h-[calc(100%-4px)] md:w-full md:h-full object-contain group-hover:scale-[1.1]"
               src={product.images[0]}
               alt=""
               width={2672}
               height={2672}
             />
           ) : (
-            <span className="italic text-xs text-red-500">Missing image</span>
+            <span className="italic text-2xl md:text-4xl font-bold text-red-500 font-display">
+              Missing image
+            </span>
           )}
         </div>
       </div>
