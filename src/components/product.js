@@ -187,12 +187,12 @@ function MobilePhotos({
 
   return (
     <div
-      className="block md:hidden w-[calc(100%-24px)] h-full mt-2"
+      className="block md:hidden w-[calc(100%-24px)] h-full my-2"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      <div className="relative w-full h-full overflow-hidden bg-gray-300/10">
+      <div className="relative w-full h-full bg-gray-300/10">
         <Image
           className="absolute top-0 left-0 w-full h-full z-2"
           src={`/images/box-large.png`}
@@ -237,8 +237,10 @@ function MobilePhotos({
             />
           </>
         )}
-        <div className="absolute bottom-[16px] left-[50%] translate-x-[-50%] flex items-center justify-center w-[64px] z-2 text-center tracking-[-2px] bg-black text-white text-sm px-2 py-1 rounded-xl">
-          {imageIndex + 1} / {product.images.length}
+        <div className="absolute bottom-[-8px] left-[50%] translate-x-[-50%] flex items-center justify-center w-full z-2 text-center tracking-[-2px]">
+          <div className="flex items-center justify-center w-[64px] text-center bg-black text-white text-sm px-2 py-1 rounded-xl">
+            {imageIndex + 1} / {product.images.length}
+          </div>
         </div>
       </div>
     </div>
