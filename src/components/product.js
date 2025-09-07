@@ -7,8 +7,6 @@ import Shopify from "@/shopify";
 import { useCart } from "@/state";
 import { CDN_URL } from "@/utils";
 
-const minSwipeDistance = 50;
-
 export default function Product({ product }) {
   const [cart, setCartOpen] = useCart(
     useShallow((state) => [state.cart, state.setOpen])
@@ -18,8 +16,6 @@ export default function Product({ product }) {
     product.variants.length === 1 ? product.variants[0].id : ""
   );
   const [imageIndex, setImageIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
 
   const soldOut =
     product.soldOut ||
@@ -77,137 +73,20 @@ export default function Product({ product }) {
     });
   };
 
-  const onTouchStart = (event) => {
-    try {
-      setTouchEnd(null);
-      setTouchStart(event.targetTouches[0].clientX);
-    } catch {
-      // Do nothing
-    }
-  };
-
-  const onTouchMove = (event) => {
-    try {
-      setTouchEnd(event.targetTouches[0].clientX);
-    } catch {
-      // Do nothing
-    }
-  };
-
-  const onTouchEnd = () => {
-    try {
-      if (!touchStart || !touchEnd) {
-        return;
-      }
-
-      const distance = touchStart - touchEnd;
-      const isLeftSwipe = distance > minSwipeDistance;
-      const isRightSwipe = distance < -minSwipeDistance;
-
-      if (isLeftSwipe) {
-        gotoPreviousImage();
-      } else if (isRightSwipe) {
-        gotoNextImage();
-      }
-    } catch {
-      // Do nothing
-    }
-  };
-
   return (
     <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[75vw] md:mx-auto">
-      <div
-        className="w-full md:w-auto h-full"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        <div className="relative h-[40vh] md:h-[33vw] rounded-xl w-full md:w-[33vw] overflow-hidden bg-gray-300/10">
-          <Image
-            className="absolute top-0 left-0 w-full h-full z-2"
-            src={`/images/box-large.png`}
-            width={1011}
-            height={982}
-            alt=""
-          />
-          <div className="relative w-[calc(100%-8px)] h-[calc(100%-8px)] md:w-[calc(100%-16px)] md:h-[calc(100%-16px)] bg-gray-500/10 m-1 md:m-2 rounded-lg overflow-hidden">
-            {product.images.map((image, index) => {
-              return (
-                <Image
-                  key={`main-${image}`}
-                  className={`absolute w-full h-full object-contain z-1 ${
-                    index === imageIndex ? "opacity-100" : "opacity-0"
-                  }`}
-                  src={image}
-                  width={1024}
-                  height={1024}
-                  alt=""
-                />
-              );
-            })}
-          </div>
-          {product.images.length > 1 && (
-            <>
-              <button
-                className="absolute top-0 left-0 z-3 h-full w-[20%] flex md:hidden items-center justify-center cursor-pointer"
-                onClick={gotoPreviousImage}
-              >
-                <Image
-                  className="w-[48px] h-auto object-contain scale-x-[-1]"
-                  src={`${CDN_URL}/images/arrow-right.png`}
-                  alt=""
-                  width={300}
-                  height={122}
-                />
-              </button>
-              <button
-                className="absolute top-0 right-0 z-3 h-full w-[20%] flex md:hidden items-center justify-center cursor-pointer"
-                onClick={gotoNextImage}
-              >
-                <Image
-                  className="w-[48px] h-auto object-contain"
-                  src={`${CDN_URL}/images/arrow-right.png`}
-                  alt=""
-                  width={300}
-                  height={122}
-                />
-              </button>
-            </>
-          )}
-        </div>
-        {product.images.length > 1 && (
-          <div className="hidden md:flex justify-evenly w-full h-[8vh] z-5">
-            {product.images.map((image, index) => {
-              return (
-                <button
-                  key={`select-${image}`}
-                  className="relative flex w-auto h-full cursor-pointer"
-                  onClick={() => setImageIndex(index)}
-                >
-                  <Image
-                    className={`w-full m-auto h-full object-contain rounded-md`}
-                    src={image}
-                    width={1024}
-                    height={1024}
-                    alt=""
-                  />
-                  <Image
-                    className={`absolute top-0 left-0 w-full h-full z-2 pointer-events-none ${
-                      index === imageIndex
-                        ? "opacity-100 scale-[1.1]"
-                        : "opacity-25"
-                    }`}
-                    src={`/images/box-large.png`}
-                    width={1011}
-                    height={982}
-                    alt=""
-                  />
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <MobilePhotos
+        product={product}
+        imageIndex={imageIndex}
+        setImageIndex={setImageIndex}
+        gotoNextImage={gotoNextImage}
+        gotoPreviousImage={gotoPreviousImage}
+      />
+      <DesktopPhotos
+        product={product}
+        imageIndex={imageIndex}
+        setImageIndex={setImageIndex}
+      />
       <div className="flex flex-col p-4">
         <h2
           className={`font-mono font-bold leading-8 text-[2rem] xl:text-4xl xl:leading-10 ${
@@ -251,6 +130,196 @@ export default function Product({ product }) {
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function MobilePhotos({
+  product,
+  imageIndex,
+  gotoNextImage,
+  gotoPreviousImage,
+}) {
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  const onTouchStart = (event) => {
+    try {
+      setTouchEnd(null);
+      setTouchStart(event.targetTouches[0].clientX);
+    } catch {
+      // Do nothing
+    }
+  };
+
+  const onTouchMove = (event) => {
+    try {
+      setTouchEnd(event.targetTouches[0].clientX);
+    } catch {
+      // Do nothing
+    }
+  };
+
+  const onTouchEnd = () => {
+    try {
+      if (!touchStart || !touchEnd) {
+        return;
+      }
+
+      const minSwipeDistance = 50;
+      const distance = touchStart - touchEnd;
+      const isLeftSwipe = distance > minSwipeDistance;
+      const isRightSwipe = distance < -minSwipeDistance;
+
+      if (isLeftSwipe) {
+        gotoPreviousImage();
+      } else if (isRightSwipe) {
+        gotoNextImage();
+      }
+    } catch {
+      // Do nothing
+    }
+  };
+
+  return (
+    <div
+      className="block md:hidden w-full h-full"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      <div className="relative w-full h-full overflow-hidden bg-gray-300/10">
+        <Image
+          className="absolute top-0 left-0 w-full h-full z-2"
+          src={`/images/box-large.png`}
+          width={1011}
+          height={982}
+          alt=""
+        />
+        <Image
+          className="w-full h-auto z-[-1] opacity-0"
+          src={product.images[0]}
+          width={1024}
+          height={1024}
+          alt=""
+        />
+
+        {product.images.map((image, index) => {
+          return (
+            <div className="absolute top-0 left-0 w-[calc(100%-10px)] h-[calc(100%-10px)] bg-gray-500/10 m-1 rounded-lg overflow-hidden z-1">
+              <Image
+                key={`main-${image}`}
+                className={`w-full h-full object-contain z-1 ${
+                  index === imageIndex ? "opacity-100" : "opacity-0"
+                }`}
+                src={image}
+                width={1024}
+                height={1024}
+                alt=""
+              />
+            </div>
+          );
+        })}
+
+        {product.images.length > 1 && (
+          <>
+            <button
+              className="absolute top-0 left-0 z-3 h-full w-[20%] flex items-center justify-center cursor-pointer"
+              onClick={gotoPreviousImage}
+            >
+              <Image
+                className="w-[48px] h-auto object-contain scale-x-[-1]"
+                src={`${CDN_URL}/images/arrow-right.png`}
+                alt=""
+                width={300}
+                height={122}
+              />
+            </button>
+            <button
+              className="absolute top-0 right-0 z-3 h-full w-[20%] flex items-center justify-center cursor-pointer"
+              onClick={gotoNextImage}
+            >
+              <Image
+                className="w-[48px] h-auto object-contain"
+                src={`${CDN_URL}/images/arrow-right.png`}
+                alt=""
+                width={300}
+                height={122}
+              />
+            </button>
+          </>
+        )}
+        <div className="absolute bottom-[16px] left-[50%] translate-x-[-50%] flex items-center justify-center w-[64px] z-2 text-center tracking-[-2px] bg-black text-white text-sm px-2 py-1 rounded-xl">
+          {imageIndex + 1} / {product.images.length}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DesktopPhotos({ product, imageIndex, setImageIndex }) {
+  return (
+    <div className="hidden md:block w-auto h-full">
+      <div className="relative h-[33vw] rounded-xl w-[33vw] overflow-hidden bg-gray-300/10">
+        <div className="absolute bottom-[16px] left-0 w-full z-2 text-center tracking-[-2px] md:hidden">
+          {imageIndex + 1} / {product.images.length}
+        </div>
+        <Image
+          className="absolute top-0 left-0 w-full h-full z-2"
+          src={`/images/box-large.png`}
+          width={1011}
+          height={982}
+          alt=""
+        />
+        <div className="relative w-[calc(100%-16px)] h-[calc(100%-16px)] bg-gray-500/10 m-2 rounded-lg overflow-hidden">
+          {product.images.map((image, index) => {
+            return (
+              <Image
+                key={`main-${image}`}
+                className={`absolute w-full h-full object-contain z-1 ${
+                  index === imageIndex ? "opacity-100" : "opacity-0"
+                }`}
+                src={image}
+                width={1024}
+                height={1024}
+                alt=""
+              />
+            );
+          })}
+        </div>
+      </div>
+      {product.images.length > 1 && (
+        <div className="flex justify-evenly w-full h-[8vh] z-5">
+          {product.images.map((image, index) => {
+            return (
+              <button
+                key={`select-${image}`}
+                className="relative flex w-auto h-full cursor-pointer"
+                onClick={() => setImageIndex(index)}
+              >
+                <Image
+                  className={`w-full h-full object-contain m-auto rounded-md`}
+                  src={image}
+                  width={1024}
+                  height={1024}
+                  alt=""
+                />
+                <Image
+                  className={`absolute top-0 left-0 w-full h-full z-2 pointer-events-none ${
+                    index === imageIndex
+                      ? "opacity-100 scale-[1.1]"
+                      : "opacity-25"
+                  }`}
+                  src={`/images/box-large.png`}
+                  width={1011}
+                  height={982}
+                  alt=""
+                />
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
