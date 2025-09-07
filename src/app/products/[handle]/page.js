@@ -22,7 +22,7 @@ export default async function ProductPage({ params }) {
           <Product product={product} />
         </Suspense>
       </div>
-      <Footer fixed />
+      <Footer />
     </>
   );
 }

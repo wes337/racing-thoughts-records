@@ -3,6 +3,7 @@ import Link from "next/link";
 
 export default function ProductListItem({ product }) {
   const longTitle = product.title.length > 21;
+  const veryLongTitle = product.title.length > 40;
   const image = product.images.length > 0 ? product.images[0] : "";
 
   return (
@@ -38,7 +39,9 @@ export default function ProductListItem({ product }) {
             longTitle
               ? "text-sm md:text-md tracking-[-2px]"
               : "text-md tracking-tighter"
-          }  md:text-xl lg:text-2xl xl:tracking-[-2px] opacity-90 group-hover:opacity-100`}
+          } ${
+            veryLongTitle ? "text-xs leading-none" : ""
+          }  md:text-xl lg:text-xl xl:tracking-[-2px] opacity-90 group-hover:opacity-100`}
         >
           {product.title}
         </div>

@@ -13,7 +13,7 @@ export default async function PolicyPage({ params }) {
         <div className="flex flex-col lg:w-4xl xl:w-7xl mx-auto">
           Sorry, we couldn&apos;t find that page.
         </div>
-        <Footer fixed />
+        <Footer />
       </>
     );
   }

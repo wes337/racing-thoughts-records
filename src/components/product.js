@@ -74,8 +74,8 @@ export default function Product({ product }) {
 
   return (
     <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[75vw] md:mx-auto">
-      <div className="w-full h-full">
-        <div className="relative h-[40vh] md:h-[70vh] rounded-xl w-full md:w-[40vw] 2xl:w-[40vw] overflow-hidden bg-gray-300/10">
+      <div className="w-full md:w-auto h-full">
+        <div className="relative h-[40vh] md:h-[33vw] rounded-xl w-full md:w-[33vw] overflow-hidden bg-gray-300/10">
           <Image
             className="absolute top-0 left-0 w-full h-full z-2"
             src={`/images/box-large.png`}
@@ -129,7 +129,7 @@ export default function Product({ product }) {
           )}
         </div>
         {product.images.length > 1 && (
-          <div className="hidden md:flex justify-evenly w-full h-[80px] z-5">
+          <div className="hidden md:flex justify-evenly w-full h-[8vh] z-5">
             {product.images.map((image, index) => {
               return (
                 <button
@@ -146,7 +146,9 @@ export default function Product({ product }) {
                   />
                   <Image
                     className={`absolute top-0 left-0 w-full h-full z-2 pointer-events-none ${
-                      index === imageIndex ? "opacity-100" : "opacity-50"
+                      index === imageIndex
+                        ? "opacity-100 scale-[1.1]"
+                        : "opacity-25"
                     }`}
                     src={`/images/box-large.png`}
                     width={1011}

@@ -7,7 +7,7 @@ export default function HomePage() {
     <>
       <TopBar hideMenu />
       <Splash showPassword />
-      <Footer hideLinks fixed />
+      <Footer hideLinks />
     </>
   );
 }
