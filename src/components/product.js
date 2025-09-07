@@ -206,9 +206,11 @@ function MobilePhotos({
 
         {product.images.map((image, index) => {
           return (
-            <div className="absolute top-0 left-0 w-[calc(100%-10px)] h-[calc(100%-10px)] bg-gray-500/10 m-1 rounded-lg overflow-hidden z-1">
+            <div
+              key={`main-${image}`}
+              className="absolute top-0 left-0 w-[calc(100%-10px)] h-[calc(100%-10px)] bg-gray-500/10 m-1 rounded-lg overflow-hidden z-1"
+            >
               <Image
-                key={`main-${image}`}
                 className={`w-full h-full object-contain z-1 ${
                   index === imageIndex ? "opacity-100" : "opacity-0"
                 }`}
