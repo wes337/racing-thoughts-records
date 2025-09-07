@@ -11,6 +11,7 @@ import Cache from "@/cache";
 
 export default function Cart() {
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [currencyCode, setCurrencyCode] = useState("USD");
   const [cart, setCart, show, open, toggleOpen] = useCart(
@@ -66,12 +67,51 @@ export default function Cart() {
   };
 
   const onRemoveCartItem = async (cartItem) => {
-    if (!cart) {
+    if (!cart || loading) {
       return;
     }
 
+    setLoading(true);
+
     await Shopify.removeFromCart(cart.id, [cartItem.id]);
     await getCartItems();
+
+    setLoading(false);
+  };
+
+  const onReduceQuantity = async (cartItem) => {
+    if (!cart || loading) {
+      return;
+    }
+
+    setLoading(true);
+
+    if (cartItem.quantity === 1) {
+      await Shopify.removeFromCart(cart.id, [cartItem.id]);
+    } else {
+      await Shopify.updateQuantity(
+        cart.id,
+        cartItem.id,
+        Math.max(cartItem.quantity - 1, 1)
+      );
+    }
+
+    await getCartItems();
+
+    setLoading(false);
+  };
+
+  const onIncreaseQuantity = async (cartItem) => {
+    if (!cart || loading) {
+      return;
+    }
+
+    setLoading(true);
+
+    await Shopify.updateQuantity(cart.id, cartItem.id, cartItem.quantity + 1);
+    await getCartItems();
+
+    setLoading(false);
   };
 
   const onClickCheckout = () => {
@@ -205,20 +245,46 @@ export default function Cart() {
                           />
                         </div>
                         <div className="flex flex-col justify-center w-[calc(100%-128px)]">
-                          <div className="font-sans font-medium flex items-center gap-2 tracking-tighter text-sm md:text-lg whitespace-nowrap overflow-hidden text-ellipsis">
-                            <span className="font-light italic text-xs">
-                              {cartItem.quantity}x
-                            </span>
+                          <div className="font-sans font-medium flex items-center gap-2 tracking-[-1.5px] text-sm md:text-md xl:text-lg whitespace-nowrap overflow-hidden text-ellipsis">
                             {cartItem.productTitle}
                           </div>
-                          <div className="text-xl font-light opacity-80">
-                            ${(cartItem.price * cartItem.quantity).toFixed(2)}
+                          <div className="flex mt-2">
+                            <div className="group relative flex w-[33%] h-[32px]">
+                              <button
+                                className="w-[50%] h-full flex items-center justify-center cursor-pointer font-bold text-lg"
+                                onClick={() => onReduceQuantity(cartItem)}
+                                disabled={loading}
+                              >
+                                -
+                              </button>
+                              <div className="w-full flex items-center justify-center text-center font-bold text-lg">
+                                {cartItem.quantity}
+                              </div>
+                              <button
+                                className="w-[50%] h-full flex items-center justify-center cursor-pointer font-bold text-lg"
+                                onClick={() => onIncreaseQuantity(cartItem)}
+                                disabled={loading}
+                              >
+                                +
+                              </button>
+                              <Image
+                                className="absolute w-full h-full pointer-events-none opacity-85 group-hover:opacity-100 group-hover:brightness-50"
+                                src={`/images/box.png`}
+                                width={605}
+                                height={214}
+                                alt=""
+                              />
+                            </div>
+                            <div className="text-xl font-light opacity-80 ml-auto">
+                              ${(cartItem.price * cartItem.quantity).toFixed(2)}
+                            </div>
                           </div>
                         </div>
                         <div className="absolute top-0 right-0 m-4">
                           <button
                             className="cursor-pointer w-[28px] h-[28px] opacity-80 hover:opacity-100 hover:scale-[1.1]"
                             onClick={() => onRemoveCartItem(cartItem)}
+                            disabled={loading}
                           >
                             <Image
                               src={`${CDN_URL}/images/close-box.png`}

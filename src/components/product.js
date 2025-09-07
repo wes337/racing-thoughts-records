@@ -13,6 +13,7 @@ export default function Product({ product }) {
   const [cart, setCartOpen] = useCart(
     useShallow((state) => [state.cart, state.setOpen])
   );
+  const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(
     product.variants.length === 1 ? product.variants[0].id : ""
   );
@@ -26,12 +27,12 @@ export default function Product({ product }) {
   const longTitle = product.title.length > 21;
 
   const onAddToCart = async () => {
-    if (!cart || soldOut || !selectedVariant) {
+    if (!cart || soldOut || !selectedVariant || quantity <= 0) {
       return;
     }
 
     await Shopify.addToCart(cart.id, [
-      { merchandiseId: selectedVariant, quantity: 1 },
+      { merchandiseId: selectedVariant, quantity },
     ]);
 
     const event = new CustomEvent("updatecart");
@@ -148,7 +149,7 @@ export default function Product({ product }) {
           {product.images.length > 1 && (
             <>
               <button
-                className="absolute top-0 left-0 z-10 h-full w-[20%] flex md:hidden items-center justify-center cursor-pointer"
+                className="absolute top-0 left-0 z-3 h-full w-[20%] flex md:hidden items-center justify-center cursor-pointer"
                 onClick={gotoPreviousImage}
               >
                 <Image
@@ -160,7 +161,7 @@ export default function Product({ product }) {
                 />
               </button>
               <button
-                className="absolute top-0 right-0 z-10 h-full w-[20%] flex md:hidden items-center justify-center cursor-pointer"
+                className="absolute top-0 right-0 z-3 h-full w-[20%] flex md:hidden items-center justify-center cursor-pointer"
                 onClick={gotoNextImage}
               >
                 <Image
