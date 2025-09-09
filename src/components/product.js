@@ -295,7 +295,7 @@ function DesktopPhotos({ product, imageIndex, setImageIndex }) {
                   alt=""
                 />
                 <Image
-                  className={`absolute top-0 left-0 w-full h-full z-2 pointer-events-none ${
+                  className={`absolute top-[50%] left-[50%] translate-[-50%] w-auto h-full z-2 pointer-events-none ${
                     index === imageIndex
                       ? "opacity-100 scale-[1.1]"
                       : "opacity-25"
