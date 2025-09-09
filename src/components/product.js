@@ -91,7 +91,7 @@ export default function Product({ product }) {
         imageIndex={imageIndex}
         setImageIndex={setImageIndex}
       />
-      <div className="flex flex-col p-4">
+      <div className="flex flex-col p-4 md:w-full">
         <h2
           className={`font-mono font-bold leading-8 text-[2rem] xl:text-4xl xl:leading-10 ${
             longTitle
@@ -249,7 +249,7 @@ function MobilePhotos({
 
 function DesktopPhotos({ product, imageIndex, setImageIndex }) {
   return (
-    <div className="hidden md:block w-auto h-full">
+    <div className="hidden md:block flex flex-col items-center justify-center w-full h-full">
       <div className="relative h-[33vw] rounded-xl w-[33vw] overflow-hidden bg-gray-300/10">
         <div className="absolute bottom-[16px] left-0 w-full z-2 text-center tracking-[-2px] md:hidden">
           {imageIndex + 1} / {product.images.length}
