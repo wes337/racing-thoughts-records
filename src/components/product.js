@@ -78,7 +78,7 @@ export default function Product({ product }) {
   };
 
   return (
-    <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[75vw] md:mx-auto">
+    <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[90vw] md:mx-auto">
       <MobilePhotos
         product={product}
         imageIndex={imageIndex}
@@ -101,15 +101,15 @@ export default function Product({ product }) {
         >
           {product.title}
         </h2>
-        <h3 className="font-sans font-medium text-2xl mt-2 opacity-80">
+        <h3 className="font-sans font-medium text-2xl min-[1921px]:text-3xl mt-2 opacity-80">
           {product.price}
         </h3>
-        <p className="font-sans font-light py-4 text-sm md:my-4 md:text-md opacity-80">
+        <p className="font-sans font-light py-4 text-sm min-[1921px]:text-lg md:my-4 md:text-md opacity-80">
           {product.description}
         </p>
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-4 min-[1921px]:min-w-[608px] mr-auto">
           <button
-            className="cursor-pointer h-[64px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
+            className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
             onClick={onAddToCart}
           >
             <Image
@@ -121,7 +121,7 @@ export default function Product({ product }) {
             />
           </button>
           <button
-            className="cursor-pointer h-[64px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
+            className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
             onClick={onBuyItNow}
           >
             <Image
