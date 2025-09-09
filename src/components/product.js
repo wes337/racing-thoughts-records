@@ -250,7 +250,7 @@ function MobilePhotos({
 function DesktopPhotos({ product, imageIndex, setImageIndex }) {
   return (
     <div className="hidden md:block flex flex-col items-center justify-center w-full h-full">
-      <div className="relative h-[33vw] rounded-xl w-[33vw] overflow-hidden bg-gray-300/10">
+      <div className="relative h-[33vw] rounded-xl w-[33vw] overflow-hidden bg-gray-300/10 m-auto">
         <div className="absolute bottom-[16px] left-0 w-full z-2 text-center tracking-[-2px] md:hidden">
           {imageIndex + 1} / {product.images.length}
         </div>
@@ -284,11 +284,11 @@ function DesktopPhotos({ product, imageIndex, setImageIndex }) {
             return (
               <button
                 key={`select-${image}`}
-                className="relative flex w-auto h-full cursor-pointer"
+                className="relative flex w-auto h-full m-auto cursor-pointer"
                 onClick={() => setImageIndex(index)}
               >
                 <Image
-                  className={`w-full h-full object-contain m-auto rounded-md`}
+                  className={`w-auto h-full object-contain m-auto rounded-md`}
                   src={image}
                   width={1024}
                   height={1024}
