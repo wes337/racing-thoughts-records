@@ -6,6 +6,9 @@ import Footer from "@/components/footer";
 import ProductListItem from "@/components/product-list-item";
 import ComingSoon from "@/components/coming-soon";
 
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export default async function CollectionPage({ params }) {
   if (!isLive()) {
     return <ComingSoon />;

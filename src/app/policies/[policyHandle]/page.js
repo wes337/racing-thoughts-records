@@ -2,6 +2,9 @@ import Shopify from "@/shopify";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export default async function PolicyPage({ params }) {
   const { policyHandle } = await params;
   const policy = await Shopify.getPolicy(policyHandle);

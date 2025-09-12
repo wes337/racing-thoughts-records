@@ -77,64 +77,87 @@ export default function Product({ product }) {
     });
   };
 
+  const customBackground = () => {
+    return [
+      "lil-darkie-collectors-edition-1",
+      "this-does-not-exist",
+      "lil-darkie-the-future-is-dark",
+      "lil-darkie-swamp",
+      "lil-darkie-swamp-drained",
+    ].includes(product.handle);
+  };
+
   return (
-    <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[90vw] md:mx-auto">
-      <MobilePhotos
-        product={product}
-        imageIndex={imageIndex}
-        setImageIndex={setImageIndex}
-        gotoNextImage={gotoNextImage}
-        gotoPreviousImage={gotoPreviousImage}
-      />
-      <DesktopPhotos
-        product={product}
-        imageIndex={imageIndex}
-        setImageIndex={setImageIndex}
-      />
-      <div className="flex flex-col p-4 md:w-full">
-        <h2
-          className={`font-mono font-bold leading-8 text-[2rem] xl:text-4xl xl:leading-10 ${
-            longTitle
-              ? "text-[2rem] tracking-[-2px] lg:tracking-tight xl:tracking-tight xl:text-4xl"
-              : ""
-          } opacity-90`}
-        >
-          {product.title}
-        </h2>
-        <h3 className="font-sans font-medium text-2xl min-[1921px]:text-3xl mt-2 opacity-80">
-          {product.price}
-        </h3>
-        <p className="font-sans font-light py-4 text-sm min-[1921px]:text-lg md:my-4 md:text-md opacity-80">
-          {product.description}
-        </p>
-        <div className="flex items-start gap-4 min-[1921px]:min-w-[608px] mr-auto">
-          <button
-            className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
-            onClick={onAddToCart}
+    <>
+      {customBackground() && (
+        <div className="fixed top-0 left-0 w-full h-full z-0 opacity-10 mix-blend-multiply">
+          <Image
+            className="w-full h-full object-cover"
+            src={`/images/custom-bg/${product.handle}.png`}
+            width={2351}
+            height={1080}
+            alt=""
+          />
+        </div>
+      )}
+      <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[90vw] md:mx-auto">
+        <MobilePhotos
+          product={product}
+          imageIndex={imageIndex}
+          setImageIndex={setImageIndex}
+          gotoNextImage={gotoNextImage}
+          gotoPreviousImage={gotoPreviousImage}
+        />
+        <DesktopPhotos
+          product={product}
+          imageIndex={imageIndex}
+          setImageIndex={setImageIndex}
+        />
+        <div className="flex flex-col p-4 md:w-full">
+          <h2
+            className={`font-mono font-bold leading-8 text-[2rem] xl:text-4xl xl:leading-10 ${
+              longTitle
+                ? "text-[2rem] tracking-[-2px] lg:tracking-tight xl:tracking-tight xl:text-4xl"
+                : ""
+            } opacity-90`}
           >
-            <Image
-              className="w-full h-full object-contain select-none"
-              src={`${CDN_URL}/images/add-to-cart.png`}
-              width={997}
-              height={224}
-              alt="Add to Cart"
-            />
-          </button>
-          <button
-            className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
-            onClick={onBuyItNow}
-          >
-            <Image
-              className="w-full h-full object-contain select-none"
-              src={`${CDN_URL}/images/buy-now.png`}
-              width={797}
-              height={225}
-              alt="Buy Now"
-            />
-          </button>
+            {product.title}
+          </h2>
+          <h3 className="font-sans font-medium text-2xl min-[1921px]:text-3xl mt-2 opacity-80">
+            {product.price}
+          </h3>
+          <p className="font-sans font-light py-4 text-sm min-[1921px]:text-lg md:my-4 md:text-md opacity-80">
+            {product.description}
+          </p>
+          <div className="flex items-start gap-4 min-[1921px]:min-w-[608px] mr-auto">
+            <button
+              className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
+              onClick={onAddToCart}
+            >
+              <Image
+                className="w-full h-full object-contain select-none"
+                src={`${CDN_URL}/images/add-to-cart.png`}
+                width={997}
+                height={224}
+                alt="Add to Cart"
+              />
+            </button>
+            <button
+              className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
+              onClick={onBuyItNow}
+            >
+              <Image
+                className="w-full h-full object-contain select-none"
+                src={`${CDN_URL}/images/buy-now.png`}
+                width={797}
+                height={225}
+                alt="Buy Now"
+              />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

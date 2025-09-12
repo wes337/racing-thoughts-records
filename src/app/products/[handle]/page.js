@@ -6,6 +6,9 @@ import Footer from "@/components/footer";
 import Product from "@/components/product";
 import ComingSoon from "@/components/coming-soon";
 
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export default async function ProductPage({ params }) {
   if (!isLive()) {
     return <ComingSoon />;
@@ -16,7 +19,7 @@ export default async function ProductPage({ params }) {
 
   return (
     <>
-      <TopBar />
+      <TopBar hideBackground />
       <div className="flex flex-col lg:w-4xl xl:w-7xl mx-auto">
         <Suspense>
           <Product product={product} />
