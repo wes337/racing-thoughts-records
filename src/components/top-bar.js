@@ -20,7 +20,7 @@ export default function TopBar({ hideMenu, hideBackground }) {
     <div className="sticky top-0 left-0 flex items-center w-full h-[64px] md:h-[72px] 2xl:h-[96px] z-4">
       <div
         className={`${
-          hideBackground ? "opacity-0" : "top-bar-bg"
+          hideBackground ? "opacity-50 md:opacity-0" : "top-bar-bg"
         } w-full h-full bg-white`}
       />
       <MobileMenu />

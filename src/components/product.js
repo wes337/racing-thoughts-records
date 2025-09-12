@@ -90,7 +90,7 @@ export default function Product({ product }) {
   return (
     <>
       {customBackground() && (
-        <div className="fixed top-0 left-0 w-full h-full z-0 mix-blend-overlay">
+        <div className="fixed top-0 left-0 w-full h-full z-0 mix-blend-overlay grayscale-100 md:grayscale-0">
           <Image
             className="w-full h-full object-cover"
             src={`/images/custom-bg/${product.handle}.png`}
