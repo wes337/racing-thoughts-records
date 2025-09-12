@@ -259,7 +259,7 @@ export default class Shopify {
       Cache.setItem(
         `products:${first}${after ? `:${after}` : ""}`,
         products,
-        120
+        60
       );
     }
 
