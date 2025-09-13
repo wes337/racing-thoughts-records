@@ -38,13 +38,11 @@ export default function ProductListItem({ product }) {
       </div>
       <div>
         <div
-          className={`flex items-center leading-none font-mono font-bold h-[36px] lg:h-[40px] leading-6  ${
-            longTitle
-              ? "text-sm md:text-md tracking-[-2px]"
-              : "text-md tracking-tighter"
+          className={`flex items-center leading-none font-mono font-bold h-[36px] lg:h-[40px] leading-6 ${
+            longTitle ? "text-sm md:text-md" : "text-md"
           } ${
             veryLongTitle ? "text-xs leading-none" : ""
-          }  md:text-xl lg:text-xl xl:tracking-[-2px] opacity-90 group-hover:opacity-100`}
+          } md:text-xl lg:text-xl tracking-tighter opacity-90 group-hover:opacity-100`}
         >
           {product.title}
         </div>

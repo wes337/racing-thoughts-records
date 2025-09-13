@@ -120,7 +120,7 @@ export default function Product({ product }) {
           />
         </div>
       )}
-      <div className="flex flex-col items-center md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[90vw] md:mx-auto">
+      <div className="flex flex-col items-center xl:gap-8 md:flex-row lg:w-4xl xl:w-full min-h-[calc(100vh-140px)] md:max-w-[90vw] md:mx-auto">
         <MobilePhotos
           product={product}
           imageIndex={imageIndex}
@@ -143,7 +143,14 @@ export default function Product({ product }) {
             onCloseFullscreenImage={() => setShowFullscreenImage(false)}
           />
         )}
-        <div className="flex flex-col p-4 md:w-full">
+        <div className="relative flex flex-col p-4 md:w-full bg-white mt-2 md:mt-0 mobile-menu-bg">
+          <Image
+            className="absolute top-0 left-0 w-full h-full z-0 scale-[1.03]"
+            src={`${CDN_URL}/images/box-large.png`}
+            width={1011}
+            height={982}
+            alt=""
+          />
           <h2
             className={`font-mono font-bold leading-8 xl:leading-10 ${
               longTitle
@@ -300,7 +307,7 @@ function MobilePhotos({
           return (
             <div
               key={`main-${image}`}
-              className="absolute top-0 left-0 w-[calc(100%-10px)] h-[calc(100%-10px)] bg-gray-500/10 m-1 rounded-lg overflow-hidden z-1"
+              className="absolute top-0 left-0 w-[calc(100%-10px)] h-[calc(100%-10px)] m-1 rounded-lg overflow-hidden z-1"
             >
               <Image
                 className={`w-full h-full object-contain z-1 ${
