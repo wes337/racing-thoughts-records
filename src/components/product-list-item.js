@@ -10,6 +10,7 @@ export default function ProductListItem({ product }) {
     <Link
       className="group flex flex-col w-full h-full max-w-[600px] m-auto cursor-pointer"
       href={`/products/${product.handle}`}
+      prefetch
     >
       <div className="relative w-full h-full aspect-square overflow-hidden">
         <Image
