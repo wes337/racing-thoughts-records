@@ -110,9 +110,9 @@ export default function Product({ product }) {
   return (
     <>
       {customBackground() && (
-        <div className="fixed top-0 left-0 w-full h-full z-0 mix-blend-overlay grayscale-100 md:grayscale-0">
+        <div className="fixed top-0 left-0 w-full h-full z-0 mix-blend-color-burn opacity-20 grayscale-100 md:grayscale-50 pointer-events-none select-none">
           <Image
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover pointer-events-none select-none"
             src={`${CDN_URL}/images/custom-bg/${product.handle}.png`}
             width={2351}
             height={1080}
