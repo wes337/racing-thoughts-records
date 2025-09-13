@@ -38,15 +38,17 @@ export default function ProductListItem({ product }) {
       </div>
       <div>
         <div
-          className={`flex items-center leading-none font-mono font-bold h-[36px] lg:h-[40px] leading-6 ${
+          className={`flex items-center font-mono font-bold min-h-[42px] md:min-h-auto h-auto md:h-[40px] lg:h-[40px] mt-1 md:mt-0 ${
             longTitle ? "text-sm md:text-md" : "text-md"
           } ${
-            veryLongTitle ? "text-xs leading-none" : ""
-          } md:text-xl lg:text-xl tracking-tighter opacity-90 group-hover:opacity-100`}
+            veryLongTitle
+              ? "text-xs tracking-[-2px] md:tracking-tighter leading-3.5 md:leading-5"
+              : "tracking-tighter leading-3.5 md:leading-5"
+          } md:text-xl lg:text-xl opacity-90 group-hover:opacity-100`}
         >
           {product.title}
         </div>
-        <div className="font-sans font-medium text-sm md:text-xl h-full opacity-80">
+        <div className="font-sans font-medium text-sm md:text-xl h-auto md:h-full opacity-80 mt-1 md:mt-0">
           ${Number(product.price).toFixed(2)}
         </div>
       </div>
