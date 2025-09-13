@@ -16,6 +16,7 @@ export default function Product({ product }) {
     product.variants.length === 1 ? product.variants[0].id : ""
   );
   const [imageIndex, setImageIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const soldOut =
     product.soldOut ||
@@ -27,9 +28,11 @@ export default function Product({ product }) {
   }, []);
 
   const onAddToCart = async () => {
-    if (!cart || soldOut || !selectedVariant || quantity <= 0) {
+    if (loading || !cart || soldOut || !selectedVariant || quantity <= 0) {
       return;
     }
+
+    setLoading(true);
 
     await Shopify.addToCart(cart.id, [
       { merchandiseId: selectedVariant, quantity },
@@ -43,14 +46,21 @@ export default function Product({ product }) {
     }
 
     setCartOpen(true);
+    setLoading(false);
+    setQuantity(1);
   };
 
   const onBuyItNow = async () => {
-    if (soldOut || !selectedVariant) {
+    if (loading || soldOut || !selectedVariant) {
       return;
     }
 
+    setLoading(true);
+
     await Shopify.buyItNow([{ merchandiseId: selectedVariant, quantity: 1 }]);
+
+    setLoading(false);
+    setQuantity(1);
   };
 
   const gotoNextImage = () => {
@@ -115,11 +125,11 @@ export default function Product({ product }) {
         />
         <div className="flex flex-col p-4 md:w-full">
           <h2
-            className={`font-mono font-bold leading-8 text-[2rem] xl:text-4xl xl:leading-10 ${
+            className={`font-mono font-bold leading-8 xl:leading-10 ${
               longTitle
-                ? "text-[2rem] tracking-[-2px] lg:tracking-tight xl:tracking-tight xl:text-4xl"
-                : ""
-            } opacity-90`}
+                ? "text-[1.8rem] tracking-[-3px] lg:tracking-tight xl:tracking-tight xl:text-4xl"
+                : "text-[2rem] xl:text-4xl tracking-tighter"
+            } opacity-90 text-left`}
           >
             {product.title}
           </h2>
@@ -129,6 +139,39 @@ export default function Product({ product }) {
           <p className="font-sans font-light py-4 text-sm min-[1921px]:text-lg md:my-4 md:text-md opacity-80">
             {product.description}
           </p>
+          <div className="group flex flex-col mb-2 md:mb-4 hover:scale-[1.01] hover:translate-x-[2px]">
+            <div className="text-xs md:text-md min-[1921px]:text-lg font-bold leading-none mb-1 opacity-60 uppercase group-hover:opacity-100">
+              Quantity
+            </div>
+            <div className="relative flex w-[33%] h-[48px] md:h-[64px]">
+              <button
+                className="w-[50%] h-full flex items-center justify-center cursor-pointer font-bold text-lg md:text-2xl"
+                onClick={() =>
+                  setQuantity((quantity) => Math.max(quantity - 1, 1))
+                }
+                disabled={loading}
+              >
+                -
+              </button>
+              <div className="w-full flex items-center justify-center text-center font-bold text-lg md:text-2xl">
+                {quantity}
+              </div>
+              <button
+                className="w-[50%] h-full flex items-center justify-center cursor-pointer font-bold text-lg md:text-2xl"
+                onClick={() => setQuantity((quantity) => quantity + 1)}
+                disabled={loading}
+              >
+                +
+              </button>
+              <Image
+                className="absolute w-full h-full pointer-events-none opacity-85 group-hover:opacity-100 group-hover:brightness-50"
+                src={`/images/box.png`}
+                width={605}
+                height={214}
+                alt=""
+              />
+            </div>
+          </div>
           <div className="flex items-start gap-4 min-[1921px]:min-w-[608px] mr-auto">
             <button
               className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
@@ -169,6 +212,8 @@ function MobilePhotos({
 }) {
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+
+  const altText = product.imageAltTexts[imageIndex];
 
   const onTouchStart = (event) => {
     try {
@@ -260,6 +305,11 @@ function MobilePhotos({
             />
           </>
         )}
+        {altText && (
+          <div className="absolute bottom-[24px] left-0 w-full z-2 text-sm text-center tracking-[-1px]">
+            {altText}
+          </div>
+        )}
         <div className="absolute bottom-[-8px] left-[50%] translate-x-[-50%] flex items-center justify-center w-full z-2 text-center tracking-[-2px]">
           <div className="flex items-center justify-center w-[64px] text-center bg-black text-white text-sm px-2 py-1 rounded-xl">
             {imageIndex + 1} / {product.images.length}
@@ -271,12 +321,16 @@ function MobilePhotos({
 }
 
 function DesktopPhotos({ product, imageIndex, setImageIndex }) {
+  const altText = product.imageAltTexts[imageIndex];
+
   return (
     <div className="hidden md:block flex flex-col items-center justify-center w-full h-full">
       <div className="relative h-[33vw] rounded-xl w-[33vw] overflow-hidden bg-gray-300/10 m-auto">
-        <div className="absolute bottom-[16px] left-0 w-full z-2 text-center tracking-[-2px] md:hidden">
-          {imageIndex + 1} / {product.images.length}
-        </div>
+        {altText && (
+          <div className="absolute bottom-[24px] left-0 w-full z-2 text-center tracking-[-2px] min-[1921px]:text-lg">
+            {altText}
+          </div>
+        )}
         <Image
           className="absolute top-0 left-0 w-full h-full z-2"
           src={`/images/box-large.png`}

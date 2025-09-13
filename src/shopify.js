@@ -121,6 +121,10 @@ export default class Shopify {
         data.product.images?.edges?.length > 0
           ? data.product.images.edges.map(({ node }) => node.url || "")
           : [],
+      imageAltTexts:
+        data.product.images?.edges?.length > 0
+          ? data.product.images.edges.map(({ node }) => node.altText || "")
+          : [],
       soldOut: !data.product.variants.edges.some(
         ({ node }) => node.availableForSale
       ),
@@ -218,7 +222,16 @@ export default class Shopify {
       .map(({ node }) => {
         const images =
           node.images?.edges?.length > 0
-            ? node.images.edges.map(({ node }) => node.url || "")
+            ? node.images.edges.map(({ node }) => {
+                return node.url || "";
+              })
+            : [];
+
+        const imageAltTexts =
+          node.images?.edges?.length > 0
+            ? node.images.edges.map(({ node }) => {
+                return node.altText || "";
+              })
             : [];
 
         const soldOut = !node.variants.edges.some(
@@ -232,6 +245,7 @@ export default class Shopify {
           description: node.description,
           descriptionHtml: node.descriptionHtml,
           images,
+          imageAltTexts,
           price: node.priceRange.minVariantPrice.amount,
           currencyCode: node.priceRange.minVariantPrice.currencyCode,
           variants:
@@ -357,6 +371,13 @@ export default class Shopify {
             ? node.images.edges.map(({ node }) => node.url || "")
             : [];
 
+        const imageAltTexts =
+          node.images?.edges?.length > 0
+            ? node.images.edges.map(({ node }) => {
+                return node.altText || "";
+              })
+            : [];
+
         const soldOut = !node.variants.edges.some(
           ({ node }) => node.availableForSale
         );
@@ -368,6 +389,7 @@ export default class Shopify {
           description: node.description,
           descriptionHtml: node.descriptionHtml,
           images,
+          imageAltTexts,
           price: node.priceRange.minVariantPrice.amount,
           currencyCode: node.priceRange.minVariantPrice.currencyCode,
           variants:
