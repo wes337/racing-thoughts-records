@@ -26,7 +26,7 @@ export default function Cursor() {
   return (
     <>
       <Image
-        className="hidden md:block fixed w-[20px] h-[27px] pointer-events-none z-25 drop-shadow-lg"
+        className="hidden md:block fixed w-[20px] h-[27px] pointer-events-none z-100 drop-shadow-lg"
         src={`${CDN_URL}/images/cursor.png`}
         alt=""
         width={109}

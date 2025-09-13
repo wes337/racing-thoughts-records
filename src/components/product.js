@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
@@ -17,6 +18,7 @@ export default function Product({ product }) {
   );
   const [imageIndex, setImageIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showFullscreenImage, setShowFullscreenImage] = useState(false);
 
   const soldOut =
     product.soldOut ||
@@ -26,6 +28,14 @@ export default function Product({ product }) {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0 });
   }, []);
+
+  useEffect(() => {
+    if (showFullscreenImage) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [showFullscreenImage]);
 
   const onAddToCart = async () => {
     if (loading || !cart || soldOut || !selectedVariant || quantity <= 0) {
@@ -103,7 +113,7 @@ export default function Product({ product }) {
         <div className="fixed top-0 left-0 w-full h-full z-0 mix-blend-overlay grayscale-100 md:grayscale-0">
           <Image
             className="w-full h-full object-cover"
-            src={`/images/custom-bg/${product.handle}.png`}
+            src={`${CDN_URL}/images/custom-bg/${product.handle}.png`}
             width={2351}
             height={1080}
             alt=""
@@ -117,12 +127,22 @@ export default function Product({ product }) {
           setImageIndex={setImageIndex}
           gotoNextImage={gotoNextImage}
           gotoPreviousImage={gotoPreviousImage}
+          onShowFullscreenImage={() => setShowFullscreenImage(true)}
         />
         <DesktopPhotos
           product={product}
           imageIndex={imageIndex}
           setImageIndex={setImageIndex}
+          onShowFullscreenImage={() => setShowFullscreenImage(true)}
         />
+        {showFullscreenImage && (
+          <FullscreenImage
+            product={product}
+            imageIndex={imageIndex}
+            setImageIndex={setImageIndex}
+            onCloseFullscreenImage={() => setShowFullscreenImage(false)}
+          />
+        )}
         <div className="flex flex-col p-4 md:w-full">
           <h2
             className={`font-mono font-bold leading-8 xl:leading-10 ${
@@ -165,7 +185,7 @@ export default function Product({ product }) {
               </button>
               <Image
                 className="absolute w-full h-full pointer-events-none opacity-85 group-hover:opacity-100 group-hover:brightness-50"
-                src={`/images/box.png`}
+                src={`${CDN_URL}/images/box.png`}
                 width={605}
                 height={214}
                 alt=""
@@ -209,6 +229,7 @@ function MobilePhotos({
   imageIndex,
   gotoNextImage,
   gotoPreviousImage,
+  onShowFullscreenImage,
 }) {
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
@@ -263,7 +284,7 @@ function MobilePhotos({
       <div className="relative w-full h-full bg-gray-300/10">
         <Image
           className="absolute top-0 left-0 w-full h-full z-2"
-          src={`/images/box-large.png`}
+          src={`${CDN_URL}/images/box-large.png`}
           width={1011}
           height={982}
           alt=""
@@ -315,25 +336,58 @@ function MobilePhotos({
             {imageIndex + 1} / {product.images.length}
           </div>
         </div>
+        <div className="absolute top-[16px] right-[16px] z-3">
+          <button
+            className="w-[48px] h-[48px] p-2 cursor-pointer hover:scale-[1.2]"
+            onClick={onShowFullscreenImage}
+          >
+            <Image
+              className="w-full h-full"
+              src={`${CDN_URL}/images/zoom.png`}
+              width={123}
+              height={123}
+              alt=""
+            />
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
-function DesktopPhotos({ product, imageIndex, setImageIndex }) {
+function DesktopPhotos({
+  product,
+  imageIndex,
+  setImageIndex,
+  onShowFullscreenImage,
+}) {
   const altText = product.imageAltTexts[imageIndex];
 
   return (
-    <div className="hidden md:block flex flex-col items-center justify-center w-full h-full">
+    <div className="hidden md:flex flex-col items-center justify-center w-full h-full">
       <div className="relative h-[33vw] rounded-xl w-[33vw] overflow-hidden bg-gray-300/10 m-auto">
         {altText && (
           <div className="absolute bottom-[24px] left-0 w-full z-2 text-center tracking-[-2px] min-[1921px]:text-lg">
             {altText}
           </div>
         )}
+        <div className="absolute top-[28px] right-[28px] z-3">
+          <button
+            className="w-[48px] h-[48px] p-2 cursor-pointer opacity-80 hover:scale-[1.2] hover:opacity-100"
+            onClick={onShowFullscreenImage}
+          >
+            <Image
+              className="w-full h-full"
+              src={`${CDN_URL}/images/zoom.png`}
+              width={123}
+              height={123}
+              alt=""
+            />
+          </button>
+        </div>
         <Image
           className="absolute top-0 left-0 w-full h-full z-2"
-          src={`/images/box-large.png`}
+          src={`${CDN_URL}/images/box-large.png`}
           width={1011}
           height={982}
           alt=""
@@ -377,7 +431,7 @@ function DesktopPhotos({ product, imageIndex, setImageIndex }) {
                       ? "opacity-100 scale-[1.1]"
                       : "opacity-25"
                   }`}
-                  src={`/images/box-large.png`}
+                  src={`${CDN_URL}/images/box-large.png`}
                   width={1011}
                   height={982}
                   alt=""
@@ -388,5 +442,43 @@ function DesktopPhotos({ product, imageIndex, setImageIndex }) {
         </div>
       )}
     </div>
+  );
+}
+
+function FullscreenImage({ product, imageIndex, onCloseFullscreenImage }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  return createPortal(
+    <div className="fixed top-0 left-0 w-full h-full z-50 overflow-y-auto bg-white">
+      <button
+        className="fixed top-[12px] right-[16px] md:right-[32px] h-[32px] md:h-[64px] z-1 opacity-85 cursor-pointer hover:scale-[1.1] hover:opacity-100 active:scale-[1.2]"
+        onClick={onCloseFullscreenImage}
+      >
+        <Image
+          className="w-auto h-full object-contain"
+          src={`${CDN_URL}/images/close.png`}
+          alt="Close"
+          width={138}
+          height={112}
+        />
+      </button>
+      <Image
+        className="w-full min-h-screen object-contain"
+        src={product.images[imageIndex]}
+        width={1024}
+        height={1024}
+        unoptimized
+        alt=""
+      />
+    </div>,
+    document.body
   );
 }
