@@ -25,6 +25,9 @@ body {
   background-image: url("https://w-img.b-cdn.net/rtr/textures/exclusive-paper-60.png");
   background-repeat: repeat;
   color: var(--foreground);
+}
+
+body {
   overflow-x: hidden;
 }
 
@@ -68,4 +71,22 @@ body {
 .policy li {
   list-style-type: decimal;
   margin-left: 24px;
+}
+
+.description ul {
+  padding-left: 16px;
+  padding-bottom: 16px;
+}
+
+.description li {
+  list-style-type: disc;
+  margin-left: 8px;
+}
+
+.description p {
+  margin-bottom: 16px;
+}
+
+.description p:last-child {
+  margin: 0;
 }

@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CDN_URL } from "@/utils";
@@ -6,6 +9,21 @@ import MobileMenu from "@/components/mobile-menu";
 import Cart from "@/components/cart";
 
 export default function TopBar({ hideMenu, hideBackground }) {
+  const [scroll, setScroll] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollY = Math.floor(window.scrollY);
+      setScroll(scrollY);
+    };
+
+    onScroll();
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   if (hideMenu) {
     return (
       <div className="sticky top-0 left-0 flex justify-center items-center w-full h-[64px] md:h-[72px] 2xl:h-[96px] z-2">
@@ -16,11 +34,14 @@ export default function TopBar({ hideMenu, hideBackground }) {
     );
   }
 
+  const opacity = () =>
+    scroll >= 64 ? "opacity-50 md:opacity-0" : "opacity-0";
+
   return (
     <div className="sticky top-0 left-0 flex items-center w-full h-[64px] md:h-[72px] 2xl:h-[96px] z-4">
       <div
         className={`${
-          hideBackground ? "opacity-50 md:opacity-0" : "top-bar-bg"
+          hideBackground ? `${opacity()}` : "top-bar-bg"
         } w-full h-full bg-white`}
       />
       <MobileMenu />

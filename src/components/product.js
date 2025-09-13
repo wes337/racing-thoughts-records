@@ -143,7 +143,7 @@ export default function Product({ product }) {
             onCloseFullscreenImage={() => setShowFullscreenImage(false)}
           />
         )}
-        <div className="relative flex flex-col p-4 md:w-full bg-white mt-2 md:mt-0 mobile-menu-bg">
+        <div className="relative flex flex-col p-4 md:w-full bg-white mx-4 md:mx-0 mt-2 md:mt-0 mobile-menu-bg">
           <Image
             className="absolute top-0 left-0 w-full h-full z-0 scale-[1.03]"
             src={`${CDN_URL}/images/box-large.png`}
@@ -163,9 +163,10 @@ export default function Product({ product }) {
           <h3 className="font-sans font-medium text-2xl min-[1921px]:text-3xl mt-2 opacity-80">
             {product.price}
           </h3>
-          <p className="font-sans font-light py-4 text-sm min-[1921px]:text-lg md:my-4 md:text-md opacity-80">
-            {product.description}
-          </p>
+          <div
+            className="description font-sans font-light py-4 min-[1921px]:px-2 text-sm min-[1921px]:text-lg md:my-4 md:text-md opacity-80"
+            dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+          />
           <div className="group flex flex-col mb-2 md:mb-4 hover:scale-[1.01] hover:translate-x-[2px]">
             <div className="text-xs md:text-md min-[1921px]:text-lg font-bold leading-none mb-1 opacity-60 uppercase group-hover:opacity-100">
               Quantity
