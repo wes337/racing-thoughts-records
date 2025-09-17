@@ -26,6 +26,7 @@ export default function Cart() {
 
   useEffect(() => {
     setMounted(true);
+    getCartItems();
   }, []);
 
   useEffect(() => {
@@ -168,12 +169,31 @@ export default function Cart() {
     return amount;
   };
 
+  const getTotalItemsInCart = () => {
+    let total = 0;
+
+    if (cartItems.length === 0) {
+      return total;
+    }
+
+    cartItems.forEach(({ quantity }) => {
+      total += Number(quantity);
+    });
+
+    return total;
+  };
+
   return (
     <>
       <button
         className="absolute right-[16px] md:right-[32px] h-[32px] xl:h-[40px] w-auto cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 active:scale-[1.2]"
         onClick={toggleOpen}
       >
+        {getTotalItemsInCart() && (
+          <div className="absolute bottom-[-4px] right-[-8px] z-1 font-bold tracking-tighter text-white text-md w-[24px] bg-black/75 rounded-lg text-shadow-[2px_2px_0_black]">
+            {getTotalItemsInCart()}
+          </div>
+        )}
         <Image
           className="hidden xl:block w-auto h-full object-contain"
           src={`${CDN_URL}/images/cart-white.png`}
