@@ -189,7 +189,7 @@ export default function Cart() {
         className="absolute right-[16px] md:right-[32px] h-[32px] xl:h-[40px] w-auto cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 active:scale-[1.2]"
         onClick={toggleOpen}
       >
-        {getTotalItemsInCart() && (
+        {getTotalItemsInCart() > 0 && (
           <div className="absolute bottom-[-4px] right-[-8px] z-1 font-bold tracking-tighter text-white text-md w-[24px] bg-black/75 rounded-lg text-shadow-[2px_2px_0_black]">
             {getTotalItemsInCart()}
           </div>
