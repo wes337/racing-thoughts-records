@@ -20,7 +20,7 @@ export default async function ProductPage({ params }) {
   return (
     <>
       <TopBar hideBackground />
-      <div className="flex flex-col lg:w-4xl xl:w-7xl mx-auto">
+      <div className="flex flex-col lg:w-4xl xl:w-7xl 2xl:w-[1400px] mx-auto">
         <Suspense>
           <Product product={product} />
         </Suspense>

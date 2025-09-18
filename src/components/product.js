@@ -152,9 +152,9 @@ export default function Product({ product }) {
             alt=""
           />
           <h2
-            className={`font-mono font-bold leading-8 xl:leading-10 ${
+            className={`font-mono font-bold leading-8 ${
               longTitle
-                ? "text-[1.8rem] tracking-[-3px] lg:tracking-tight xl:tracking-tight xl:text-4xl"
+                ? "text-[1.8rem] tracking-[-3px] lg:tracking-tighter xl:text-3xl"
                 : "text-[2rem] xl:text-4xl tracking-tighter"
             } opacity-90 text-left`}
           >
