@@ -143,7 +143,7 @@ export default function Product({ product }) {
             onCloseFullscreenImage={() => setShowFullscreenImage(false)}
           />
         )}
-        <div className="relative flex flex-col p-4 md:w-full bg-white mx-4 md:mx-0 mt-2 md:mt-0 mobile-menu-bg">
+        <div className="relative flex flex-col p-4 md:w-full bg-white mx-4 md:mx-0 mt-2 md:mt-0 mobile-menu-bg min-[1920px]:translate-y-[-40px]">
           <Image
             className="absolute top-0 left-0 w-full h-full z-0 scale-[1.03]"
             src={`${CDN_URL}/images/box-large.png`}
