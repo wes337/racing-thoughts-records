@@ -169,9 +169,9 @@ export default function MobileMenu() {
             </Link>
             <Link
               className="flex h-[28px] w-full gap-4"
-              href={`/collections/other`}
+              href={`https://www.smalldarkone.com`}
               onClick={() => setMobileMenuOpen(false)}
-              prefetch
+              target="_blank"
             >
               <Image
                 className="w-[28px] h-auto object-contain opacity-80"
@@ -181,8 +181,8 @@ export default function MobileMenu() {
                 height={122}
               />
               <Image
-                className="w-auto h-full object-contain"
-                src={`${CDN_URL}/images/other.png`}
+                className="w-auto h-full object-contain translate-x-[-14%]"
+                src={`${CDN_URL}/images/merch.png`}
                 alt="Other"
                 width={1170}
                 height={235}

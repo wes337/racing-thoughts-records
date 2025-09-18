@@ -11,6 +11,7 @@ const LINKS = [
   { label: "Refunds", href: "/policies/refund-policy" },
   { label: "Terms", href: "/policies/terms-of-service" },
   { label: "Shipping", href: "/policies/shipping-policy" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Footer({ hideLinks }) {
@@ -41,7 +42,7 @@ export default function Footer({ hideLinks }) {
       } ${fixed ? "fixed bottom-0 left-0" : "mt-auto"}`}
     >
       {!hideLinks && (
-        <div className="flex gap-8 font-sans font-medium text-xs md:text-sm tracking-tighter mb-2">
+        <div className="flex gap-6 lg:gap-8 font-sans font-medium text-xs md:text-sm tracking-tighter mb-2">
           {LINKS.map(({ label, href }) => {
             return (
               <Link

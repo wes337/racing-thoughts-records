@@ -91,13 +91,13 @@ export default function TopBar({ hideMenu, hideBackground }) {
           </Link>
           <Link
             className="flex items-center justify-center w-auto p-2 opacity-90 hover:scale-[1.1] hover:opacity-100 hover:brightness-75 active:scale-[1.2]"
-            href={`/collections/other`}
-            prefetch
+            href={"https://www.smalldarkone.com"}
+            target="_blank"
           >
             <Image
               className="w-auto h-full object-contain"
-              src={`${CDN_URL}/images/other.png`}
-              alt="Other"
+              src={`${CDN_URL}/images/merch.png`}
+              alt="Merch"
               width={1170}
               height={235}
             />
