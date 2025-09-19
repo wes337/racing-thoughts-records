@@ -40,6 +40,7 @@ export const config = {
   matcher: [
     "/",
     "/shop",
+    "/contact",
     "/products",
     "/products/:path*",
     "/collections/:path*",

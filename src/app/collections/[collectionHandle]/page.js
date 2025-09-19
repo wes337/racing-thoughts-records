@@ -1,19 +1,14 @@
 import Image from "next/image";
 import Shopify from "@/shopify";
-import { isLive, CDN_URL } from "@/utils";
+import { CDN_URL } from "@/utils";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 import ProductListItem from "@/components/product-list-item";
-import ComingSoon from "@/components/coming-soon";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
 export default async function CollectionPage({ params }) {
-  if (!isLive()) {
-    return <ComingSoon />;
-  }
-
   const { collectionHandle } = await params;
   const { products } = await Shopify.getCollectionProducts(collectionHandle);
 
