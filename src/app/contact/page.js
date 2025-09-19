@@ -13,7 +13,7 @@ export default async function ContactPage() {
   return (
     <>
       <TopBar />
-      <div className="flex flex-col lg:w-4xl mx-auto my-4">
+      <div className="flex flex-col w-[90vw] lg:w-4xl md:mx-auto my-4">
         <h1 className="text-3xl text-center font-bold uppercase opacity-75">
           {page.title}
         </h1>

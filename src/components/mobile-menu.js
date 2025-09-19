@@ -188,6 +188,27 @@ export default function MobileMenu() {
                 height={235}
               />
             </Link>
+            <Link
+              className="flex h-[28px] w-full gap-4"
+              href={`/contact`}
+              onClick={() => setMobileMenuOpen(false)}
+              prefetch
+            >
+              <Image
+                className="w-[28px] h-auto object-contain opacity-80"
+                src={`${CDN_URL}/images/arrow-right.png`}
+                alt=""
+                width={300}
+                height={122}
+              />
+              <Image
+                className="w-auto h-full object-contain"
+                src={`/images/contact.png`}
+                alt="Contact"
+                width={723}
+                height={155}
+              />
+            </Link>
           </div>
         </div>,
         document.body

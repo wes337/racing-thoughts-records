@@ -30,7 +30,7 @@ export const COLLECTION_IDS = {
 };
 
 export const CDN_URL = "https://w-img.b-cdn.net/rtr";
-export const RELEASE_DATE = Date.parse("01 Jan 2024 18:00:00 EDT");
+export const RELEASE_DATE = Date.parse("24 Sep 2025 12:00:00 EDT");
 
 export function isLive() {
   return Date.now() > RELEASE_DATE;

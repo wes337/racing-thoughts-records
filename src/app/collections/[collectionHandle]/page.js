@@ -54,7 +54,7 @@ export default async function CollectionPage({ params }) {
     <>
       <TopBar />
       <div className="flex flex-col lg:w-4xl xl:w-7xl mx-auto">
-        <div className="grid grid-cols-2 gap-8 p-8">
+        <div className="grid grid-cols-2 gap-4 p-2 md:p-8 md:gap-8">
           {products.results.map((product) => (
             <ProductListItem key={product.id} product={product} />
           ))}
