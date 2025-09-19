@@ -18,7 +18,7 @@ export function middleware(request) {
       return response;
     } else {
       request.cookies.delete("password");
-      return NextResponse.redirect(new URL("/password", request.url));
+      return NextResponse.redirect(new URL("/soon", request.url));
     }
   }
 
@@ -33,7 +33,7 @@ export function middleware(request) {
   }
 
   request.cookies.delete("password");
-  return NextResponse.redirect(new URL("/password", request.url));
+  return NextResponse.redirect(new URL("/soon", request.url));
 }
 
 export const config = {
