@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
-import { CDN_URL } from "@/utils";
+import { CDN_URL, isSafari } from "@/utils";
 
 export default function Product({ product }) {
   const [cart, setCartOpen] = useCart(
@@ -110,7 +110,13 @@ export default function Product({ product }) {
   return (
     <>
       {customBackground() && (
-        <div className="fixed top-0 left-0 w-full h-full z-0 mix-blend-color-burn opacity-20 grayscale-100 md:grayscale-50 pointer-events-none select-none">
+        <div
+          className={`fixed top-0 left-0 w-full h-full z-0 ${
+            isSafari()
+              ? "mix-blend-color-burn opacity-5"
+              : "mix-blend-color-burn opacity-15"
+          }  grayscale-100 md:grayscale-50 pointer-events-none select-none`}
+        >
           <Image
             className="w-full h-full object-cover pointer-events-none select-none"
             src={`${CDN_URL}/images/custom-bg/${product.handle}.png`}
@@ -154,7 +160,7 @@ export default function Product({ product }) {
           <h2
             className={`font-mono font-bold leading-8 ${
               longTitle
-                ? "text-[1.8rem] tracking-[-3px] lg:tracking-tighter xl:text-3xl"
+                ? "text-[1.8rem] tracking-[-3px] lg:tracking-tighter xl:text-2.5xl"
                 : "text-[2rem] xl:text-4xl tracking-tighter"
             } opacity-90 text-left`}
           >
@@ -420,10 +426,16 @@ function DesktopPhotos({
       {product.images.length > 1 && (
         <div className="flex justify-evenly w-full h-[8vh] z-5">
           {product.images.map((image, index) => {
+            const selected = index === imageIndex;
+
             return (
               <button
                 key={`select-${image}`}
-                className="relative flex w-auto h-full m-auto cursor-pointer"
+                className={`relative flex w-auto h-full m-auto cursor-pointer rounded-md  ${
+                  selected
+                    ? "outline-4 outline-red-600"
+                    : "outline-2 outline-black/50"
+                }`}
                 onClick={() => setImageIndex(index)}
               >
                 <Image
@@ -435,9 +447,7 @@ function DesktopPhotos({
                 />
                 <Image
                   className={`absolute top-[50%] left-[50%] translate-[-50%] w-auto h-full z-2 pointer-events-none ${
-                    index === imageIndex
-                      ? "opacity-100 scale-[1.1]"
-                      : "opacity-25"
+                    selected ? "opacity-100 scale-[1.05]" : "opacity-75"
                   }`}
                   src={`${CDN_URL}/images/box-large.png`}
                   width={1011}
