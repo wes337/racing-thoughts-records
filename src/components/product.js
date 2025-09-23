@@ -113,7 +113,7 @@ export default function Product({ product }) {
         <div
           className={`fixed top-0 left-0 w-full h-full z-0 ${
             isSafari()
-              ? "mix-blend-color-burn opacity-5"
+              ? "mix-blend-darken opacity-10"
               : "mix-blend-color-burn opacity-15"
           }  grayscale-100 md:grayscale-50 pointer-events-none select-none`}
         >
