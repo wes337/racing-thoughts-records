@@ -6,7 +6,7 @@ export const metadata = {
   description:
     "The official store for music by Joshua Hamilton. Vinyl, CD, Cassette; Lil Darkie and more.",
   openGraph: {
-    images: "/images/logo-text.png",
+    images: "/images/og.jpg",
   },
   keywords: [
     "lil darkie",
