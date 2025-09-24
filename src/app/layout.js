@@ -3,7 +3,19 @@ import "./globals.css";
 
 export const metadata = {
   title: "Racing Thought Records",
-  description: "Vinyl records, CDs, and cassettes.",
+  description:
+    "The official store for music by Joshua Hamilton. Vinyl, CD, Cassette; Lil Darkie and more.",
+  openGraph: {
+    images: "/images/logo-text.png",
+  },
+  keywords: [
+    "lil darkie",
+    "joshua hamilton",
+    "vinyl",
+    "cd",
+    "cassette",
+    "music",
+  ],
 };
 
 export const viewport = {
