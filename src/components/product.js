@@ -23,6 +23,7 @@ export default function Product({ product }) {
   const soldOut =
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
+
   const longTitle = product.title.length > 21;
 
   useEffect(() => {
@@ -173,65 +174,74 @@ export default function Product({ product }) {
             className="description font-sans font-light py-4 min-[1921px]:px-2 text-sm min-[1921px]:text-lg md:my-4 md:text-md opacity-80"
             dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
           />
-          <div className="group flex flex-col mb-2 md:mb-4 hover:scale-[1.01] hover:translate-x-[2px]">
-            <div className="text-xs md:text-md min-[1921px]:text-lg font-bold leading-none mb-1 opacity-60 uppercase group-hover:opacity-100">
-              Quantity
-            </div>
-            <div className="relative flex w-[33%] h-[48px] md:h-[64px]">
-              <button
-                className="w-[50%] h-full flex items-center justify-center cursor-pointer font-bold text-lg md:text-2xl"
-                onClick={() =>
-                  setQuantity((quantity) => Math.max(quantity - 1, 1))
-                }
-                disabled={loading}
-              >
-                -
-              </button>
-              <div className="w-full flex items-center justify-center text-center font-bold text-lg md:text-2xl">
-                {quantity}
+          {!soldOut && (
+            <div className="group flex flex-col mb-2 md:mb-4 hover:scale-[1.01] hover:translate-x-[2px]">
+              <div className="text-xs md:text-md min-[1921px]:text-lg font-bold leading-none mb-1 opacity-60 uppercase group-hover:opacity-100">
+                Quantity
               </div>
-              <button
-                className="w-[50%] h-full flex items-center justify-center cursor-pointer font-bold text-lg md:text-2xl"
-                onClick={() => setQuantity((quantity) => quantity + 1)}
-                disabled={loading}
-              >
-                +
-              </button>
-              <Image
-                className="absolute w-full h-full pointer-events-none opacity-85 group-hover:opacity-100 group-hover:brightness-50"
-                src={`${CDN_URL}/images/box.png`}
-                width={605}
-                height={214}
-                alt=""
-              />
+              <div className="relative flex w-[33%] h-[48px] md:h-[64px]">
+                <button
+                  className="w-[50%] h-full flex items-center justify-center cursor-pointer font-bold text-lg md:text-2xl"
+                  onClick={() =>
+                    setQuantity((quantity) => Math.max(quantity - 1, 1))
+                  }
+                  disabled={loading}
+                >
+                  -
+                </button>
+                <div className="w-full flex items-center justify-center text-center font-bold text-lg md:text-2xl">
+                  {quantity}
+                </div>
+                <button
+                  className="w-[50%] h-full flex items-center justify-center cursor-pointer font-bold text-lg md:text-2xl"
+                  onClick={() => setQuantity((quantity) => quantity + 1)}
+                  disabled={loading}
+                >
+                  +
+                </button>
+                <Image
+                  className="absolute w-full h-full pointer-events-none opacity-85 group-hover:opacity-100 group-hover:brightness-50"
+                  src={`${CDN_URL}/images/box.png`}
+                  width={605}
+                  height={214}
+                  alt=""
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex items-start gap-4 min-[1921px]:min-w-[608px] mr-auto">
-            <button
-              className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
-              onClick={onAddToCart}
-            >
-              <Image
-                className="w-full h-full object-contain select-none"
-                src={`${CDN_URL}/images/add-to-cart.png`}
-                width={997}
-                height={224}
-                alt="Add to Cart"
-              />
-            </button>
-            <button
-              className="cursor-pointer h-[64px] min-[1921px]:h-[80px] opacity-90 hover:opacity-100 hover:brightness-50 hover:scale-[1.05] active:opacity-100 active:brightness-50 active:scale-[1.08]"
-              onClick={onBuyItNow}
-            >
-              <Image
-                className="w-full h-full object-contain select-none"
-                src={`${CDN_URL}/images/buy-now.png`}
-                width={797}
-                height={225}
-                alt="Buy Now"
-              />
-            </button>
-          </div>
+          )}
+          {soldOut && (
+            <div className="min-[1921px]:min-w-[608px] flex items-center justify-center w-full h-full font-bold uppercase text-4xl text-red-600 z-1 text-shadow-[2px_3px_0_black] mb-4">
+              Sold Out!
+            </div>
+          )}
+          {!soldOut && (
+            <div className="flex items-start gap-4 min-[1921px]:min-w-[608px] mr-auto">
+              <button
+                className={`h-[64px] min-[1921px]:h-[80px] hover:brightness-50 hover:scale-[1.05] active:brightness-50 active:scale-[1.08] opacity-90 hover:opacity-100 active:opacity-100 cursor-pointer`}
+                onClick={onAddToCart}
+              >
+                <Image
+                  className="w-full h-full object-contain select-none"
+                  src={`${CDN_URL}/images/add-to-cart.png`}
+                  width={997}
+                  height={224}
+                  alt="Add to Cart"
+                />
+              </button>
+              <button
+                className={`cursor-pointer h-[64px] min-[1921px]:h-[80px] hover:brightness-50 hover:scale-[1.05] active:brightness-50 active:scale-[1.08] opacity-90 hover:opacity-100 active:opacity-100 cursor-pointer`}
+                onClick={onBuyItNow}
+              >
+                <Image
+                  className="w-full h-full object-contain select-none"
+                  src={`${CDN_URL}/images/buy-now.png`}
+                  width={797}
+                  height={225}
+                  alt="Buy Now"
+                />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

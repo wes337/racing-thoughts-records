@@ -5,6 +5,9 @@ export default function ProductListItem({ product }) {
   const longTitle = product.title.length > 21;
   const veryLongTitle = product.title.length > 40;
   const image = product.images.length > 0 ? product.images[0] : "";
+  const soldOut =
+    product.soldOut ||
+    !product.variants.some((variant) => variant.availableForSale);
 
   return (
     <Link
@@ -13,6 +16,11 @@ export default function ProductListItem({ product }) {
       prefetch
     >
       <div className="relative w-full h-full aspect-square overflow-hidden">
+        {soldOut && (
+          <div className="absolute bottom-0 right-0 p-2 md:p-4 text-xl md:text-3xl whitespace-nowrap text-red-600 font-black text-shadow-[2px_2px_0_black] z-3 uppercase tracking-tight">
+            Sold Out!
+          </div>
+        )}
         <Image
           className="absolute top-0 left-0 w-full h-full z-1 opacity-80 group-hover:opacity-100"
           src={`/images/box-large.png`}
