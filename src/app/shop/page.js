@@ -6,7 +6,7 @@ import ProductListItem from "@/components/product-list-item";
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
-const DEFAULT_COLLECTION = "vinyl";
+const DEFAULT_COLLECTION = "frontpage";
 
 export default async function ShopPage() {
   const { products } = await Shopify.getCollectionProducts(DEFAULT_COLLECTION);
