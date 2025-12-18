@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { isLive } from "@/utils";
 
-export function middleware(request) {
+export function proxy(request) {
   const response = NextResponse.next();
 
   if (isLive()) {
