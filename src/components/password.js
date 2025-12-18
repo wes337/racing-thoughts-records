@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { CDN_URL } from "@/utils";
 
 export default function Password({ password, setPassword }) {
   return (
@@ -11,7 +12,7 @@ export default function Password({ password, setPassword }) {
       <div className="m-auto relative w-[112px] md:w-[200px]">
         <Image
           className="absolute w-full h-full pointer-events-none"
-          src={`/images/box.png`}
+          src={`${CDN_URL}/images/box.png`}
           width={605}
           height={214}
           alt=""

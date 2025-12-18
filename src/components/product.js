@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
-import { CDN_URL, isSafari } from "@/utils";
+import { CDN_URL, isSafari, TAGS } from "@/utils";
 
 export default function Product({ product }) {
   const [cart, setCartOpen] = useCart(
@@ -108,6 +108,30 @@ export default function Product({ product }) {
     ].includes(product.handle);
   };
 
+  const renderTag = () => {
+    if (soldOut) {
+      return null;
+    }
+
+    const tag = TAGS.find(({ id }) => product.tags.includes(id));
+
+    if (!tag) {
+      return null;
+    }
+
+    return (
+      <div className="absolute top-0 right-0 -my-8 md:-my-10 rotate-15 z-3 h-[56px] w-auto pointer-events-none">
+        <Image
+          className="h-full w-full"
+          src={tag.image}
+          width={389}
+          height={145}
+          alt={tag.label}
+        />
+      </div>
+    );
+  };
+
   return (
     <>
       {customBackground() && (
@@ -207,11 +231,18 @@ export default function Product({ product }) {
                   alt=""
                 />
               </div>
+              {renderTag()}
             </div>
           )}
           {soldOut && (
-            <div className="min-[1921px]:min-w-[608px] flex items-center justify-center w-full h-full font-bold uppercase text-4xl text-red-600 z-1 text-shadow-[2px_3px_0_black] mb-4">
-              Sold Out!
+            <div className="min-[1921px]:min-w-[608px] flex items-center justify-center w-full h-full mb-4 h-[80px] w-auto">
+              <Image
+                className="h-[152px] w-auto"
+                src={`${CDN_URL}/images/sold-out.png`}
+                width={461}
+                height={264}
+                alt="Sold Out"
+              />
             </div>
           )}
           {!soldOut && (

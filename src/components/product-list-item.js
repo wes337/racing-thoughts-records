@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CDN_URL, TAGS } from "@/utils";
 
 export default function ProductListItem({ product }) {
   const longTitle = product.title.length > 21;
@@ -9,6 +10,33 @@ export default function ProductListItem({ product }) {
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
 
+  const renderTag = () => {
+    if (soldOut) {
+      return (
+        <div className="absolute top-0 right-0 md:m-2 z-3 w-[66%] md:w-[50%] rotate-15 group-hover:scale-[1.1]">
+          <Image
+            src={`${CDN_URL}/images/sold-out.png`}
+            width={461}
+            height={264}
+            alt="Sold Out"
+          />
+        </div>
+      );
+    }
+
+    const tag = TAGS.find(({ id }) => product.tags.includes(id));
+
+    if (!tag) {
+      return null;
+    }
+
+    return (
+      <div className="absolute top-0 right-0 mx-2 my-4 md:mx-4 md:my-6 z-3 w-[50%] md:w-[40%] rotate-10 group-hover:scale-[1.1]">
+        <Image src={tag.image} width={389} height={145} alt={tag.label} />
+      </div>
+    );
+  };
+
   return (
     <Link
       className="group flex flex-col w-full h-full max-w-[600px] m-auto cursor-pointer"
@@ -16,14 +44,10 @@ export default function ProductListItem({ product }) {
       prefetch
     >
       <div className="relative w-full h-full aspect-square overflow-hidden">
-        {soldOut && (
-          <div className="absolute bottom-0 right-0 p-2 md:p-4 text-xl md:text-3xl whitespace-nowrap text-red-600 font-black text-shadow-[2px_2px_0_black] z-3 uppercase tracking-tight">
-            Sold Out!
-          </div>
-        )}
+        {renderTag()}
         <Image
           className="absolute top-0 left-0 w-full h-full z-1 opacity-80 group-hover:opacity-100"
-          src={`/images/box-large.png`}
+          src={`${CDN_URL}/images/box-large.png`}
           width={1011}
           height={982}
           alt=""

@@ -289,7 +289,7 @@ export default function Cart() {
                               </button>
                               <Image
                                 className="absolute w-full h-full pointer-events-none opacity-85 group-hover:opacity-100 group-hover:brightness-50"
-                                src={`/images/box.png`}
+                                src={`${CDN_URL}/images/box.png`}
                                 width={605}
                                 height={214}
                                 alt=""

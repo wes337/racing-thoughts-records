@@ -1,6 +1,7 @@
+import Image from "next/image";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
-import Image from "next/image";
+import { CDN_URL } from "@/utils";
 
 export default function ComingSoon() {
   return (
@@ -9,7 +10,7 @@ export default function ComingSoon() {
       <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center">
         <Image
           className="opacity-75"
-          src={`/images/logo-black.png`}
+          src={`${CDN_URL}/images/logo-black.png`}
           width={652}
           height={471}
           alt=""

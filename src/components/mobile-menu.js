@@ -203,7 +203,7 @@ export default function MobileMenu() {
               />
               <Image
                 className="w-auto h-full object-contain"
-                src={`/images/contact.png`}
+                src={`${CDN_URL}/images/contact.png`}
                 alt="Contact"
                 width={723}
                 height={155}

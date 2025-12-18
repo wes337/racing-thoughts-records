@@ -45,3 +45,11 @@ export function isSafari() {
 export function isLive() {
   return Date.now() > RELEASE_DATE;
 }
+
+export const TAGS = [
+  {
+    id: "LOWSTOCK",
+    label: "Low Stock",
+    image: `${CDN_URL}/images/low-stock.png`,
+  },
+];

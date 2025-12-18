@@ -73,6 +73,7 @@ export default class Shopify {
           handle
           description
           descriptionHtml
+          tags
           priceRange {
             minVariantPrice {
               amount
@@ -117,6 +118,7 @@ export default class Shopify {
       title: data.product.title,
       description: data.product.description,
       descriptionHtml: data.product.descriptionHtml,
+      tags: data.product.tags || [],
       images:
         data.product.images?.edges?.length > 0
           ? data.product.images.edges.map(({ node }) => node.url || "")
@@ -173,6 +175,7 @@ export default class Shopify {
               handle
               description
               descriptionHtml
+              tags
               variants(first: 25) {
                 edges {
                   node {
@@ -244,6 +247,7 @@ export default class Shopify {
           title: node.title,
           description: node.description,
           descriptionHtml: node.descriptionHtml,
+          tags: node.tags || [],
           images,
           imageAltTexts,
           price: node.priceRange.minVariantPrice.amount,
@@ -320,6 +324,7 @@ export default class Shopify {
                 handle
                 description
                 descriptionHtml
+                tags
                 variants(first: 25) {
                   edges {
                     node {
@@ -388,6 +393,7 @@ export default class Shopify {
           title: node.title,
           description: node.description,
           descriptionHtml: node.descriptionHtml,
+          tags: node.tags || [],
           images,
           imageAltTexts,
           price: node.priceRange.minVariantPrice.amount,
