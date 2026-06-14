@@ -21,14 +21,20 @@
 
 html,
 body {
+  min-height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
+.default-theme {
   background: var(--background);
   background-image: url("https://w-img.b-cdn.net/rtr/textures/exclusive-paper-60.png");
   background-repeat: repeat;
   color: var(--foreground);
-}
-
-body {
-  overflow-x: hidden;
 }
 
 .top-bar-bg {
@@ -90,4 +96,13 @@ body {
 
 .description p:last-child {
   margin: 0;
+}
+
+.godhand-theme {
+  --godhand-background: #030303;
+  --godhand-foreground: #f1eee6;
+  --godhand-red: #e1251b;
+
+  color: var(--godhand-foreground);
+  background-color: var(--godhand-background);
 }

@@ -1,6 +1,8 @@
 import { create } from "zustand";
 
 export const useLayout = create((set) => ({
+  artist: "lildarkie",
+  setArtist: (current) => set(() => ({ current })),
   mobileMenuOpen: false,
   setMobileMenuOpen: (mobileMenuOpen) => set(() => ({ mobileMenuOpen })),
   toggleMobileMenuOpen: () =>

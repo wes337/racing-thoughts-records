@@ -14,7 +14,8 @@ const LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Footer({ hideLinks }) {
+export default function Footer({ hideLinks, theme }) {
+  const isGodhandUSA = theme === "godhandusa";
   const pathname = usePathname();
   const [fixed, setFixed] = useState(null);
 
@@ -42,7 +43,11 @@ export default function Footer({ hideLinks }) {
       } ${fixed ? "fixed bottom-0 left-0" : "mt-auto"}`}
     >
       {!hideLinks && (
-        <div className="flex gap-6 lg:gap-8 font-sans font-medium text-xs md:text-sm tracking-tighter mb-2">
+        <div
+          className={`flex gap-6 lg:gap-8 font-sans font-medium text-xs md:text-sm tracking-tighter mb-2 ${
+            isGodhandUSA ? "text-[#00ff6a]" : ""
+          }`}
+        >
           {LINKS.map(({ label, href }) => {
             return (
               <Link
@@ -58,7 +63,9 @@ export default function Footer({ hideLinks }) {
       )}
       <div className="h-[16px] md:h-[24px]">
         <Image
-          className="w-full h-full object-contain select-none"
+          className={`w-full h-full object-contain select-none ${
+            isGodhandUSA ? "invert" : ""
+          }`}
           src={`${CDN_URL}/images/copy.png`}
           alt="Copyright Racing Thought Records."
           width={1450}

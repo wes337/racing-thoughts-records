@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { CDN_URL, TAGS } from "@/utils";
 
-export default function ProductListItem({ product }) {
+export default function ProductListItem({ product, theme }) {
+  const isGodhandUSA = theme === "godhandusa";
   const longTitle = product.title.length > 21;
   const veryLongTitle = product.title.length > 40;
   const image = product.images.length > 0 ? product.images[0] : "";
@@ -44,18 +45,28 @@ export default function ProductListItem({ product }) {
       prefetch
     >
       <div className="relative w-full h-full aspect-square overflow-hidden">
-        {renderTag()}
-        <Image
-          className="absolute top-0 left-0 w-full h-full z-1 opacity-80 group-hover:opacity-100"
-          src={`${CDN_URL}/images/box-large.png`}
-          width={1011}
-          height={982}
-          alt=""
-        />
-        <div className="bg-gray-500/10 m-0 md:m-2 rounded-lg overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center">
+        {!isGodhandUSA && renderTag()}
+        {!isGodhandUSA && (
+          <Image
+            className="absolute top-0 left-0 w-full h-full z-1 opacity-80 group-hover:opacity-100"
+            src={`${CDN_URL}/images/box-large.png`}
+            width={1011}
+            height={982}
+            alt=""
+          />
+        )}
+        <div
+          className={`bg-gray-500/10 m-0 md:m-2 overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center ${
+            isGodhandUSA
+              ? "rounded-none outline-4 outline-[#00ff6a]/25 group-hover:outline-[#00ff6a] group-focus:outline-[#00ff6a]"
+              : "rounded-lg"
+          }`}
+        >
           {image ? (
             <Image
-              className="w-[calc(100%-4px)] h-[calc(100%-4px)] md:w-full md:h-full object-contain group-hover:scale-[1.1]"
+              className={`w-[calc(100%-4px)] h-[calc(100%-4px)] md:w-full md:h-full object-contain group-hover:scale-[1.1] ${
+                isGodhandUSA ? "relative z-10" : ""
+              }`}
               src={product.images[0]}
               alt=""
               width={2672}
@@ -77,10 +88,14 @@ export default function ProductListItem({ product }) {
               ? "text-xs tracking-[-2px] md:tracking-tighter leading-3.5 md:leading-5"
               : "tracking-tighter leading-3.5 md:leading-5"
           } md:text-xl lg:text-xl opacity-90 group-hover:opacity-100`}
+          style={isGodhandUSA ? { color: "#00ff6a" } : undefined}
         >
           {product.title}
         </div>
-        <div className="font-sans font-medium text-sm md:text-xl h-auto md:h-full opacity-80 mt-1 md:mt-0">
+        <div
+          className="font-sans font-medium text-sm md:text-xl h-auto md:h-full opacity-80 mt-1 md:mt-0"
+          style={isGodhandUSA ? { color: "#00ff6a" } : undefined}
+        >
           ${Number(product.price).toFixed(2)}
         </div>
       </div>

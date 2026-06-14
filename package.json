@@ -9,18 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@shopify/storefront-api-client": "^1.0.9",
+    "@shopify/storefront-api-client": "^1.0.10",
     "localforage": "^1.10.0",
-    "next": "16.0.10",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "zustand": "^5.0.6"
+    "next": "16.2.9",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
-    "eslint-config-next": "15.4.2",
+    "eslint-config-next": "16.2.9",
     "tailwindcss": "^4"
   }
 }
