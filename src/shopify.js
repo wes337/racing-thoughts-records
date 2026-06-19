@@ -112,6 +112,10 @@ export default class Shopify {
       }
     );
 
+    if (!data.product) {
+      return null;
+    }
+
     const product = {
       id: data.product.id,
       handle: data.product.handle,
@@ -369,7 +373,113 @@ export default class Shopify {
       };
     }
 
-    const results = data.collection.products.edges
+    const collectionProducts = Shopify.parseCollection(data.collection);
+
+    if (collectionProducts.products.results.length > 0) {
+      Cache.setItem(
+        `collection:${collectionHandle}:products:${first}${
+          after ? `:${after}` : ""
+        }`,
+        collectionProducts,
+        120
+      );
+    }
+
+    return collectionProducts;
+  }
+
+  static async getCollectionProductsById(collectionId, first = 100, after = null) {
+    const cacheKey = `collectionById:${collectionId}:products:${first}${
+      after ? `:${after}` : ""
+    }`;
+
+    const cachedProducts = await Cache.getItem(cacheKey);
+
+    if (cachedProducts) {
+      return cachedProducts;
+    }
+
+    const { data } = await Shopify.client.request(
+      `
+        query CollectionProductsByIdQuery($collectionId: ID!, $first: Int!, $after: String) {
+        collection(id: $collectionId) {
+          id
+          title
+          handle
+          description
+          descriptionHtml
+          image {
+            url
+            altText
+          }
+          products(first: $first, after: $after) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            edges {
+              node {
+                id
+                title
+                handle
+                description
+                descriptionHtml
+                tags
+                variants(first: 25) {
+                  edges {
+                    node {
+                      id
+                      title
+                      price {
+                        amount
+                        currencyCode
+                      }
+                      availableForSale
+                    }
+                  }
+                }
+                priceRange {
+                  minVariantPrice {
+                    amount
+                    currencyCode
+                  }
+                }
+                images(first: 3) {
+                  edges {
+                    node {
+                      url
+                      altText
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`,
+      {
+        variables: { collectionId, first, after },
+      }
+    );
+
+    if (!data.collection) {
+      return {
+        collection: null,
+        products: null,
+      };
+    }
+
+    const collectionProducts = Shopify.parseCollection(data.collection);
+
+    if (collectionProducts.products.results.length > 0) {
+      Cache.setItem(cacheKey, collectionProducts, 120);
+    }
+
+    return collectionProducts;
+  }
+
+  static parseCollection(collection) {
+    const results = collection.products.edges
       .map(({ node }) => {
         const images =
           node.images?.edges?.length > 0
@@ -412,18 +522,18 @@ export default class Shopify {
       })
       .filter(Boolean);
 
-    const hasMore = data.collection.products.pageInfo?.hasNextPage || false;
-    const endCursor = data.collection.products.pageInfo?.endCursor || null;
+    const hasMore = collection.products.pageInfo?.hasNextPage || false;
+    const endCursor = collection.products.pageInfo?.endCursor || null;
 
-    const collectionProducts = {
+    return {
       collection: {
-        id: data.collection.id,
-        title: data.collection.title,
-        handle: data.collection.handle,
-        description: data.collection.description,
-        descriptionHtml: data.collection.descriptionHtml,
-        image: data.collection.image?.url || null,
-        imageAlt: data.collection.image?.altText || null,
+        id: collection.id,
+        title: collection.title,
+        handle: collection.handle,
+        description: collection.description,
+        descriptionHtml: collection.descriptionHtml,
+        image: collection.image?.url || null,
+        imageAlt: collection.image?.altText || null,
       },
       products: {
         results,
@@ -431,18 +541,6 @@ export default class Shopify {
         endCursor,
       },
     };
-
-    if (collectionProducts && collectionProducts.products.results.length > 0) {
-      Cache.setItem(
-        `collection:${collectionHandle}:products:${first}${
-          after ? `:${after}` : ""
-        }`,
-        collectionProducts,
-        120
-      );
-    }
-
-    return collectionProducts;
   }
 
   static async getCart(cartId) {

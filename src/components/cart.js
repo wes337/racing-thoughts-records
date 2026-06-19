@@ -9,7 +9,7 @@ import { useCart } from "@/state";
 import Shopify from "@/shopify";
 import Cache from "@/cache";
 
-export default function Cart() {
+export default function Cart({ invert }) {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
@@ -186,7 +186,9 @@ export default function Cart() {
   return (
     <>
       <button
-        className="absolute right-[16px] md:right-[32px] h-[32px] xl:h-[40px] w-auto cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 active:scale-[1.2]"
+        className={`absolute right-[16px] md:right-[32px] h-[32px] xl:h-[40px] w-auto cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 active:scale-[1.2] ${
+          invert ? "invert" : ""
+        }`}
         onClick={toggleOpen}
       >
         {getTotalItemsInCart() > 0 && (

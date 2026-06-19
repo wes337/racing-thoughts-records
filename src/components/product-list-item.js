@@ -38,10 +38,14 @@ export default function ProductListItem({ product, theme }) {
     );
   };
 
+  const href = isGodhandUSA
+    ? `/godhandusa/products/${product.handle}`
+    : `/products/${product.handle}`;
+
   return (
     <Link
       className="group flex flex-col w-full h-full max-w-[600px] m-auto cursor-pointer"
-      href={`/products/${product.handle}`}
+      href={href}
       prefetch
     >
       <div className="relative w-full h-full aspect-square overflow-hidden">
@@ -56,9 +60,11 @@ export default function ProductListItem({ product, theme }) {
           />
         )}
         <div
-          className={`bg-gray-500/10 m-0 md:m-2 overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center ${
+          className={`m-0 md:m-2 overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center ${
+            isGodhandUSA && !image ? "bg-black" : "bg-gray-500/10"
+          } ${
             isGodhandUSA
-              ? "rounded-none outline-4 outline-[#00ff6a]/25 group-hover:outline-[#00ff6a] group-focus:outline-[#00ff6a]"
+              ? "rounded-none outline-4 -outline-offset-4 md:outline-offset-0 outline-[#00ff6a]/25 group-hover:outline-[#00ff6a] group-focus:outline-[#00ff6a]"
               : "rounded-lg"
           }`}
         >
@@ -72,7 +78,7 @@ export default function ProductListItem({ product, theme }) {
               width={2672}
               height={2672}
             />
-          ) : (
+          ) : isGodhandUSA ? null : (
             <span className="italic text-2xl md:text-4xl font-bold text-red-500 font-display">
               Missing image
             </span>

@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
 import Shopify from "@/shopify";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
@@ -10,6 +11,10 @@ export const dynamic = "force-dynamic";
 export default async function ProductPage({ params }) {
   const { handle } = await params;
   const product = await Shopify.getProduct(handle);
+
+  if (!product) {
+    notFound();
+  }
 
   return (
     <>

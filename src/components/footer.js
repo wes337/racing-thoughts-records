@@ -36,11 +36,15 @@ export default function Footer({ hideLinks, theme }) {
     return () => window.removeEventListener("resize", onResize);
   }, [pathname]);
 
+  const positionClasses = isGodhandUSA
+    ? "relative z-10 mt-4"
+    : `z-1 ${fixed === null ? "opacity-0" : ""} ${
+        fixed ? "fixed bottom-0 left-0" : "mt-auto"
+      }`;
+
   return (
     <div
-      className={`flex flex-col items-center justify-center w-full h-[64px] z-1 ${
-        fixed === null ? "opacity-0" : ""
-      } ${fixed ? "fixed bottom-0 left-0" : "mt-auto"}`}
+      className={`flex flex-col items-center justify-center w-full h-[64px] ${positionClasses}`}
     >
       {!hideLinks && (
         <div

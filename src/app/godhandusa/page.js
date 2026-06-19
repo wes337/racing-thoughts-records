@@ -2,15 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import Shopify from "@/shopify";
 import Footer from "@/components/footer";
+import Cart from "@/components/cart";
 import ProductListItem from "@/components/product-list-item";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
-const DEFAULT_COLLECTION = "frontpage";
+const GODHANDUSA_COLLECTION_ID = "gid://shopify/Collection/517340037408";
 
 export default async function GodhandUSAShopPage() {
-  const { products } = await Shopify.getCollectionProducts(DEFAULT_COLLECTION);
+  const { products } = await Shopify.getCollectionProductsById(
+    GODHANDUSA_COLLECTION_ID,
+  );
+
+  const productResults = products?.results ?? [];
 
   return (
     <main className="flex min-h-screen flex-col px-2 py-8 md:px-8 md:py-12 pt-4">
@@ -22,26 +27,50 @@ export default async function GodhandUSAShopPage() {
           >
             &lt;&lt; RETURN
           </Link>
-          <Image
-            className="h-[80px] w-auto"
-            src="/images/artists/godhandusa-green.png"
-            alt="GODHANDUSA"
-            width={376}
-            height={80}
-            priority
-          />
-        </header>
-        <div className="grid grid-cols-2 gap-4 p-2 md:p-8 md:gap-8 lg:grid-cols-3">
-          {products.results.map((product) => (
-            <ProductListItem
-              key={product.id}
-              product={product}
-              theme="godhandusa"
+          <Link
+            href="/shop"
+            className="flex flex-col opacity-90 hover:opacity-100"
+          >
+            <Image
+              className="h-[80px] w-auto object-contain"
+              src="/images/artists/godhandusa-green.png"
+              alt="GODHANDUSA"
+              width={376}
+              height={80}
+              priority
             />
-          ))}
-        </div>
+            <Image
+              className="invert opacity-80 px-4 pt-4 max-w-[400px]"
+              src="/images/logo-text-horizontal.png"
+              alt="Racing Thoughts Records."
+              width={2085}
+              height={136}
+              priority
+            />
+          </Link>
+          <Cart invert />
+        </header>
+        {productResults.length > 0 ? (
+          <div className="grid grid-cols-2 gap-4 p-2 md:p-8 md:gap-8 lg:grid-cols-3">
+            {productResults.map((product) => (
+              <ProductListItem
+                key={product.id}
+                product={product}
+                theme="godhandusa"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex min-h-[60vh] items-center justify-center p-8 mt-auto">
+            <span className="font-mono text-3xl uppercase tracking-widest text-[#00ff6a] md:text-5xl">
+              Coming Soon
+            </span>
+          </div>
+        )}
       </div>
-      <Footer theme="godhandusa" />
+      <div className="mt-auto">
+        <Footer theme="godhandusa" />
+      </div>
     </main>
   );
 }
