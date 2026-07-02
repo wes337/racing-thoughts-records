@@ -6,6 +6,23 @@ export default class Shopify {
   static domain = "p0enpg-gn.myshopify.com";
   static storefrontAccessToken = "b1ff7732ccb7ec95b9ae1b1757cff0a4";
 
+  // Requires the `unauthenticated_read_product_inventory`
+  // scope on the Storefront access token
+  static applyStockTags(tags, totalInventory) {
+    const result = Array.isArray(tags) ? [...tags] : [];
+
+    if (
+      typeof totalInventory === "number" &&
+      totalInventory > 0 &&
+      totalInventory < 50 &&
+      !result.includes("LOWSTOCK")
+    ) {
+      result.push("LOWSTOCK");
+    }
+
+    return result;
+  }
+
   static {
     Shopify.client = createStorefrontApiClient({
       apiVersion: "2025-07",
@@ -74,6 +91,7 @@ export default class Shopify {
           description
           descriptionHtml
           tags
+          totalInventory
           priceRange {
             minVariantPrice {
               amount
@@ -109,7 +127,7 @@ export default class Shopify {
       }`,
       {
         variables: { handle },
-      }
+      },
     );
 
     if (!data.product) {
@@ -122,7 +140,10 @@ export default class Shopify {
       title: data.product.title,
       description: data.product.description,
       descriptionHtml: data.product.descriptionHtml,
-      tags: data.product.tags || [],
+      tags: Shopify.applyStockTags(
+        data.product.tags,
+        data.product.totalInventory,
+      ),
       images:
         data.product.images?.edges?.length > 0
           ? data.product.images.edges.map(({ node }) => node.url || "")
@@ -132,10 +153,10 @@ export default class Shopify {
           ? data.product.images.edges.map(({ node }) => node.altText || "")
           : [],
       soldOut: !data.product.variants.edges.some(
-        ({ node }) => node.availableForSale
+        ({ node }) => node.availableForSale,
       ),
       price: `$${Number(data.product.priceRange.minVariantPrice.amount).toFixed(
-        2
+        2,
       )}`,
       currencyCode: data.product.priceRange.minVariantPrice.currencyCode,
       variants:
@@ -157,7 +178,7 @@ export default class Shopify {
 
   static async getProducts(first = 100, after = null) {
     const cachedProducts = await Cache.getItem(
-      `products:${first}${after ? `:${after}` : ""}`
+      `products:${first}${after ? `:${after}` : ""}`,
     );
 
     if (cachedProducts) {
@@ -180,6 +201,7 @@ export default class Shopify {
               description
               descriptionHtml
               tags
+              totalInventory
               variants(first: 25) {
                 edges {
                   node {
@@ -222,7 +244,7 @@ export default class Shopify {
       }`,
       {
         variables: { first, after },
-      }
+      },
     );
 
     const results = data.products.edges
@@ -242,7 +264,7 @@ export default class Shopify {
             : [];
 
         const soldOut = !node.variants.edges.some(
-          ({ node }) => node.availableForSale
+          ({ node }) => node.availableForSale,
         );
 
         return {
@@ -251,7 +273,7 @@ export default class Shopify {
           title: node.title,
           description: node.description,
           descriptionHtml: node.descriptionHtml,
-          tags: node.tags || [],
+          tags: Shopify.applyStockTags(node.tags, node.totalInventory),
           images,
           imageAltTexts,
           price: node.priceRange.minVariantPrice.amount,
@@ -281,7 +303,7 @@ export default class Shopify {
       Cache.setItem(
         `products:${first}${after ? `:${after}` : ""}`,
         products,
-        60
+        60,
       );
     }
 
@@ -291,12 +313,12 @@ export default class Shopify {
   static async getCollectionProducts(
     collectionHandle,
     first = 100,
-    after = null
+    after = null,
   ) {
     const cachedProducts = await Cache.getItem(
       `collection:${collectionHandle}:products:${first}${
         after ? `:${after}` : ""
-      }`
+      }`,
     );
 
     if (cachedProducts) {
@@ -329,6 +351,7 @@ export default class Shopify {
                 description
                 descriptionHtml
                 tags
+                totalInventory
                 variants(first: 25) {
                   edges {
                     node {
@@ -363,7 +386,7 @@ export default class Shopify {
       }`,
       {
         variables: { collectionHandle, first, after },
-      }
+      },
     );
 
     if (!data.collection) {
@@ -381,14 +404,18 @@ export default class Shopify {
           after ? `:${after}` : ""
         }`,
         collectionProducts,
-        120
+        120,
       );
     }
 
     return collectionProducts;
   }
 
-  static async getCollectionProductsById(collectionId, first = 100, after = null) {
+  static async getCollectionProductsById(
+    collectionId,
+    first = 100,
+    after = null,
+  ) {
     const cacheKey = `collectionById:${collectionId}:products:${first}${
       after ? `:${after}` : ""
     }`;
@@ -425,6 +452,7 @@ export default class Shopify {
                 description
                 descriptionHtml
                 tags
+                totalInventory
                 variants(first: 25) {
                   edges {
                     node {
@@ -459,7 +487,7 @@ export default class Shopify {
       }`,
       {
         variables: { collectionId, first, after },
-      }
+      },
     );
 
     if (!data.collection) {
@@ -494,7 +522,7 @@ export default class Shopify {
             : [];
 
         const soldOut = !node.variants.edges.some(
-          ({ node }) => node.availableForSale
+          ({ node }) => node.availableForSale,
         );
 
         return {
@@ -503,7 +531,7 @@ export default class Shopify {
           title: node.title,
           description: node.description,
           descriptionHtml: node.descriptionHtml,
-          tags: node.tags || [],
+          tags: Shopify.applyStockTags(node.tags, node.totalInventory),
           images,
           imageAltTexts,
           price: node.priceRange.minVariantPrice.amount,
@@ -594,7 +622,7 @@ export default class Shopify {
       }`,
       {
         variables: { cartId },
-      }
+      },
     );
 
     return data.cart;
@@ -612,7 +640,7 @@ export default class Shopify {
         }`,
         {
           variables: { cartId },
-        }
+        },
       );
 
       return !!(data && data.cart && data.cart.id);
@@ -687,7 +715,7 @@ export default class Shopify {
       }`,
       {
         variables: { cartId, lines },
-      }
+      },
     );
 
     Cache.setItem("cartId", cartId, 180);
@@ -736,7 +764,7 @@ export default class Shopify {
       }`,
       {
         variables: { cartId, lineIds },
-      }
+      },
     );
 
     return data.cartLinesRemove.cart;
@@ -786,7 +814,7 @@ export default class Shopify {
           cartId,
           lines: [{ id: lineId, quantity }],
         },
-      }
+      },
     );
 
     return data.cartLinesUpdate.cart;
@@ -844,7 +872,7 @@ export default class Shopify {
       }`,
       {
         variables: { cartId: cart.id, lineIds },
-      }
+      },
     );
   }
 
@@ -921,7 +949,7 @@ export default class Shopify {
     const policies = await Shopify.getPolicies();
 
     const policy = Object.values(policies).find(
-      ({ handle }) => policyHandle === handle
+      ({ handle }) => policyHandle === handle,
     );
 
     return policy;
@@ -952,7 +980,7 @@ export default class Shopify {
       }`,
       {
         variables: { pageId },
-      }
+      },
     );
 
     if (!data.page) {
@@ -984,7 +1012,7 @@ export default class Shopify {
 
   static async getPages(first = 100, after = null) {
     const cachedPages = await Cache.getItem(
-      `pages:${first}${after ? `:${after}` : ""}`
+      `pages:${first}${after ? `:${after}` : ""}`,
     );
 
     if (cachedPages) {
@@ -1017,7 +1045,7 @@ export default class Shopify {
       }`,
       {
         variables: { first, after },
-      }
+      },
     );
 
     if (!data.pages) {
