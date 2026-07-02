@@ -99,8 +99,8 @@ body {
 }
 
 .godhand-theme {
-  --godhand-background: #030303;
-  --godhand-foreground: #f1eee6;
+  --godhand-background: #ffffff;
+  --godhand-foreground: #171717;
   --godhand-red: #e1251b;
 
   color: var(--godhand-foreground);

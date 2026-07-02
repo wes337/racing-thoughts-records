@@ -64,7 +64,7 @@ export default function ProductListItem({ product, theme }) {
             isGodhandUSA && !image ? "bg-black" : "bg-gray-500/10"
           } ${
             isGodhandUSA
-              ? "rounded-none outline-4 -outline-offset-4 md:outline-offset-0 outline-[#00ff6a]/25 group-hover:outline-[#00ff6a] group-focus:outline-[#00ff6a]"
+              ? "rounded-none outline-4 -outline-offset-4 md:outline-offset-0 outline-green-800/25 group-hover:outline-green-800 group-focus:outline-green-800"
               : "rounded-lg"
           }`}
         >
@@ -93,14 +93,12 @@ export default function ProductListItem({ product, theme }) {
             veryLongTitle
               ? "text-xs tracking-[-2px] md:tracking-tighter leading-3.5 md:leading-5"
               : "tracking-tighter leading-3.5 md:leading-5"
-          } md:text-xl lg:text-xl opacity-90 group-hover:opacity-100`}
-          style={isGodhandUSA ? { color: "#00ff6a" } : undefined}
+          } md:text-xl lg:text-xl opacity-90 group-hover:opacity-100 ${isGodhandUSA ? "text-green-600" : ""}`}
         >
           {product.title}
         </div>
         <div
-          className="font-sans font-medium text-sm md:text-xl h-auto md:h-full opacity-80 mt-1 md:mt-0"
-          style={isGodhandUSA ? { color: "#00ff6a" } : undefined}
+          className={`font-sans font-medium text-sm md:text-xl h-auto md:h-full opacity-80 mt-1 md:mt-0 ${isGodhandUSA ? "text-green-800" : ""}`}
         >
           ${Number(product.price).toFixed(2)}
         </div>

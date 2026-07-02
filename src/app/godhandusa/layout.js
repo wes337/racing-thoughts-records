@@ -1,4 +1,3 @@
-import Cart from "@/components/cart";
 import FX from "./fx";
 
 export const metadata = {

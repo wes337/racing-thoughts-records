@@ -6,8 +6,6 @@ import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
 
-const GREEN = "#00ff6a";
-
 function formatPrice(price) {
   const value = String(price);
   return value.startsWith("$") ? value : `$${Number(value).toFixed(2)}`;
@@ -84,7 +82,7 @@ export default function GodhandUSAProduct({ product }) {
   return (
     <div className="flex flex-col gap-6 md:flex-row md:gap-10 md:items-start md:my-6">
       <div className="flex w-full flex-col gap-3 md:w-1/2">
-        <div className="relative aspect-square w-full overflow-hidden bg-black outline-4 outline-[#00ff6a]/25">
+        <div className="relative aspect-square w-full overflow-hidden bg-black outline-4 outline-green-800/25">
           {hasImages ? (
             <>
               <Image
@@ -106,7 +104,7 @@ export default function GodhandUSAProduct({ product }) {
                     onClick={gotoNextImage}
                     aria-label="Next image"
                   />
-                  <div className="absolute bottom-3 left-1/2 z-3 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 font-mono text-xs text-[#00ff6a]">
+                  <div className="absolute bottom-3 left-1/2 z-3 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 font-mono text-xs text-green-800">
                     {imageIndex + 1} / {product.images.length}
                   </div>
                 </>
@@ -121,8 +119,8 @@ export default function GodhandUSAProduct({ product }) {
                 key={image}
                 className={`h-16 w-16 overflow-hidden bg-black outline-2 ${
                   index === imageIndex
-                    ? "outline-[#00ff6a]"
-                    : "outline-[#00ff6a]/25"
+                    ? "outline-green-800"
+                    : "outline-green-800/25"
                 }`}
                 onClick={() => setImageIndex(index)}
               >
@@ -140,16 +138,10 @@ export default function GodhandUSAProduct({ product }) {
       </div>
 
       <div className="flex w-full flex-col md:w-1/2">
-        <h1
-          className="font-mono text-3xl font-bold tracking-tighter md:text-4xl"
-          style={{ color: GREEN }}
-        >
+        <h1 className="font-mono text-3xl font-bold tracking-tighter md:text-4xl text-green-800">
           {product.title}
         </h1>
-        <div
-          className="mt-2 font-sans text-2xl font-medium opacity-90"
-          style={{ color: GREEN }}
-        >
+        <div className="mt-2 font-sans text-2xl font-medium opacity-90 text-green-800">
           {formatPrice(product.price)}
         </div>
 
@@ -170,11 +162,11 @@ export default function GodhandUSAProduct({ product }) {
           <div className="mt-8 mb-8 flex flex-col gap-5">
             {product.variants.length > 1 && (
               <label className="flex flex-col gap-1">
-                <span className="font-mono text-xs uppercase tracking-widest text-[#00ff6a]/70">
+                <span className="font-mono text-xs uppercase tracking-widest text-green-800/70">
                   Option
                 </span>
                 <select
-                  className="border-2 border-[#00ff6a]/40 bg-black px-3 py-2 font-mono text-sm text-[#00ff6a] outline-none focus:border-[#00ff6a]"
+                  className="border-2 border-green-800/40 bg-black px-3 py-2 font-mono text-sm text-green-800 outline-none focus:border-green-800"
                   value={selectedVariant}
                   onChange={(event) => setSelectedVariant(event.target.value)}
                 >
@@ -194,12 +186,12 @@ export default function GodhandUSAProduct({ product }) {
             )}
 
             <div className="flex flex-col gap-1">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#00ff6a]/70">
+              <span className="font-mono text-xs uppercase tracking-widest text-green-800/70">
                 Quantity
               </span>
-              <div className="flex h-12 w-32 items-center border-2 border-[#00ff6a]/40">
+              <div className="flex h-12 w-32 items-center border-2 border-green-800/40">
                 <button
-                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-[#00ff6a] disabled:opacity-40"
+                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-green-800 disabled:opacity-40"
                   onClick={() =>
                     setQuantity((current) => Math.max(current - 1, 1))
                   }
@@ -208,11 +200,11 @@ export default function GodhandUSAProduct({ product }) {
                 >
                   -
                 </button>
-                <div className="flex w-full items-center justify-center font-mono text-lg text-[#00ff6a]">
+                <div className="flex w-full items-center justify-center font-mono text-lg text-green-800">
                   {quantity}
                 </div>
                 <button
-                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-[#00ff6a] disabled:opacity-40"
+                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-green-800 disabled:opacity-40"
                   onClick={() => setQuantity((current) => current + 1)}
                   disabled={loading}
                   aria-label="Increase quantity"
@@ -224,14 +216,14 @@ export default function GodhandUSAProduct({ product }) {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
-                className="flex w-full cursor-pointer items-center justify-center border-2 border-[#00ff6a]/40 px-4 py-2 font-mono text-sm uppercase tracking-widest text-[#00ff6a]/80 hover:border-[#00ff6a] hover:text-[#00ff6a] disabled:cursor-not-allowed disabled:opacity-40 sm:w-40"
+                className="flex w-full cursor-pointer items-center justify-center border-2 border-green-800/40 px-4 py-2 font-mono text-sm uppercase tracking-widest text-green-800/80 hover:border-green-800 hover:text-green-800 disabled:cursor-not-allowed disabled:opacity-40 sm:w-40"
                 onClick={onAddToCart}
                 disabled={loading || !selectedVariant}
               >
                 Add to Cart
               </button>
               <button
-                className="flex w-full cursor-pointer items-center justify-center border-2 border-[#00ff6a] bg-[#00ff6a] px-4 py-2 font-mono text-sm uppercase tracking-widest text-black hover:bg-[#00ff6a]/80 disabled:cursor-not-allowed disabled:opacity-40 sm:w-40"
+                className="flex w-full cursor-pointer items-center justify-center border-2 border-green-800 bg-green-800 px-4 py-2 font-mono text-sm uppercase tracking-widest text-black hover:bg-green-800/80 disabled:cursor-not-allowed disabled:opacity-40 sm:w-40"
                 onClick={onBuyItNow}
                 disabled={loading || !selectedVariant}
               >

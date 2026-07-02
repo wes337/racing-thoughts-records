@@ -213,7 +213,7 @@ export default function Cart({ invert }) {
       </button>
       {createPortal(
         <div
-          className={`fixed top-0 flex w-full h-screen z-5 ${
+          className={`fixed top-0 flex w-full h-screen z-50 ${
             open ? "right-0" : "right-[-150%] delay-100"
           } transition-all duration-200`}
         >

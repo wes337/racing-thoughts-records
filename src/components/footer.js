@@ -49,7 +49,7 @@ export default function Footer({ hideLinks, theme }) {
       {!hideLinks && (
         <div
           className={`flex gap-6 lg:gap-8 font-sans font-medium text-xs md:text-sm tracking-tighter mb-2 ${
-            isGodhandUSA ? "text-[#00ff6a]" : ""
+            isGodhandUSA ? "text-green-800" : ""
           }`}
         >
           {LINKS.map(({ label, href }) => {
@@ -68,7 +68,7 @@ export default function Footer({ hideLinks, theme }) {
       <div className="h-[16px] md:h-[24px]">
         <Image
           className={`w-full h-full object-contain select-none ${
-            isGodhandUSA ? "invert" : ""
+            isGodhandUSA ? "" : ""
           }`}
           src={`${CDN_URL}/images/copy.png`}
           alt="Copyright Racing Thought Records."
