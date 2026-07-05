@@ -1,5 +1,6 @@
 import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 import Cache from "./cache.js";
+import { shopifyImageUrl } from "./utils.js";
 
 export default class Shopify {
   static client;
@@ -105,7 +106,7 @@ export default class Shopify {
           images(first: 10) {
             edges {
               node {
-                url(transform: { maxWidth: 1600, maxHeight: 1600 })
+                url
                 altText
               }
             }
@@ -146,7 +147,9 @@ export default class Shopify {
       ),
       images:
         data.product.images?.edges?.length > 0
-          ? data.product.images.edges.map(({ node }) => node.url || "")
+          ? data.product.images.edges.map(({ node }) =>
+              shopifyImageUrl(node.url || "", { width: 1600, height: 1600 }),
+            )
           : [],
       imageAltTexts:
         data.product.images?.edges?.length > 0
@@ -224,7 +227,7 @@ export default class Shopify {
               images(first: 3) {
                 edges {
                   node {
-                    url(transform: { maxWidth: 600, maxHeight: 600 })
+                    url
                     altText
                   }
                 }
@@ -252,7 +255,10 @@ export default class Shopify {
         const images =
           node.images?.edges?.length > 0
             ? node.images.edges.map(({ node }) => {
-                return node.url || "";
+                return shopifyImageUrl(node.url || "", {
+                  width: 600,
+                  height: 600,
+                });
               })
             : [];
 
@@ -374,7 +380,7 @@ export default class Shopify {
                 images(first: 3) {
                   edges {
                     node {
-                      url(transform: { maxWidth: 600, maxHeight: 600 })
+                      url
                       altText
                     }
                   }
@@ -475,7 +481,7 @@ export default class Shopify {
                 images(first: 3) {
                   edges {
                     node {
-                      url(transform: { maxWidth: 600, maxHeight: 600 })
+                      url
                       altText
                     }
                   }
@@ -511,7 +517,9 @@ export default class Shopify {
       .map(({ node }) => {
         const images =
           node.images?.edges?.length > 0
-            ? node.images.edges.map(({ node }) => node.url || "")
+            ? node.images.edges.map(({ node }) =>
+                shopifyImageUrl(node.url || "", { width: 600, height: 600 }),
+              )
             : [];
 
         const imageAltTexts =
@@ -610,7 +618,7 @@ export default class Shopify {
                       currencyCode
                     }
                     image {
-                      url(transform: { maxWidth: 160, maxHeight: 160 })
+                      url
                       altText
                     }
                   }
@@ -899,7 +907,10 @@ export default class Shopify {
         productTitle: merchandise.product.title,
         productHandle: merchandise.product.handle,
         price: merchandise.price.amount,
-        image: merchandise.image?.url || "",
+        image: shopifyImageUrl(merchandise.image?.url || "", {
+          width: 160,
+          height: 160,
+        }),
       };
     });
   }

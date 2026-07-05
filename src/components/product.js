@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
-import { CDN_URL, isSafari, TAGS } from "@/utils";
+import { CDN_URL, isSafari, TAGS, shopifyImageUrl } from "@/utils";
 
 export default function Product({ product }) {
   const [cart, setCartOpen] = useCart(
@@ -506,14 +506,33 @@ function DesktopPhotos({
 
 function FullscreenImage({ product, imageIndex, onCloseFullscreenImage }) {
   const [mounted, setMounted] = useState(false);
+  const [viewport, setViewport] = useState(null);
 
   useEffect(() => {
     setMounted(true);
+
+    const measure = () => {
+      const dpr = window.devicePixelRatio || 1;
+      setViewport({
+        width: Math.round(window.innerWidth * dpr),
+        height: Math.round(window.innerHeight * dpr),
+      });
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+
+    return () => window.removeEventListener("resize", measure);
   }, []);
 
   if (!mounted) {
     return null;
   }
+
+  const fullscreenSrc = shopifyImageUrl(
+    product.images[imageIndex],
+    viewport || undefined,
+  );
 
   return createPortal(
     <div className="fixed top-0 left-0 w-full h-full z-50 overflow-y-auto bg-white">
@@ -531,7 +550,7 @@ function FullscreenImage({ product, imageIndex, onCloseFullscreenImage }) {
       </button>
       <Image
         className="w-full min-h-screen object-contain"
-        src={product.images[imageIndex]}
+        src={fullscreenSrc}
         width={1024}
         height={1024}
         unoptimized

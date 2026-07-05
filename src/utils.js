@@ -32,6 +32,35 @@ export const COLLECTION_IDS = {
 export const CDN_URL = "https://w-img.b-cdn.net/rtr";
 export const RELEASE_DATE = Date.parse("24 Sep 2025 10:00:00 EDT");
 
+// Resize a Shopify CDN image via URL query params instead of a GraphQL
+// transform. Passing width + height without a crop preserves aspect ratio,
+// matching the maxWidth/maxHeight transform behavior.
+export function shopifyImageUrl(url, { width, height, crop } = {}) {
+  if (!url) {
+    return url;
+  }
+
+  try {
+    const parsed = new URL(url);
+
+    if (width) {
+      parsed.searchParams.set("width", String(width));
+    }
+
+    if (height) {
+      parsed.searchParams.set("height", String(height));
+    }
+
+    if (crop) {
+      parsed.searchParams.set("crop", crop);
+    }
+
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
 export function isSafari() {
   const ua = navigator.userAgent;
   const iOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;

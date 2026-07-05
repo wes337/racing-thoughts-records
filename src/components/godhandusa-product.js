@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
+import { shopifyImageUrl } from "@/utils";
 
 const GREEN = "#00ff6a";
 
@@ -23,6 +25,7 @@ export default function GodhandUSAProduct({ product }) {
   );
   const [imageIndex, setImageIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showFullscreen, setShowFullscreen] = useState(false);
 
   const preview = Boolean(product.previewOnly);
   const soldOut =
@@ -36,6 +39,16 @@ export default function GodhandUSAProduct({ product }) {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0 });
   }, []);
+
+  useEffect(() => {
+    if (showFullscreen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    return () => document.body.classList.remove("no-scroll");
+  }, [showFullscreen]);
 
   const gotoNextImage = () => {
     setImageIndex((index) => (index + 1) % product.images.length);
@@ -119,6 +132,13 @@ export default function GodhandUSAProduct({ product }) {
                   </div>
                 </>
               )}
+              <button
+                className="absolute top-2 right-2 z-3 flex h-10 w-10 cursor-pointer items-center justify-center border-2 border-[#00ff6a]/40 bg-black/70 text-[#00ff6a] hover:border-[#00ff6a]"
+                onClick={() => setShowFullscreen(true)}
+                aria-label="View fullscreen"
+              >
+                <ExpandIcon />
+              </button>
             </>
           ) : null}
         </div>
@@ -249,6 +269,153 @@ export default function GodhandUSAProduct({ product }) {
           </div>
         )}
       </div>
+
+      {showFullscreen && (
+        <FullscreenImage
+          product={product}
+          imageIndex={imageIndex}
+          gotoNextImage={gotoNextImage}
+          gotoPreviousImage={gotoPreviousImage}
+          onClose={() => setShowFullscreen(false)}
+        />
+      )}
     </div>
+  );
+}
+
+function ExpandIcon() {
+  return (
+    <svg
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="square"
+      aria-hidden="true"
+    >
+      <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+    </svg>
+  );
+}
+
+function FullscreenImage({
+  product,
+  imageIndex,
+  gotoNextImage,
+  gotoPreviousImage,
+  onClose,
+}) {
+  const [mounted, setMounted] = useState(false);
+  const [viewport, setViewport] = useState(null);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const measure = () => {
+      const dpr = window.devicePixelRatio || 1;
+      setViewport({
+        width: Math.round(window.innerWidth * dpr),
+        height: Math.round(window.innerHeight * dpr),
+      });
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  const hasMultipleImages = product.images.length > 1;
+  const fullscreenSrc = shopifyImageUrl(
+    product.images[imageIndex],
+    viewport || undefined,
+  );
+
+  const onTouchStart = (event) => {
+    try {
+      setTouchEnd(null);
+      setTouchStart(event.targetTouches[0].clientX);
+    } catch {
+      // Do nothing
+    }
+  };
+
+  const onTouchMove = (event) => {
+    try {
+      setTouchEnd(event.targetTouches[0].clientX);
+    } catch {
+      // Do nothing
+    }
+  };
+
+  const onTouchEnd = () => {
+    try {
+      if (!touchStart || !touchEnd) {
+        return;
+      }
+
+      const minSwipeDistance = 50;
+      const distance = touchStart - touchEnd;
+
+      if (distance > minSwipeDistance) {
+        gotoNextImage();
+      } else if (distance < -minSwipeDistance) {
+        gotoPreviousImage();
+      }
+    } catch {
+      // Do nothing
+    }
+  };
+
+  return createPortal(
+    <div
+      className="fixed top-0 left-0 z-50 flex h-full w-full flex-col bg-black"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      <button
+        className="absolute top-4 right-4 z-2 flex h-11 w-11 cursor-pointer items-center justify-center border-2 border-[#00ff6a]/40 bg-black/70 font-mono text-xl text-[#00ff6a]"
+        onClick={onClose}
+        aria-label="Close fullscreen"
+      >
+        ✕
+      </button>
+      <div className="relative flex h-full w-full items-center justify-center">
+        <Image
+          className="h-full w-full object-contain"
+          src={fullscreenSrc}
+          alt={product.imageAltTexts[imageIndex] || product.title}
+          width={1024}
+          height={1024}
+          unoptimized
+        />
+        {hasMultipleImages && (
+          <>
+            <button
+              className="absolute top-0 left-0 z-1 h-full w-1/2 cursor-pointer"
+              onClick={gotoPreviousImage}
+              aria-label="Previous image"
+            />
+            <button
+              className="absolute top-0 right-0 z-1 h-full w-1/2 cursor-pointer"
+              onClick={gotoNextImage}
+              aria-label="Next image"
+            />
+            <div className="absolute bottom-4 left-1/2 z-2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 font-mono text-xs text-[#00ff6a]">
+              {imageIndex + 1} / {product.images.length}
+            </div>
+          </>
+        )}
+      </div>
+    </div>,
+    document.body,
   );
 }

@@ -1,4 +1,5 @@
 import "server-only";
+import { shopifyImageUrl } from "./utils.js";
 
 export default class ShopifyAdmin {
   static domain = "p0enpg-gn.myshopify.com";
@@ -25,7 +26,7 @@ export default class ShopifyAdmin {
           node {
             ... on MediaImage {
               image {
-                url(transform: { maxWidth: 600, maxHeight: 600 })
+                url
                 altText
               }
             }
@@ -132,7 +133,10 @@ export default class ShopifyAdmin {
   static parseImages(product) {
     return (product.media?.edges ?? [])
       .map(({ node }) => ({
-        url: node.image?.url || "",
+        url: shopifyImageUrl(node.image?.url || "", {
+          width: 600,
+          height: 600,
+        }),
         altText: node.image?.altText || "",
       }))
       .filter((image) => image.url);
