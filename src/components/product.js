@@ -231,9 +231,9 @@ export default function Product({ product }) {
                   alt=""
                 />
               </div>
-              {renderTag()}
             </div>
           )}
+          {renderTag()}
           {soldOut && (
             <div className="min-[1921px]:min-w-[608px] flex items-center justify-center w-full h-full mb-4 h-[80px] w-auto">
               <Image
@@ -465,14 +465,14 @@ function DesktopPhotos({
         </div>
       </div>
       {product.images.length > 1 && (
-        <div className="flex justify-evenly w-full h-[8vh] z-5">
+        <div className="flex justify-center gap-4 w-full h-[8vh] z-5">
           {product.images.map((image, index) => {
             const selected = index === imageIndex;
 
             return (
               <button
                 key={`select-${image}`}
-                className={`relative flex w-auto h-full m-auto cursor-pointer rounded-md  ${
+                className={`relative flex w-auto h-full my-auto cursor-pointer rounded-md  ${
                   selected
                     ? "outline-4 outline-red-600"
                     : "outline-2 outline-black/50"

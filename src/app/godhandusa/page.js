@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Shopify from "@/shopify";
+import ShopifyAdmin from "@/shopify-admin";
 import Footer from "@/components/footer";
 import Cart from "@/components/cart";
 import ProductListItem from "@/components/product-list-item";
@@ -10,12 +11,27 @@ export const dynamic = "force-dynamic";
 
 const GODHANDUSA_COLLECTION_ID = "gid://shopify/Collection/517340037408";
 
-export default async function GodhandUSAShopPage() {
-  const { products } = await Shopify.getCollectionProductsById(
-    GODHANDUSA_COLLECTION_ID,
-  );
+async function getGodhandUSACollectionProducts(showDrafts) {
+  if (showDrafts) {
+    try {
+      return await ShopifyAdmin.getDraftProductsByCollectionId(
+        GODHANDUSA_COLLECTION_ID,
+      );
+    } catch (error) {
+      console.error("Failed to load GODHANDUSA draft products", error);
+      return null;
+    }
+  }
 
-  const productResults = products?.results ?? [];
+  return Shopify.getCollectionProductsById(GODHANDUSA_COLLECTION_ID);
+}
+
+export default async function GodhandUSAShopPage({ searchParams }) {
+  const params = await searchParams;
+  const showDrafts = params?.showDrafts === "true";
+  const collectionProducts = await getGodhandUSACollectionProducts(showDrafts);
+
+  const productResults = collectionProducts?.products?.results ?? [];
 
   return (
     <main className="flex min-h-screen flex-col px-2 py-8 md:px-8 md:py-12 pt-4">
@@ -37,14 +53,6 @@ export default async function GodhandUSAShopPage() {
               alt="GODHANDUSA"
               width={376}
               height={80}
-              priority
-            />
-            <Image
-              className="invert opacity-80 px-4 pt-4 max-w-[400px]"
-              src="/images/logo-text-horizontal.png"
-              alt="Racing Thoughts Records."
-              width={2085}
-              height={136}
               priority
             />
           </Link>

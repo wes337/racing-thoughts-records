@@ -105,7 +105,7 @@ export default class Shopify {
           images(first: 10) {
             edges {
               node {
-                url
+                url(transform: { maxWidth: 1600, maxHeight: 1600 })
                 altText
               }
             }
@@ -224,7 +224,7 @@ export default class Shopify {
               images(first: 3) {
                 edges {
                   node {
-                    url
+                    url(transform: { maxWidth: 600, maxHeight: 600 })
                     altText
                   }
                 }
@@ -374,7 +374,7 @@ export default class Shopify {
                 images(first: 3) {
                   edges {
                     node {
-                      url
+                      url(transform: { maxWidth: 600, maxHeight: 600 })
                       altText
                     }
                   }
@@ -475,7 +475,7 @@ export default class Shopify {
                 images(first: 3) {
                   edges {
                     node {
-                      url
+                      url(transform: { maxWidth: 600, maxHeight: 600 })
                       altText
                     }
                   }
@@ -610,7 +610,7 @@ export default class Shopify {
                       currencyCode
                     }
                     image {
-                      url
+                      url(transform: { maxWidth: 160, maxHeight: 160 })
                       altText
                     }
                   }
