@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CDN_URL, TAGS } from "@/utils";
 
-export default function ProductListItem({ product, theme }) {
+export default function ProductListItem({ product, theme, showDrafts }) {
   const isGodhandUSA = theme === "godhandusa";
   const longTitle = product.title.length > 21;
   const veryLongTitle = product.title.length > 40;
@@ -39,7 +39,9 @@ export default function ProductListItem({ product, theme }) {
   };
 
   const href = isGodhandUSA
-    ? `/godhandusa/products/${product.handle}`
+    ? `/godhandusa/products/${product.handle}${
+        showDrafts ? "?showDrafts=true" : ""
+      }`
     : `/products/${product.handle}`;
 
   return (

@@ -65,6 +65,7 @@ export default async function GodhandUSAShopPage({ searchParams }) {
                 key={product.id}
                 product={product}
                 theme="godhandusa"
+                showDrafts={showDrafts}
               />
             ))}
           </div>

@@ -24,6 +24,7 @@ export default function GodhandUSAProduct({ product }) {
   const [imageIndex, setImageIndex] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  const preview = Boolean(product.previewOnly);
   const soldOut =
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
@@ -47,7 +48,14 @@ export default function GodhandUSAProduct({ product }) {
   };
 
   const onAddToCart = async () => {
-    if (loading || !cart || !purchasable || !selectedVariant || quantity <= 0) {
+    if (
+      loading ||
+      preview ||
+      !cart ||
+      !purchasable ||
+      !selectedVariant ||
+      quantity <= 0
+    ) {
       return;
     }
 
@@ -69,7 +77,7 @@ export default function GodhandUSAProduct({ product }) {
   };
 
   const onBuyItNow = async () => {
-    if (loading || !purchasable || !selectedVariant) {
+    if (loading || preview || !purchasable || !selectedVariant) {
       return;
     }
 
@@ -83,7 +91,7 @@ export default function GodhandUSAProduct({ product }) {
 
   return (
     <div className="flex flex-col gap-6 md:flex-row md:gap-10 md:items-start md:my-6">
-      <div className="flex w-full flex-col gap-3 md:w-1/2">
+      <div className="relative z-10 flex w-full flex-col gap-3 md:w-1/2">
         <div className="relative aspect-square w-full overflow-hidden bg-black outline-4 outline-[#00ff6a]/25">
           {hasImages ? (
             <>
@@ -119,7 +127,7 @@ export default function GodhandUSAProduct({ product }) {
             {product.images.map((image, index) => (
               <button
                 key={image}
-                className={`h-16 w-16 overflow-hidden bg-black outline-2 ${
+                className={`h-16 w-16 cursor-pointer overflow-hidden bg-black outline-2 ${
                   index === imageIndex
                     ? "outline-[#00ff6a]"
                     : "outline-[#00ff6a]/25"
@@ -199,7 +207,7 @@ export default function GodhandUSAProduct({ product }) {
               </span>
               <div className="flex h-12 w-32 items-center border-2 border-[#00ff6a]/40">
                 <button
-                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-[#00ff6a] disabled:opacity-40"
+                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-[#00ff6a] disabled:cursor-default disabled:opacity-40"
                   onClick={() =>
                     setQuantity((current) => Math.max(current - 1, 1))
                   }
@@ -212,7 +220,7 @@ export default function GodhandUSAProduct({ product }) {
                   {quantity}
                 </div>
                 <button
-                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-[#00ff6a] disabled:opacity-40"
+                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-[#00ff6a] disabled:cursor-default disabled:opacity-40"
                   onClick={() => setQuantity((current) => current + 1)}
                   disabled={loading}
                   aria-label="Increase quantity"
@@ -224,16 +232,16 @@ export default function GodhandUSAProduct({ product }) {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
-                className="flex w-full cursor-pointer items-center justify-center border-2 border-[#00ff6a]/40 px-4 py-2 font-mono text-sm uppercase tracking-widest text-[#00ff6a]/80 hover:border-[#00ff6a] hover:text-[#00ff6a] disabled:cursor-not-allowed disabled:opacity-40 sm:w-40"
+                className="flex w-full cursor-pointer items-center justify-center border-2 border-[#00ff6a]/40 px-6 py-3.5 font-mono text-base uppercase tracking-widest text-[#00ff6a]/80 hover:border-[#00ff6a] hover:text-[#00ff6a] disabled:cursor-default disabled:opacity-40 sm:w-52 md:py-5 md:text-lg lg:w-64"
                 onClick={onAddToCart}
-                disabled={loading || !selectedVariant}
+                disabled={loading || preview || !selectedVariant}
               >
                 Add to Cart
               </button>
               <button
-                className="flex w-full cursor-pointer items-center justify-center border-2 border-[#00ff6a] bg-[#00ff6a] px-4 py-2 font-mono text-sm uppercase tracking-widest text-black hover:bg-[#00ff6a]/80 disabled:cursor-not-allowed disabled:opacity-40 sm:w-40"
+                className="flex w-full cursor-pointer items-center justify-center border-2 border-[#00ff6a] bg-[#00ff6a] px-6 py-3.5 font-mono text-base uppercase tracking-widest text-black hover:bg-[#00ff6a]/80 disabled:cursor-default disabled:opacity-40 sm:w-52 md:py-5 md:text-lg lg:w-64"
                 onClick={onBuyItNow}
-                disabled={loading || !selectedVariant}
+                disabled={loading || preview || !selectedVariant}
               >
                 Buy Now
               </button>
