@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { CDN_URL } from "@/utils";
 import Shopify from "@/shopify";
 import ShopifyAdmin from "@/shopify-admin";
 import Footer from "@/components/footer";
@@ -46,10 +47,16 @@ export default async function GodhandUSAProductPage({ params, searchParams }) {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <header className="relative flex min-h-[80px] items-center justify-center">
           <Link
-            className="absolute top-0 left-0 mx-2 font-mono text-sm font-normal text-[#00ff6a] opacity-90 hover:opacity-100 md:text-base"
+            className="absolute left-[16px] md:left-[32px] h-[32px] md:h-[40px] cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 z-1 active:scale-[1.2]"
             href={backHref}
           >
-            &lt;&lt; RETURN
+            <Image
+              className="w-auto h-full object-contain"
+              src={`${CDN_URL}/images/back.png`}
+              alt="Back"
+              width={250}
+              height={209}
+            />
           </Link>
           <Link
             href={backHref}
@@ -57,14 +64,14 @@ export default async function GodhandUSAProductPage({ params, searchParams }) {
           >
             <Image
               className="h-[64px] w-auto md:h-[80px] object-contain"
-              src="/images/artists/godhandusa-green.png"
+              src="/images/artists/godhandusa.png"
               alt="GODHANDUSA"
               width={376}
               height={80}
               priority
             />
           </Link>
-          <Cart invert />
+          <Cart />
         </header>
         <Suspense>
           <GodhandUSAProduct product={product} />

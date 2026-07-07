@@ -1,4 +1,3 @@
-import Cart from "@/components/cart";
 import FX from "./fx";
 
 export const metadata = {
@@ -6,7 +5,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#030303",
+  themeColor: "#ededed",
 };
 
 export default function GodhandUSALayout({ children }) {

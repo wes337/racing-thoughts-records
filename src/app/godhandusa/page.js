@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CDN_URL } from "@/utils";
 import Shopify from "@/shopify";
 import ShopifyAdmin from "@/shopify-admin";
 import Footer from "@/components/footer";
@@ -38,10 +39,16 @@ export default async function GodhandUSAShopPage({ searchParams }) {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <header className="relative flex min-h-[64px] items-center justify-center">
           <Link
-            className="absolute top-0 left-0 mx-2 font-mono text-sm font-normal text-[#00ff6a] opacity-90 hover:opacity-100 md:text-base"
+            className="absolute left-[16px] md:left-[32px] h-[32px] md:h-[40px] cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 z-1 active:scale-[1.2]"
             href="/shop"
           >
-            &lt;&lt; RETURN
+            <Image
+              className="w-auto h-full object-contain"
+              src={`${CDN_URL}/images/back.png`}
+              alt="Back"
+              width={250}
+              height={209}
+            />
           </Link>
           <Link
             href="/shop"
@@ -49,14 +56,14 @@ export default async function GodhandUSAShopPage({ searchParams }) {
           >
             <Image
               className="h-[80px] w-auto object-contain"
-              src="/images/artists/godhandusa-green.png"
+              src="/images/artists/godhandusa.png"
               alt="GODHANDUSA"
               width={376}
               height={80}
               priority
             />
           </Link>
-          <Cart invert />
+          <Cart />
         </header>
         {productResults.length > 0 ? (
           <div className="grid grid-cols-2 gap-4 p-2 md:p-8 md:gap-8 lg:grid-cols-3">
@@ -71,7 +78,7 @@ export default async function GodhandUSAShopPage({ searchParams }) {
           </div>
         ) : (
           <div className="flex min-h-[60vh] items-center justify-center p-8 mt-auto">
-            <span className="font-mono text-3xl uppercase tracking-widest text-[#00ff6a] md:text-5xl">
+            <span className="font-mono text-3xl uppercase tracking-widest md:text-5xl">
               Coming Soon
             </span>
           </div>
