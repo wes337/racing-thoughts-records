@@ -63,7 +63,7 @@ export default async function GodhandUSAProductPage({ params, searchParams }) {
             className="flex flex-col opacity-90 hover:opacity-100"
           >
             <Image
-              className="h-[64px] w-auto md:h-[80px] object-contain"
+              className="h-[64px] w-auto md:h-[96px] object-contain"
               src="/images/artists/godhandusa.png"
               alt="GODHANDUSA"
               width={376}
@@ -77,7 +77,9 @@ export default async function GodhandUSAProductPage({ params, searchParams }) {
           <GodhandUSAProduct product={product} />
         </Suspense>
       </div>
-      <Footer theme="godhandusa" />
+      <div className="mt-auto">
+        <Footer theme="godhandusa" />
+      </div>
     </main>
   );
 }

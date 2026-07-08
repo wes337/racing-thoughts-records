@@ -13,6 +13,14 @@ export default function ProductListItem({ product, theme, showDrafts }) {
 
   const renderTag = () => {
     if (soldOut) {
+      if (isGodhandUSA) {
+        return (
+          <div className="absolute top-3 right-3 z-3 border-2 border-[#e1251b]/60 bg-white/80 px-2 py-1 font-mono font-bold text-xs uppercase tracking-widest text-[#e1251b] md:top-4 md:right-4 md:text-sm">
+            Sold Out
+          </div>
+        );
+      }
+
       return (
         <div className="absolute top-0 right-0 md:m-2 z-3 w-[66%] md:w-[50%] rotate-15 group-hover:scale-[1.1]">
           <Image
@@ -29,6 +37,14 @@ export default function ProductListItem({ product, theme, showDrafts }) {
 
     if (!tag) {
       return null;
+    }
+
+    if (isGodhandUSA) {
+      return (
+        <div className="absolute top-3 right-3 z-3 border-2 border-amber-600/60 bg-white/80 px-2 py-1 font-mono font-bold text-xs uppercase tracking-widest text-amber-600 md:top-4 md:right-4 md:text-sm">
+          {tag.label}
+        </div>
+      );
     }
 
     return (
@@ -51,7 +67,7 @@ export default function ProductListItem({ product, theme, showDrafts }) {
       prefetch
     >
       <div className="relative w-full h-full aspect-square overflow-hidden">
-        {!isGodhandUSA && renderTag()}
+        {renderTag()}
         {!isGodhandUSA && (
           <Image
             className="absolute top-0 left-0 w-full h-full z-1 opacity-80 group-hover:opacity-100"

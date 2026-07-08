@@ -60,7 +60,7 @@ export default async function GodhandUSAShopPage({ searchParams }) {
             className="flex flex-col opacity-90 hover:opacity-100"
           >
             <Image
-              className="h-[80px] w-auto object-contain"
+              className="h-[80px] w-auto object-contain md:h-[96px]"
               src="/images/artists/godhandusa.png"
               alt="GODHANDUSA"
               width={376}

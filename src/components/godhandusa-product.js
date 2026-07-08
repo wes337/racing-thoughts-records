@@ -29,6 +29,7 @@ export default function GodhandUSAProduct({ product }) {
   const soldOut =
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
+  const lowStock = !soldOut && product.tags?.includes("LOWSTOCK");
   const purchasable = !soldOut;
 
   const hasImages = product.images.length > 0;
@@ -171,6 +172,12 @@ export default function GodhandUSAProduct({ product }) {
           {formatPrice(product.price)}
         </div>
 
+        {lowStock && (
+          <div className="mt-3 inline-flex w-fit items-center border-2 border-amber-600/60 px-3 py-1.5 font-mono font-bold text-sm uppercase tracking-widest text-amber-600 md:text-base">
+            Low Stock
+          </div>
+        )}
+
         {product.descriptionHtml && (
           <div
             className="description mt-6 font-sans text-sm font-light leading-relaxed opacity-80 md:text-base"
@@ -179,7 +186,7 @@ export default function GodhandUSAProduct({ product }) {
         )}
 
         {soldOut && (
-          <div className="mt-8 inline-flex w-fit items-center border-2 border-[#e1251b]/60 px-4 py-2 font-mono text-sm uppercase tracking-widest text-[#e1251b]">
+          <div className="mt-8 inline-flex w-fit items-center border-2 border-[#e1251b]/60 px-6 py-3 font-mono font-bold text-xl uppercase tracking-widest text-[#e1251b] md:text-2xl">
             Sold Out
           </div>
         )}
