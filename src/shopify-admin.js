@@ -199,52 +199,94 @@ export default class ShopifyAdmin {
     first = 100,
     after = null,
   ) {
-    const collectionLegacyId = ShopifyAdmin.getLegacyResourceId(collectionId);
-    const productsQuery = `collection_id:${collectionLegacyId} AND status:draft`;
-    const data = await ShopifyAdmin.request(
-      `
-        query AdminDraftProductsByCollectionQuery(
-          $collectionId: ID!
-          $productsQuery: String!
-          $first: Int!
-          $after: String
-        ) {
-          collection(id: $collectionId) {
-            id
-            title
-            handle
-            description
-            descriptionHtml
-            image {
-              url
-              altText
-            }
-          }
-          products(first: $first, after: $after, query: $productsQuery) {
-            pageInfo {
-              hasNextPage
-              endCursor
-            }
-            edges {
-              node {
-                ...AdminDraftProductFields
-              }
-            }
-          }
-        }
-
-        ${ShopifyAdmin.productFields}
-      `,
-      { collectionId, productsQuery, first, after },
-    );
-
-    if (!data?.collection || !data?.products) {
+    if (first <= 0) {
       return null;
     }
 
+    const pageSize = Math.min(Math.max(first, 1), 250);
+    let collection = null;
+    let cursor = after;
+    let hasMore = true;
+    let endCursor = null;
+    const draftEdges = [];
+
+    while (hasMore && draftEdges.length < first) {
+      const data = await ShopifyAdmin.request(
+        `
+          query AdminDraftProductsByCollectionQuery(
+            $collectionId: ID!
+            $first: Int!
+            $after: String
+          ) {
+            collection(id: $collectionId) {
+              id
+              title
+              handle
+              description
+              descriptionHtml
+              image {
+                url
+                altText
+              }
+              products(first: $first, after: $after, sortKey: MANUAL) {
+                pageInfo {
+                  hasNextPage
+                  endCursor
+                }
+                edges {
+                  cursor
+                  node {
+                    ...AdminDraftProductFields
+                  }
+                }
+              }
+            }
+          }
+
+          ${ShopifyAdmin.productFields}
+        `,
+        { collectionId, first: pageSize, after: cursor },
+      );
+
+      if (!data?.collection?.products) {
+        return null;
+      }
+
+      collection ??= data.collection;
+
+      const products = data.collection.products;
+      const pageDraftEdges = products.edges.filter(
+        ({ node }) => node.status === "DRAFT",
+      );
+      const remaining = first - draftEdges.length;
+      const includedDraftEdges = pageDraftEdges.slice(0, remaining);
+
+      draftEdges.push(...includedDraftEdges);
+
+      if (draftEdges.length >= first) {
+        hasMore =
+          pageDraftEdges.length > remaining ||
+          products.pageInfo?.hasNextPage ||
+          false;
+        endCursor =
+          includedDraftEdges[includedDraftEdges.length - 1]?.cursor || null;
+        break;
+      }
+
+      hasMore = products.pageInfo?.hasNextPage || false;
+      endCursor = products.pageInfo?.endCursor || null;
+      cursor = endCursor;
+    }
+
     return ShopifyAdmin.parseCollection({
-      ...data.collection,
-      products: data.products,
+      ...collection,
+      products: {
+        edges: draftEdges,
+        pageInfo: {
+          hasNextPage: hasMore,
+          endCursor,
+        },
+      },
     });
   }
 

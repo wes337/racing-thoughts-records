@@ -24,7 +24,12 @@ async function getGodhandUSACollectionProducts(showDrafts) {
     }
   }
 
-  return Shopify.getCollectionProductsById(GODHANDUSA_COLLECTION_ID);
+  return Shopify.getCollectionProductsById(
+    GODHANDUSA_COLLECTION_ID,
+    100,
+    null,
+    "MANUAL",
+  );
 }
 
 export default async function GodhandUSAShopPage({ searchParams }) {

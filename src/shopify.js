@@ -421,10 +421,11 @@ export default class Shopify {
     collectionId,
     first = 100,
     after = null,
+    sortKey = "COLLECTION_DEFAULT",
   ) {
     const cacheKey = `collectionById:${collectionId}:products:${first}${
       after ? `:${after}` : ""
-    }`;
+    }:${sortKey}`;
 
     const cachedProducts = await Cache.getItem(cacheKey);
 
@@ -434,7 +435,12 @@ export default class Shopify {
 
     const { data } = await Shopify.client.request(
       `
-        query CollectionProductsByIdQuery($collectionId: ID!, $first: Int!, $after: String) {
+        query CollectionProductsByIdQuery(
+          $collectionId: ID!
+          $first: Int!
+          $after: String
+          $sortKey: ProductCollectionSortKeys!
+        ) {
         collection(id: $collectionId) {
           id
           title
@@ -445,7 +451,7 @@ export default class Shopify {
             url
             altText
           }
-          products(first: $first, after: $after) {
+          products(first: $first, after: $after, sortKey: $sortKey) {
             pageInfo {
               hasNextPage
               endCursor
@@ -492,7 +498,7 @@ export default class Shopify {
         }
       }`,
       {
-        variables: { collectionId, first, after },
+        variables: { collectionId, first, after, sortKey },
       },
     );
 
