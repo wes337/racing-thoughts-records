@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { CDN_URL } from "@/utils";
+import { CDN_URL, GODHANDUSA_RELEASE_DATE } from "@/utils";
 import Shopify from "@/shopify";
 import ShopifyAdmin from "@/shopify-admin";
 import Footer from "@/components/footer";
@@ -18,6 +18,10 @@ export default async function GodhandUSAProductPage({ params, searchParams }) {
   const { handle } = await params;
   const query = await searchParams;
   const showDrafts = query?.showDrafts === "true";
+
+  if (!showDrafts && Date.now() < GODHANDUSA_RELEASE_DATE) {
+    redirect("/godhandusa");
+  }
 
   let product = null;
 

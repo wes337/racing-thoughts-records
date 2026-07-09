@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CDN_URL } from "@/utils";
+import { CDN_URL, GODHANDUSA_RELEASE_DATE } from "@/utils";
 import Shopify from "@/shopify";
 import ShopifyAdmin from "@/shopify-admin";
 import Footer from "@/components/footer";
 import Cart from "@/components/cart";
 import ProductListItem from "@/components/product-list-item";
+import GodhandUSACountdown from "@/components/godhandusa-countdown";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -35,7 +36,10 @@ async function getGodhandUSACollectionProducts(showDrafts) {
 export default async function GodhandUSAShopPage({ searchParams }) {
   const params = await searchParams;
   const showDrafts = params?.showDrafts === "true";
-  const collectionProducts = await getGodhandUSACollectionProducts(showDrafts);
+  const isLive = showDrafts || Date.now() >= GODHANDUSA_RELEASE_DATE;
+  const collectionProducts = isLive
+    ? await getGodhandUSACollectionProducts(showDrafts)
+    : null;
 
   const productResults = collectionProducts?.products?.results ?? [];
 
@@ -70,7 +74,9 @@ export default async function GodhandUSAShopPage({ searchParams }) {
           </Link>
           <Cart />
         </header>
-        {productResults.length > 0 ? (
+        {!isLive ? (
+          <GodhandUSACountdown timestamp={GODHANDUSA_RELEASE_DATE} />
+        ) : productResults.length > 0 ? (
           <div className="grid grid-cols-2 gap-4 p-2 md:p-8 md:gap-8 lg:grid-cols-3">
             {productResults.map((product) => (
               <ProductListItem
