@@ -8,8 +8,6 @@ import Shopify from "@/shopify";
 import { useCart } from "@/state";
 import { shopifyImageUrl } from "@/utils";
 
-const GREEN = "#00ff6a";
-
 function formatPrice(price) {
   const value = String(price);
   return value.startsWith("$") ? value : `$${Number(value).toFixed(2)}`;
@@ -31,6 +29,7 @@ export default function GodhandUSAProduct({ product }) {
   const soldOut =
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
+  const lowStock = !soldOut && product.tags?.includes("LOWSTOCK");
   const purchasable = !soldOut;
 
   const hasImages = product.images.length > 0;
@@ -104,8 +103,8 @@ export default function GodhandUSAProduct({ product }) {
 
   return (
     <div className="flex flex-col gap-6 md:flex-row md:gap-10 md:items-start md:my-6">
-      <div className="relative z-10 flex w-full flex-col gap-3 md:w-1/2">
-        <div className="relative aspect-square w-full overflow-hidden bg-black outline-4 outline-[#00ff6a]/25">
+      <div className="relative flex w-full flex-col gap-3 md:w-1/2">
+        <div className="relative aspect-square w-full overflow-hidden bg-gray-500/10 outline-4 outline-black/25">
           {hasImages ? (
             <>
               <Image
@@ -127,13 +126,13 @@ export default function GodhandUSAProduct({ product }) {
                     onClick={gotoNextImage}
                     aria-label="Next image"
                   />
-                  <div className="absolute bottom-3 left-1/2 z-3 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 font-mono text-xs text-[#00ff6a]">
+                  <div className="absolute bottom-3 left-1/2 z-3 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 font-mono text-xs text-white">
                     {imageIndex + 1} / {product.images.length}
                   </div>
                 </>
               )}
               <button
-                className="absolute top-2 right-2 z-3 flex h-10 w-10 cursor-pointer items-center justify-center border-2 border-[#00ff6a]/40 bg-black/70 text-[#00ff6a] hover:border-[#00ff6a]"
+                className="absolute top-2 right-2 z-3 flex h-10 w-10 cursor-pointer items-center justify-center border-2 border-black/40 bg-white/70 text-black hover:border-black"
                 onClick={() => setShowFullscreen(true)}
                 aria-label="View fullscreen"
               >
@@ -147,10 +146,8 @@ export default function GodhandUSAProduct({ product }) {
             {product.images.map((image, index) => (
               <button
                 key={image}
-                className={`h-16 w-16 cursor-pointer overflow-hidden bg-black outline-2 ${
-                  index === imageIndex
-                    ? "outline-[#00ff6a]"
-                    : "outline-[#00ff6a]/25"
+                className={`h-16 w-16 cursor-pointer overflow-hidden bg-gray-500/10 outline-2 ${
+                  index === imageIndex ? "outline-black" : "outline-black/25"
                 }`}
                 onClick={() => setImageIndex(index)}
               >
@@ -168,18 +165,18 @@ export default function GodhandUSAProduct({ product }) {
       </div>
 
       <div className="flex w-full flex-col md:w-1/2">
-        <h1
-          className="font-mono text-3xl font-bold tracking-tighter md:text-4xl"
-          style={{ color: GREEN }}
-        >
+        <h1 className="font-mono text-3xl font-bold tracking-tighter md:text-4xl">
           {product.title}
         </h1>
-        <div
-          className="mt-2 font-sans text-2xl font-medium opacity-90"
-          style={{ color: GREEN }}
-        >
+        <div className="mt-2 font-sans text-2xl font-medium opacity-90">
           {formatPrice(product.price)}
         </div>
+
+        {lowStock && (
+          <div className="mt-3 inline-flex w-fit items-center border-2 border-amber-600/60 px-3 py-1.5 font-mono font-bold text-sm uppercase tracking-widest text-amber-600 md:text-base">
+            Low Stock
+          </div>
+        )}
 
         {product.descriptionHtml && (
           <div
@@ -189,7 +186,7 @@ export default function GodhandUSAProduct({ product }) {
         )}
 
         {soldOut && (
-          <div className="mt-8 inline-flex w-fit items-center border-2 border-[#e1251b]/60 px-4 py-2 font-mono text-sm uppercase tracking-widest text-[#e1251b]">
+          <div className="mt-8 inline-flex w-fit items-center border-2 border-[#e1251b]/60 px-6 py-3 font-mono font-bold text-xl uppercase tracking-widest text-[#e1251b] md:text-2xl">
             Sold Out
           </div>
         )}
@@ -198,11 +195,11 @@ export default function GodhandUSAProduct({ product }) {
           <div className="mt-8 mb-8 flex flex-col gap-5">
             {product.variants.length > 1 && (
               <label className="flex flex-col gap-1">
-                <span className="font-mono text-xs uppercase tracking-widest text-[#00ff6a]/70">
+                <span className="font-mono text-xs uppercase tracking-widest opacity-70">
                   Option
                 </span>
                 <select
-                  className="border-2 border-[#00ff6a]/40 bg-black px-3 py-2 font-mono text-sm text-[#00ff6a] outline-none focus:border-[#00ff6a]"
+                  className="border-2 border-black/40 bg-white px-3 py-2 font-mono text-sm outline-none focus:border-black"
                   value={selectedVariant}
                   onChange={(event) => setSelectedVariant(event.target.value)}
                 >
@@ -222,12 +219,12 @@ export default function GodhandUSAProduct({ product }) {
             )}
 
             <div className="flex flex-col gap-1">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#00ff6a]/70">
+              <span className="font-mono text-xs uppercase tracking-widest opacity-70">
                 Quantity
               </span>
-              <div className="flex h-12 w-32 items-center border-2 border-[#00ff6a]/40">
+              <div className="flex h-12 w-32 items-center border-2 border-black/40">
                 <button
-                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-[#00ff6a] disabled:cursor-default disabled:opacity-40"
+                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl disabled:cursor-default disabled:opacity-40"
                   onClick={() =>
                     setQuantity((current) => Math.max(current - 1, 1))
                   }
@@ -236,11 +233,11 @@ export default function GodhandUSAProduct({ product }) {
                 >
                   -
                 </button>
-                <div className="flex w-full items-center justify-center font-mono text-lg text-[#00ff6a]">
+                <div className="flex w-full items-center justify-center font-mono text-lg">
                   {quantity}
                 </div>
                 <button
-                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl text-[#00ff6a] disabled:cursor-default disabled:opacity-40"
+                  className="flex h-full w-12 cursor-pointer items-center justify-center font-mono text-xl disabled:cursor-default disabled:opacity-40"
                   onClick={() => setQuantity((current) => current + 1)}
                   disabled={loading}
                   aria-label="Increase quantity"
@@ -252,14 +249,14 @@ export default function GodhandUSAProduct({ product }) {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
-                className="flex w-full cursor-pointer items-center justify-center border-2 border-[#00ff6a]/40 px-6 py-3.5 font-mono text-base uppercase tracking-widest text-[#00ff6a]/80 hover:border-[#00ff6a] hover:text-[#00ff6a] disabled:cursor-default disabled:opacity-40 sm:w-52 md:py-5 md:text-lg lg:w-64"
+                className="flex w-full cursor-pointer items-center justify-center border-2 border-black/40 px-6 py-3.5 font-mono text-base uppercase tracking-widest text-black/80 hover:border-black hover:text-black disabled:cursor-default disabled:opacity-40 sm:w-52 md:py-5 md:text-lg lg:w-64"
                 onClick={onAddToCart}
                 disabled={loading || preview || !selectedVariant}
               >
                 Add to Cart
               </button>
               <button
-                className="flex w-full cursor-pointer items-center justify-center border-2 border-[#00ff6a] bg-[#00ff6a] px-6 py-3.5 font-mono text-base uppercase tracking-widest text-black hover:bg-[#00ff6a]/80 disabled:cursor-default disabled:opacity-40 sm:w-52 md:py-5 md:text-lg lg:w-64"
+                className="flex w-full cursor-pointer items-center justify-center border-2 border-black bg-black px-6 py-3.5 font-mono text-base uppercase tracking-widest text-white hover:bg-black/80 disabled:cursor-default disabled:opacity-40 sm:w-52 md:py-5 md:text-lg lg:w-64"
                 onClick={onBuyItNow}
                 disabled={loading || preview || !selectedVariant}
               >
@@ -376,13 +373,13 @@ function FullscreenImage({
 
   return createPortal(
     <div
-      className="fixed top-0 left-0 z-50 flex h-full w-full flex-col bg-black"
+      className="fixed top-0 left-0 z-50 flex h-full w-full flex-col bg-white"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
       <button
-        className="absolute top-4 right-4 z-2 flex h-11 w-11 cursor-pointer items-center justify-center border-2 border-[#00ff6a]/40 bg-black/70 font-mono text-xl text-[#00ff6a]"
+        className="absolute top-4 right-4 z-2 flex h-11 w-11 cursor-pointer items-center justify-center border-2 border-black/40 bg-white/70 font-mono text-xl text-black"
         onClick={onClose}
         aria-label="Close fullscreen"
       >
@@ -409,7 +406,7 @@ function FullscreenImage({
               onClick={gotoNextImage}
               aria-label="Next image"
             />
-            <div className="absolute bottom-4 left-1/2 z-2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 font-mono text-xs text-[#00ff6a]">
+            <div className="absolute bottom-4 left-1/2 z-2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 font-mono text-xs text-white">
               {imageIndex + 1} / {product.images.length}
             </div>
           </>

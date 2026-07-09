@@ -100,12 +100,12 @@ body {
 }
 
 .godhand-theme {
-  --godhand-background: #030303;
-  --godhand-foreground: #f1eee6;
   --godhand-red: #e1251b;
 
-  color: var(--godhand-foreground);
-  background-color: var(--godhand-background);
+  color: var(--foreground);
+  background: var(--background);
+  background-image: url("https://w-img.b-cdn.net/rtr/textures/exclusive-paper-60.png");
+  background-repeat: repeat;
   font-family: "Share Tech Mono", monospace;
 }
 

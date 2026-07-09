@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 
+const DIGIT_CLASS =
+  "text-5xl md:text-8xl font-bold text-white [text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000,-3px_0_0_#000,3px_0_0_#000,0_-3px_0_#000,0_3px_0_#000,-2px_-3px_0_#000,2px_-3px_0_#000,-3px_-2px_0_#000,3px_-2px_0_#000,-2px_3px_0_#000,2px_3px_0_#000,-3px_2px_0_#000,3px_2px_0_#000]";
+
 export default function Countdown({ timestamp, onEnd }) {
   const [initialized, setInitialized] = useState(false);
   const [ended, setEnded] = useState(false);
@@ -48,22 +51,22 @@ export default function Countdown({ timestamp, onEnd }) {
   }, [timestamp]);
 
   return (
-    <div className="flex items-center justify-center text-center gap-6 md:gap-8">
-      <div className="flex flex-col w-[64px] md:w-[80px]">
-        <span className="text-3xl font-bold">{days}</span>
-        <span className="text-md md:text-xl uppercase">Days</span>
+    <div className="flex items-center justify-center text-center gap-2 md:gap-8">
+      <div className="flex flex-col w-[84px] md:w-[128px]">
+        <span className={DIGIT_CLASS}>{days}</span>
+        <span className="text-md md:text-xl uppercase font-bold">Days</span>
       </div>
-      <div className="flex flex-col w-[64px] md:w-[80px]">
-        <span className="text-3xl font-bold">{hours}</span>
-        <span className="text-md md:text-xl uppercase">Hours</span>
+      <div className="flex flex-col w-[84px] md:w-[128px]">
+        <span className={DIGIT_CLASS}>{hours}</span>
+        <span className="text-md md:text-xl uppercase font-bold">Hours</span>
       </div>
-      <div className="flex flex-col w-[64px] md:w-[80px]">
-        <span className="text-3xl font-bold">{minutes}</span>
-        <span className="text-md md:text-xl uppercase">Mins</span>
+      <div className="flex flex-col w-[84px] md:w-[128px]">
+        <span className={DIGIT_CLASS}>{minutes}</span>
+        <span className="text-md md:text-xl uppercase font-bold">Mins</span>
       </div>
-      <div className="flex flex-col w-[64px] md:w-[80px]">
-        <span className="text-3xl font-bold">{seconds}</span>
-        <span className="text-md md:text-xl uppercase">Sec</span>
+      <div className="flex flex-col w-[84px] md:w-[128px]">
+        <span className={DIGIT_CLASS}>{seconds}</span>
+        <span className="text-md md:text-xl uppercase font-bold">Sec</span>
       </div>
     </div>
   );

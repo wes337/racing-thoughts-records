@@ -37,7 +37,7 @@ export default function Footer({ hideLinks, theme }) {
   }, [pathname]);
 
   const positionClasses = isGodhandUSA
-    ? "relative z-10 mt-4"
+    ? "relative mt-4"
     : `z-1 ${fixed === null ? "opacity-0" : ""} ${
         fixed ? "fixed bottom-0 left-0" : "mt-auto"
       }`;
@@ -48,9 +48,7 @@ export default function Footer({ hideLinks, theme }) {
     >
       {!hideLinks && (
         <div
-          className={`flex gap-6 lg:gap-8 font-sans font-medium text-xs md:text-sm tracking-tighter mb-2 ${
-            isGodhandUSA ? "text-[#00ff6a]" : ""
-          }`}
+          className="flex gap-6 lg:gap-8 font-sans font-medium text-xs md:text-sm tracking-tighter mb-2"
         >
           {LINKS.map(({ label, href }) => {
             return (
@@ -67,9 +65,7 @@ export default function Footer({ hideLinks, theme }) {
       )}
       <div className="h-[16px] md:h-[24px]">
         <Image
-          className={`w-full h-full object-contain select-none ${
-            isGodhandUSA ? "invert" : ""
-          }`}
+          className="w-full h-full object-contain select-none"
           src={`${CDN_URL}/images/copy.png`}
           alt="Copyright Racing Thought Records."
           width={1450}

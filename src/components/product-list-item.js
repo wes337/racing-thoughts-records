@@ -13,6 +13,14 @@ export default function ProductListItem({ product, theme, showDrafts }) {
 
   const renderTag = () => {
     if (soldOut) {
+      if (isGodhandUSA) {
+        return (
+          <div className="absolute top-3 right-3 z-3 border-2 border-[#e1251b]/60 bg-white/80 px-2 py-1 font-mono font-bold text-xs uppercase tracking-widest text-[#e1251b] md:top-4 md:right-4 md:text-sm">
+            Sold Out
+          </div>
+        );
+      }
+
       return (
         <div className="absolute top-0 right-0 md:m-2 z-3 w-[66%] md:w-[50%] rotate-15 group-hover:scale-[1.1]">
           <Image
@@ -29,6 +37,14 @@ export default function ProductListItem({ product, theme, showDrafts }) {
 
     if (!tag) {
       return null;
+    }
+
+    if (isGodhandUSA) {
+      return (
+        <div className="absolute top-3 right-3 z-3 border-2 border-amber-600/60 bg-white/80 px-2 py-1 font-mono font-bold text-xs uppercase tracking-widest text-amber-600 md:top-4 md:right-4 md:text-sm">
+          {tag.label}
+        </div>
+      );
     }
 
     return (
@@ -51,7 +67,7 @@ export default function ProductListItem({ product, theme, showDrafts }) {
       prefetch
     >
       <div className="relative w-full h-full aspect-square overflow-hidden">
-        {!isGodhandUSA && renderTag()}
+        {renderTag()}
         {!isGodhandUSA && (
           <Image
             className="absolute top-0 left-0 w-full h-full z-1 opacity-80 group-hover:opacity-100"
@@ -62,19 +78,15 @@ export default function ProductListItem({ product, theme, showDrafts }) {
           />
         )}
         <div
-          className={`m-0 md:m-2 overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center ${
-            isGodhandUSA && !image ? "bg-black" : "bg-gray-500/10"
-          } ${
+          className={`m-0 md:m-2 overflow-hidden text-center flex items-center h-full md:h-[calc(100%-16px)] justify-center bg-gray-500/10 ${
             isGodhandUSA
-              ? "rounded-none outline-4 -outline-offset-4 md:outline-offset-0 outline-[#00ff6a]/25 group-hover:outline-[#00ff6a] group-focus:outline-[#00ff6a]"
+              ? "rounded-none outline-4 -outline-offset-4 md:outline-offset-0 outline-black/25 group-hover:outline-black group-focus:outline-black"
               : "rounded-lg"
           }`}
         >
           {image ? (
             <Image
-              className={`w-[calc(100%-4px)] h-[calc(100%-4px)] md:w-full md:h-full object-contain group-hover:scale-[1.1] ${
-                isGodhandUSA ? "relative z-10" : ""
-              }`}
+              className="w-[calc(100%-4px)] h-[calc(100%-4px)] md:w-full md:h-full object-contain group-hover:scale-[1.1]"
               src={product.images[0]}
               alt=""
               width={2672}
@@ -90,19 +102,27 @@ export default function ProductListItem({ product, theme, showDrafts }) {
       <div>
         <div
           className={`flex items-center font-mono font-bold min-h-[42px] md:min-h-auto h-auto md:h-[40px] lg:h-[40px] mt-1 md:mt-0 ${
-            longTitle ? "text-sm md:text-md" : "text-md"
+            longTitle
+              ? isGodhandUSA
+                ? "text-md md:text-md"
+                : "text-sm md:text-md"
+              : isGodhandUSA
+                ? "text-lg"
+                : "text-md"
           } ${
             veryLongTitle
-              ? "text-xs tracking-[-2px] md:tracking-tighter leading-3.5 md:leading-5"
+              ? `${
+                  isGodhandUSA ? "text-sm" : "text-xs"
+                } tracking-[-2px] md:tracking-tighter leading-3.5 md:leading-5`
               : "tracking-tighter leading-3.5 md:leading-5"
           } md:text-xl lg:text-xl opacity-90 group-hover:opacity-100`}
-          style={isGodhandUSA ? { color: "#00ff6a" } : undefined}
         >
           {product.title}
         </div>
         <div
-          className="font-sans font-medium text-sm md:text-xl h-auto md:h-full opacity-80 mt-1 md:mt-0"
-          style={isGodhandUSA ? { color: "#00ff6a" } : undefined}
+          className={`font-sans font-medium ${
+            isGodhandUSA ? "text-lg" : "text-sm mt-1 md:mt-0"
+          } md:text-xl h-auto md:h-full opacity-80`}
         >
           ${Number(product.price).toFixed(2)}
         </div>
