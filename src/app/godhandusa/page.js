@@ -47,9 +47,9 @@ export default async function GodhandUSAShopPage({ searchParams }) {
     <main className="flex min-h-screen flex-col px-2 py-8 md:px-8 md:py-12 pt-4">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <header className="relative flex min-h-[64px] items-center justify-center">
-          <Link
+          <a
             className="absolute left-[16px] md:left-[32px] h-[32px] md:h-[40px] cursor-pointer opacity-90 hover:scale-[1.1] hover:opacity-100 z-1 active:scale-[1.2]"
-            href="/shop"
+            href="https://www.godhandusa.com"
           >
             <Image
               className="w-auto h-full object-contain"
@@ -58,7 +58,7 @@ export default async function GodhandUSAShopPage({ searchParams }) {
               width={250}
               height={209}
             />
-          </Link>
+          </a>
           <Link
             href="/godhandusa"
             className="flex flex-col opacity-90 hover:opacity-100"
