@@ -60,7 +60,7 @@ export default async function GodhandUSAShopPage({ searchParams }) {
             />
           </Link>
           <Link
-            href="/shop"
+            href="/godhandusa"
             className="flex flex-col opacity-90 hover:opacity-100"
           >
             <Image
