@@ -53,19 +53,19 @@ export default function Countdown({ timestamp, onEnd }) {
   return (
     <div className="flex items-center justify-center text-center gap-2 md:gap-8">
       <div className="flex flex-col w-[84px] md:w-[128px]">
-        <span className={DIGIT_CLASS}>{days}</span>
+        <span className={DIGIT_CLASS}>{String(days).padStart(2, "0")}</span>
         <span className="text-md md:text-xl uppercase font-bold">Days</span>
       </div>
       <div className="flex flex-col w-[84px] md:w-[128px]">
-        <span className={DIGIT_CLASS}>{hours}</span>
+        <span className={DIGIT_CLASS}>{String(hours).padStart(2, "0")}</span>
         <span className="text-md md:text-xl uppercase font-bold">Hours</span>
       </div>
       <div className="flex flex-col w-[84px] md:w-[128px]">
-        <span className={DIGIT_CLASS}>{minutes}</span>
+        <span className={DIGIT_CLASS}>{String(minutes).padStart(2, "0")}</span>
         <span className="text-md md:text-xl uppercase font-bold">Mins</span>
       </div>
       <div className="flex flex-col w-[84px] md:w-[128px]">
-        <span className={DIGIT_CLASS}>{seconds}</span>
+        <span className={DIGIT_CLASS}>{String(seconds).padStart(2, "0")}</span>
         <span className="text-md md:text-xl uppercase font-bold">Sec</span>
       </div>
     </div>
