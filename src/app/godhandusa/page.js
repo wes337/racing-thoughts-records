@@ -14,23 +14,39 @@ export const dynamic = "force-dynamic";
 const GODHANDUSA_COLLECTION_ID = "gid://shopify/Collection/517340037408";
 
 async function getGodhandUSACollectionProducts(showDrafts) {
-  if (showDrafts) {
-    try {
-      return await ShopifyAdmin.getDraftProductsByCollectionId(
-        GODHANDUSA_COLLECTION_ID,
-      );
-    } catch (error) {
-      console.error("Failed to load GODHANDUSA draft products", error);
-      return null;
-    }
-  }
-
-  return Shopify.getCollectionProductsById(
+  const liveProducts = await Shopify.getCollectionProductsById(
     GODHANDUSA_COLLECTION_ID,
     100,
     null,
     "MANUAL",
   );
+
+  if (!showDrafts) {
+    return liveProducts;
+  }
+
+  let draftProducts = null;
+
+  try {
+    draftProducts = await ShopifyAdmin.getDraftProductsByCollectionId(
+      GODHANDUSA_COLLECTION_ID,
+    );
+  } catch (error) {
+    console.error("Failed to load GODHANDUSA draft products", error);
+  }
+
+  const liveResults = liveProducts?.products?.results ?? [];
+  const draftResults = draftProducts?.products?.results ?? [];
+  const liveIds = new Set(liveResults.map((product) => product.id));
+  const mergedResults = [
+    ...liveResults,
+    ...draftResults.filter((product) => !liveIds.has(product.id)),
+  ];
+
+  return {
+    collection: liveProducts?.collection ?? draftProducts?.collection ?? null,
+    products: { results: mergedResults },
+  };
 }
 
 export default async function GodhandUSAShopPage({ searchParams }) {

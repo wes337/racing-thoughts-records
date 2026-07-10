@@ -5,19 +5,21 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { CDN_URL } from "@/utils";
+import LegalModal from "@/components/legal-modal";
 
 const LINKS = [
-  { label: "Privacy", href: "/policies/privacy-policy" },
-  { label: "Refunds", href: "/policies/refund-policy" },
-  { label: "Terms", href: "/policies/terms-of-service" },
-  { label: "Shipping", href: "/policies/shipping-policy" },
-  { label: "Contact", href: "/contact" },
+  { label: "Privacy", href: "/policies/privacy-policy", handle: "privacy-policy" },
+  { label: "Refunds", href: "/policies/refund-policy", handle: "refund-policy" },
+  { label: "Terms", href: "/policies/terms-of-service", handle: "terms-of-service" },
+  { label: "Shipping", href: "/policies/shipping-policy", handle: "shipping-policy" },
+  { label: "Contact", href: "/contact", handle: "contact" },
 ];
 
 export default function Footer({ hideLinks, theme }) {
   const isGodhandUSA = theme === "godhandusa";
   const pathname = usePathname();
   const [fixed, setFixed] = useState(null);
+  const [activeHandle, setActiveHandle] = useState(null);
 
   useEffect(() => {
     const onResize = () => {
@@ -50,7 +52,19 @@ export default function Footer({ hideLinks, theme }) {
         <div
           className="flex gap-6 lg:gap-8 font-sans font-medium text-xs md:text-sm tracking-tighter mb-2"
         >
-          {LINKS.map(({ label, href }) => {
+          {LINKS.map(({ label, href, handle }) => {
+            if (isGodhandUSA) {
+              return (
+                <button
+                  key={label}
+                  className="opacity-75 hover:opacity-100 cursor-pointer"
+                  onClick={() => setActiveHandle(handle)}
+                >
+                  {label}
+                </button>
+              );
+            }
+
             return (
               <Link
                 key={label}
@@ -72,6 +86,12 @@ export default function Footer({ hideLinks, theme }) {
           height={72}
         />
       </div>
+      {isGodhandUSA && (
+        <LegalModal
+          handle={activeHandle}
+          onClose={() => setActiveHandle(null)}
+        />
+      )}
     </div>
   );
 }
