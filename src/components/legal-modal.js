@@ -53,31 +53,33 @@ export default function LegalModal({ handle, onClose }) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-lg bg-white p-6 text-black"
+        className="relative w-full max-w-2xl max-h-[80vh] rounded-lg bg-white text-black"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute right-4 top-4 text-xl opacity-60 hover:opacity-100 cursor-pointer"
+          className="absolute right-4 top-4 z-10 text-4xl leading-none opacity-60 hover:opacity-100 cursor-pointer"
           onClick={onClose}
           aria-label="Close"
         >
           &times;
         </button>
-        {error && <p className="text-sm">{error}</p>}
-        {!error && !content && (
-          <p className="text-center text-sm opacity-75">Loading...</p>
-        )}
-        {!error && content && (
-          <>
-            <h1 className="text-2xl text-center font-bold uppercase opacity-75 mb-4">
-              {content.title}
-            </h1>
-            <div
-              className="policy text-sm tracking-tight"
-              dangerouslySetInnerHTML={{ __html: content.body }}
-            />
-          </>
-        )}
+        <div className="max-h-[80vh] overflow-y-auto p-6 pt-12">
+          {error && <p className="text-sm">{error}</p>}
+          {!error && !content && (
+            <p className="text-center text-sm opacity-75">Loading...</p>
+          )}
+          {!error && content && (
+            <>
+              <h1 className="text-2xl text-center font-bold uppercase opacity-75 mb-4">
+                {content.title}
+              </h1>
+              <div
+                className="policy text-sm tracking-tight"
+                dangerouslySetInnerHTML={{ __html: content.body }}
+              />
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
