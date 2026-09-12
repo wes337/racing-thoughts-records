@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Shopify from "@/shopify";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
@@ -14,6 +14,10 @@ export default async function ProductPage({ params }) {
 
   if (!product) {
     notFound();
+  }
+
+  if (Shopify.isGodhandUSAProduct(product)) {
+    redirect(`/godhandusa/products/${product.handle}`);
   }
 
   return (

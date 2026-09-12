@@ -1,6 +1,6 @@
 import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 import Cache from "./cache.js";
-import { shopifyImageUrl } from "./utils.js";
+import { shopifyImageUrl, GODHANDUSA_COLLECTION_ID } from "./utils.js";
 
 export default class Shopify {
   static client;
@@ -93,6 +93,13 @@ export default class Shopify {
           descriptionHtml
           tags
           totalInventory
+          collections(first: 20) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
           priceRange {
             minVariantPrice {
               amount
@@ -170,6 +177,8 @@ export default class Shopify {
               availableForSale: node.availableForSale,
             }))
           : [],
+      collectionIds:
+        data.product.collections?.edges?.map(({ node }) => node.id) ?? [],
     };
 
     if (product) {
@@ -385,6 +394,13 @@ export default class Shopify {
                     }
                   }
                 }
+                collections(first: 20) {
+                  edges {
+                    node {
+                      id
+                    }
+                  }
+                }
               }
             }
           }
@@ -403,6 +419,16 @@ export default class Shopify {
     }
 
     const collectionProducts = Shopify.parseCollection(data.collection);
+
+    // GODHANDUSA merch is only sold on the /godhandusa route. Shopify's smart
+    // collections (cds, vinyl, cassettes, ...) still match those products by
+    // type, so drop anything that belongs to the GODHANDUSA collection here.
+    if (collectionProducts.collection.id !== GODHANDUSA_COLLECTION_ID) {
+      collectionProducts.products.results =
+        collectionProducts.products.results.filter(
+          (product) => !Shopify.isGodhandUSAProduct(product),
+        );
+    }
 
     if (collectionProducts.products.results.length > 0) {
       Cache.setItem(
@@ -518,6 +544,10 @@ export default class Shopify {
     return collectionProducts;
   }
 
+  static isGodhandUSAProduct(product) {
+    return (product?.collectionIds ?? []).includes(GODHANDUSA_COLLECTION_ID);
+  }
+
   static parseCollection(collection) {
     const results = collection.products.edges
       .map(({ node }) => {
@@ -538,6 +568,9 @@ export default class Shopify {
         const soldOut = !node.variants.edges.some(
           ({ node }) => node.availableForSale,
         );
+
+        const collectionIds =
+          node.collections?.edges?.map(({ node }) => node.id) ?? [];
 
         return {
           id: node.id,
@@ -560,6 +593,7 @@ export default class Shopify {
                 }))
               : [],
           soldOut,
+          collectionIds,
         };
       })
       .filter(Boolean);

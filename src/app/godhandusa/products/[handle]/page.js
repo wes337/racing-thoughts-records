@@ -2,7 +2,11 @@ import { Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { CDN_URL, GODHANDUSA_RELEASE_DATE } from "@/utils";
+import {
+  CDN_URL,
+  GODHANDUSA_RELEASE_DATE,
+  GODHANDUSA_COLLECTION_ID,
+} from "@/utils";
 import Shopify from "@/shopify";
 import ShopifyAdmin from "@/shopify-admin";
 import Footer from "@/components/footer";
@@ -11,8 +15,6 @@ import GodhandUSAProduct from "@/components/godhandusa-product";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
-
-const GODHANDUSA_COLLECTION_ID = "gid://shopify/Collection/517340037408";
 
 export default async function GodhandUSAProductPage({ params, searchParams }) {
   const { handle } = await params;

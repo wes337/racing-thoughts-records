@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import Shopify from "@/shopify";
-import { CDN_URL } from "@/utils";
+import { CDN_URL, GODHANDUSA_COLLECTION_ID } from "@/utils";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 import ProductListItem from "@/components/product-list-item";
@@ -10,7 +11,12 @@ export const dynamic = "force-dynamic";
 
 export default async function CollectionPage({ params }) {
   const { collectionHandle } = await params;
-  const { products } = await Shopify.getCollectionProducts(collectionHandle);
+  const { collection, products } =
+    await Shopify.getCollectionProducts(collectionHandle);
+
+  if (collection?.id === GODHANDUSA_COLLECTION_ID) {
+    redirect("/godhandusa");
+  }
 
   if (!products) {
     return (

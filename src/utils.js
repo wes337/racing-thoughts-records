@@ -32,6 +32,7 @@ export const COLLECTION_IDS = {
 export const CDN_URL = "https://w-img.b-cdn.net/rtr";
 export const RELEASE_DATE = Date.parse("24 Sep 2025 10:00:00 EDT");
 export const GODHANDUSA_RELEASE_DATE = Date.parse("10 Jul 2026 14:00:00 EDT");
+export const GODHANDUSA_COLLECTION_ID = "gid://shopify/Collection/517340037408";
 
 // Resize a Shopify CDN image via URL query params instead of a GraphQL
 // transform. Passing width + height without a crop preserves aspect ratio,
