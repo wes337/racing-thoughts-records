@@ -28,7 +28,7 @@ export default function Footer({ hideLinks, theme }) {
         document.body.scrollHeight > window.innerHeight
       );
 
-      setFixed(noScroll || pathname === "/");
+      setFixed(noScroll);
     };
 
     onResize();

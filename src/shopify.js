@@ -303,6 +303,8 @@ export default class Shopify {
                 }))
               : [],
           soldOut,
+          collectionIds:
+            node.collections?.edges?.map(({ node }) => node.id) ?? [],
         };
       })
       .filter(Boolean);

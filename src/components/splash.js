@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { CDN_URL, RELEASE_DATE } from "@/utils";
 import Password from "@/components/password";
 import Countdown from "@/components/countdown";
@@ -11,14 +10,20 @@ export default function Splash({
   showPassword,
   showCountdown: _showCountdown,
 }) {
-  const router = useRouter();
   const [password, setPassword] = useState("");
   const [showCountdown, setShowCountdown] = useState(_showCountdown);
 
+  // Full page load on purpose. While the site is gated, the client router has
+  // already prefetched "/" as a redirect to /soon and would replay that instead
+  // of asking the server, so the proxy would never see the password.
   const onEnter = () => {
-    router.push(
+    window.location.assign(
       `/${
-        password ? `?password=${Buffer.from(password).toString("base64")}` : ""
+        password
+          ? `?password=${encodeURIComponent(
+              Buffer.from(password).toString("base64")
+            )}`
+          : ""
       }`
     );
   };
