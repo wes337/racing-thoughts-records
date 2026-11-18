@@ -39,8 +39,6 @@ export function proxy(request) {
 export const config = {
   matcher: [
     "/",
-    "/shop",
-    "/godhandusa",
     "/contact",
     "/products",
     "/products/:path*",

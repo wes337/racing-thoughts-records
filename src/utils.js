@@ -30,7 +30,9 @@ export const COLLECTION_IDS = {
 };
 
 export const CDN_URL = "https://w-img.b-cdn.net/rtr";
-export const RELEASE_DATE = Date.parse("24 Sep 2025 10:00:00 EDT");
+// Until this moment the proxy sends the regular site to the /soon countdown.
+// GODHANDUSA pages are not gated by it.
+export const RELEASE_DATE = Date.parse("2026-11-20T15:00:00-05:00"); // 3PM New York
 export const GODHANDUSA_RELEASE_DATE = Date.parse("10 Jul 2026 14:00:00 EDT");
 export const GODHANDUSA_COLLECTION_ID = "gid://shopify/Collection/517340037408";
 

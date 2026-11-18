@@ -17,7 +17,7 @@ export default function Splash({
 
   const onEnter = () => {
     router.push(
-      `/shop${
+      `/${
         password ? `?password=${Buffer.from(password).toString("base64")}` : ""
       }`
     );

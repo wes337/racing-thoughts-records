@@ -1,13 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { CDN_URL, getRandomNumberBetween } from "@/utils";
 
 export default function Eye() {
-  const pathname = usePathname();
   const [eye, setEye] = useState("open");
 
   useEffect(() => {
@@ -47,7 +45,7 @@ export default function Eye() {
   return (
     <Link
       className="relative h-full flex items-center justify-center w-auto opacity-90 hover:scale-[1.1] hover:opacity-100 active:opacity-100 active:scale-[1.2]"
-      href={pathname.match("/shop") ? "/" : "/shop"}
+      href="/"
     >
       <Image
         className={`w-auto h-full object-contain ${
