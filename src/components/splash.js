@@ -30,7 +30,7 @@ export default function Splash({
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center h-screen m-auto gap-12"
+      className="fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center m-auto gap-12"
       onClick={() => {
         if (showPassword) {
           return;
