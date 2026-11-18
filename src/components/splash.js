@@ -17,6 +17,7 @@ export default function Splash({
   // already prefetched "/" as a redirect to /soon and would replay that instead
   // of asking the server, so the proxy would never see the password.
   const onEnter = () => {
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
     window.location.assign(
       `/${
         password

@@ -12,16 +12,16 @@
   "dependencies": {
     "@shopify/storefront-api-client": "^1.0.10",
     "localforage": "^1.10.0",
-    "next": "16.2.9",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
-    "zustand": "^5.0.14"
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zustand": "^5.1.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@eslint/eslintrc": "^3.3.7",
+    "@tailwindcss/postcss": "^4.3.5",
     "eslint": "^9",
-    "eslint-config-next": "16.2.9",
-    "tailwindcss": "^4"
+    "eslint-config-next": "16.4.6",
+    "tailwindcss": "^4.3.5"
   }
 }
