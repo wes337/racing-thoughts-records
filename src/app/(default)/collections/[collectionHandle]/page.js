@@ -1,7 +1,9 @@
+import { cache } from "react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import Shopify from "@/shopify";
 import { CDN_URL, GODHANDUSA_COLLECTION_ID } from "@/utils";
+import { pageMetadata } from "@/metadata";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 import ProductListItem from "@/components/product-list-item";
@@ -9,10 +11,33 @@ import ProductListItem from "@/components/product-list-item";
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
+// React shares this lookup between metadata and the page within a single
+// server request. A later visit always asks Shopify again.
+const getCollectionProducts = cache((handle) =>
+  Shopify.getCollectionProducts(handle),
+);
+
+export async function generateMetadata({ params }) {
+  const { collectionHandle } = await params;
+  const { collection } = await getCollectionProducts(collectionHandle);
+
+  if (!collection) {
+    return { title: "Not Found" };
+  }
+
+  return pageMetadata({
+    title: collection.title,
+    description:
+      collection.description ||
+      `${collection.title} from Racing Thoughts Records, the official store for music by Joshua Hamilton.`,
+    path: `/collections/${collection.handle}`,
+  });
+}
+
 export default async function CollectionPage({ params }) {
   const { collectionHandle } = await params;
   const { collection, products } =
-    await Shopify.getCollectionProducts(collectionHandle);
+    await getCollectionProducts(collectionHandle);
 
   if (collection?.id === GODHANDUSA_COLLECTION_ID) {
     redirect("/godhandusa");
@@ -55,6 +80,7 @@ export default async function CollectionPage({ params }) {
     <>
       <TopBar />
       <div className="flex flex-col lg:w-4xl xl:w-7xl mx-auto">
+        <h1 className="sr-only">{collection.title}</h1>
         <div className="grid grid-cols-2 gap-4 p-2 md:p-8 md:gap-8">
           {products.results.map((product) => (
             <ProductListItem key={product.id} product={product} />

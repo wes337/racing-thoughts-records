@@ -1,10 +1,18 @@
 import Shopify from "@/shopify";
+import { pageMetadata } from "@/metadata";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 import ProductListItem from "@/components/product-list-item";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
+
+export const metadata = pageMetadata({
+  title: "Archive",
+  description:
+    "Sold out vinyl, CDs and cassettes from Racing Thoughts Records, the official store for music by Joshua Hamilton.",
+  path: "/archive",
+});
 
 // Storefront API page size limit. The whole catalog fits in one page.
 const MAX_PRODUCTS = 250;

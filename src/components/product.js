@@ -7,6 +7,7 @@ import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
 import { CDN_URL, isSafari, TAGS, shopifyImageUrl } from "@/utils";
+import { productImageAlt } from "@/product-seo";
 
 export default function Product({ product }) {
   const [cart, setCartOpen] = useCart(
@@ -182,7 +183,7 @@ export default function Product({ product }) {
             height={982}
             alt=""
           />
-          <h2
+          <h1
             className={`font-mono font-bold leading-8 ${
               longTitle
                 ? "text-[1.8rem] tracking-[-3px] lg:tracking-tighter xl:text-2.5xl"
@@ -190,7 +191,7 @@ export default function Product({ product }) {
             } opacity-90 text-left`}
           >
             {product.title}
-          </h2>
+          </h1>
           <h3 className="font-sans font-medium text-2xl min-[1921px]:text-3xl mt-2 opacity-80">
             {product.price}
           </h3>
@@ -364,7 +365,7 @@ function MobilePhotos({
                 src={image}
                 width={1024}
                 height={1024}
-                alt=""
+                alt={productImageAlt(product, index)}
               />
             </div>
           );
@@ -458,7 +459,7 @@ function DesktopPhotos({
                 src={image}
                 width={1024}
                 height={1024}
-                alt=""
+                alt={productImageAlt(product, index)}
               />
             );
           })}
@@ -554,7 +555,7 @@ function FullscreenImage({ product, imageIndex, onCloseFullscreenImage }) {
         width={1024}
         height={1024}
         unoptimized
-        alt=""
+        alt={productImageAlt(product, imageIndex)}
       />
     </div>,
     document.body

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Shopify from "@/shopify";
+import { SITE_NAME } from "@/metadata";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 import ProductListItem from "@/components/product-list-item";
@@ -9,6 +10,8 @@ export const dynamic = "force-dynamic";
 
 const DEFAULT_COLLECTION = "frontpage";
 
+export const metadata = { alternates: { canonical: "/" } };
+
 export default async function HomePage() {
   const { products } = await Shopify.getCollectionProducts(DEFAULT_COLLECTION);
 
@@ -16,6 +19,7 @@ export default async function HomePage() {
     <>
       <TopBar />
       <div className="flex flex-col lg:w-4xl xl:w-7xl mx-auto">
+        <h1 className="sr-only">{SITE_NAME}</h1>
         <div className="grid grid-cols-2 gap-4 p-2 md:p-8 md:gap-8 lg:grid-cols-3">
           {/* Sold out products live on /archive instead. */}
           {products.results

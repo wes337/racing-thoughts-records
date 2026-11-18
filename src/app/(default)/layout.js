@@ -1,22 +1,5 @@
 import Cursor from "@/components/cursor";
 
-export const metadata = {
-  title: "Racing Thought Records",
-  description:
-    "The official store for music by Joshua Hamilton. Vinyl, CD, Cassette; Lil Darkie and more.",
-  openGraph: {
-    images: "/images/og.jpg",
-  },
-  keywords: [
-    "lil darkie",
-    "joshua hamilton",
-    "vinyl",
-    "cd",
-    "cassette",
-    "music",
-  ],
-};
-
 export const viewport = {
   themeColor: "#ededed",
 };

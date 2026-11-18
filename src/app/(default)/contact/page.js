@@ -1,4 +1,5 @@
 import Shopify from "@/shopify";
+import { pageMetadata } from "@/metadata";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 
@@ -6,6 +7,12 @@ export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
 const CONTACT_PAGE_ID = "gid://shopify/Page/151623631136";
+
+export const metadata = pageMetadata({
+  title: "Contact",
+  description: "Get in touch with Racing Thoughts Records.",
+  path: "/contact",
+});
 
 export default async function ContactPage() {
   const page = await Shopify.getPage(CONTACT_PAGE_ID);

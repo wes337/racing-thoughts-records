@@ -1,9 +1,25 @@
 import Shopify from "@/shopify";
+import { pageMetadata } from "@/metadata";
 import TopBar from "@/components/top-bar";
 import Footer from "@/components/footer";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }) {
+  const { policyHandle } = await params;
+  const policy = await Shopify.getPolicy(policyHandle);
+
+  if (!policy) {
+    return { title: "Not Found" };
+  }
+
+  return pageMetadata({
+    title: policy.title,
+    description: `${policy.title} for purchases from Racing Thoughts Records.`,
+    path: `/policies/${policy.handle}`,
+  });
+}
 
 export default async function PolicyPage({ params }) {
   const { policyHandle } = await params;

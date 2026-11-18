@@ -93,6 +93,12 @@ export default class Shopify {
           descriptionHtml
           tags
           totalInventory
+          productType
+          updatedAt
+          seo {
+            title
+            description
+          }
           collections(first: 20) {
             edges {
               node {
@@ -123,6 +129,7 @@ export default class Shopify {
               node {
                 id
                 title
+                sku
                 price {
                   amount
                   currencyCode
@@ -174,11 +181,16 @@ export default class Shopify {
           ? data.product.variants.edges.map(({ node }) => ({
               id: node.id,
               title: node.title,
+              sku: node.sku,
+              price: node.price.amount,
               availableForSale: node.availableForSale,
             }))
           : [],
       collectionIds:
         data.product.collections?.edges?.map(({ node }) => node.id) ?? [],
+      productType: data.product.productType,
+      seo: data.product.seo,
+      updatedAt: data.product.updatedAt,
     };
 
     if (product) {
@@ -214,6 +226,7 @@ export default class Shopify {
               descriptionHtml
               tags
               totalInventory
+              updatedAt
               variants(first: 25) {
                 edges {
                   node {
@@ -305,6 +318,7 @@ export default class Shopify {
           soldOut,
           collectionIds:
             node.collections?.edges?.map(({ node }) => node.id) ?? [],
+          updatedAt: node.updatedAt,
         };
       })
       .filter(Boolean);

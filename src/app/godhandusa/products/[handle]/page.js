@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { cache, Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,12 +9,35 @@ import {
 } from "@/utils";
 import Shopify from "@/shopify";
 import ShopifyAdmin from "@/shopify-admin";
+import {
+  productMetadata,
+  productStructuredData,
+  serializeStructuredData,
+} from "@/product-seo";
 import Footer from "@/components/footer";
 import Cart from "@/components/cart";
 import GodhandUSAProduct from "@/components/godhandusa-product";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
+
+// React shares this lookup between metadata and the page within a single
+// server request. A later visit always asks Shopify again.
+const getProduct = cache((handle) => Shopify.getProduct(handle));
+
+// Draft previews and the pre-release redirect are not for search engines.
+export async function generateMetadata({ params, searchParams }) {
+  const { handle } = await params;
+  const showDrafts = (await searchParams)?.showDrafts === "true";
+
+  if (showDrafts || Date.now() < GODHANDUSA_RELEASE_DATE) {
+    return { robots: { index: false } };
+  }
+
+  const product = await getProduct(handle);
+
+  return product ? productMetadata(product) : { title: "Not Found" };
+}
 
 export default async function GodhandUSAProductPage({ params, searchParams }) {
   const { handle } = await params;
@@ -39,7 +62,7 @@ export default async function GodhandUSAProductPage({ params, searchParams }) {
   }
 
   if (!product) {
-    product = await Shopify.getProduct(handle);
+    product = await getProduct(handle);
   }
 
   if (!product) {
@@ -50,6 +73,14 @@ export default async function GodhandUSAProductPage({ params, searchParams }) {
 
   return (
     <main className="flex min-h-screen flex-col px-2 py-8 md:px-8 md:py-10 pt-4">
+      {!showDrafts && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeStructuredData(productStructuredData(product)),
+          }}
+        />
+      )}
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <header className="relative flex min-h-[80px] items-center justify-center">
           <Link

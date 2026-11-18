@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CDN_URL, TAGS } from "@/utils";
+import { productImageAlt } from "@/product-seo";
 
 export default function ProductListItem({ product, theme, showDrafts }) {
   const isGodhandUSA = theme === "godhandusa";
@@ -88,7 +89,7 @@ export default function ProductListItem({ product, theme, showDrafts }) {
             <Image
               className="w-[calc(100%-4px)] h-[calc(100%-4px)] md:w-full md:h-full object-contain group-hover:scale-[1.1]"
               src={product.images[0]}
-              alt=""
+              alt={productImageAlt(product)}
               width={2672}
               height={2672}
             />
