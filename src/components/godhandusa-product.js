@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
-import { getProductTag, shopifyImageUrl } from "@/utils";
+import { getCompareAtPrice, getProductTag, shopifyImageUrl } from "@/utils";
 
 function formatPrice(price) {
   const value = String(price);
@@ -30,6 +30,7 @@ export default function GodhandUSAProduct({ product }) {
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
   const tag = soldOut ? null : getProductTag(product);
+  const compareAtPrice = soldOut ? null : getCompareAtPrice(product);
   const purchasable = !soldOut;
 
   const hasImages = product.images.length > 0;
@@ -170,6 +171,11 @@ export default function GodhandUSAProduct({ product }) {
         </h1>
         <div className="mt-2 font-sans text-2xl font-medium opacity-90">
           {formatPrice(product.price)}
+          {compareAtPrice !== null && (
+            <s className="ml-2 text-lg font-normal opacity-60">
+              {formatPrice(compareAtPrice)}
+            </s>
+          )}
         </div>
 
         {tag?.id === "SALE" && (

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CDN_URL, getProductTag } from "@/utils";
+import { CDN_URL, getCompareAtPrice, getProductTag } from "@/utils";
 import { productImageAlt } from "@/product-seo";
 
 export default function ProductListItem({ product, theme, showDrafts }) {
@@ -11,6 +11,7 @@ export default function ProductListItem({ product, theme, showDrafts }) {
   const soldOut =
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
+  const compareAtPrice = soldOut ? null : getCompareAtPrice(product);
 
   const renderTag = () => {
     if (soldOut) {
@@ -132,6 +133,11 @@ export default function ProductListItem({ product, theme, showDrafts }) {
           } md:text-xl h-auto md:h-full opacity-80`}
         >
           ${Number(product.price).toFixed(2)}
+          {compareAtPrice !== null && (
+            <s className="ml-2 text-[0.8em] font-normal opacity-70">
+              ${compareAtPrice.toFixed(2)}
+            </s>
+          )}
         </div>
       </div>
     </Link>

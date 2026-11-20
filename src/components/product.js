@@ -6,7 +6,13 @@ import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
-import { CDN_URL, getProductTag, isSafari, shopifyImageUrl } from "@/utils";
+import {
+  CDN_URL,
+  getCompareAtPrice,
+  getProductTag,
+  isSafari,
+  shopifyImageUrl,
+} from "@/utils";
 import { productImageAlt } from "@/product-seo";
 
 export default function Product({ product }) {
@@ -24,6 +30,8 @@ export default function Product({ product }) {
   const soldOut =
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
+
+  const compareAtPrice = soldOut ? null : getCompareAtPrice(product);
 
   const longTitle = product.title.length > 21;
 
@@ -194,6 +202,11 @@ export default function Product({ product }) {
           </h1>
           <h3 className="font-sans font-medium text-2xl min-[1921px]:text-3xl mt-2 opacity-80">
             {product.price}
+            {compareAtPrice !== null && (
+              <s className="ml-2 text-lg min-[1921px]:text-xl font-normal opacity-60">
+                ${compareAtPrice.toFixed(2)}
+              </s>
+            )}
           </h3>
           <div
             className="description font-sans font-light py-4 min-[1921px]:px-2 text-sm min-[1921px]:text-lg md:my-4 md:text-md opacity-80"

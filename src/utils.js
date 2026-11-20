@@ -105,3 +105,18 @@ export function getProductTag({ tags, variants }) {
 
   return tags?.includes(lowStockTag.id) ? lowStockTag : null;
 }
+
+// The original price to cross out next to a product's displayed price, as a
+// number. The displayed price is the cheapest variant's, so this is null
+// unless an available variant at that price is marked down.
+export function getCompareAtPrice({ variants }) {
+  const lowestPrice = Math.min(...variants.map(({ price }) => Number(price)));
+  const markedDown = variants.find(
+    ({ availableForSale, price, compareAtPrice }) =>
+      availableForSale &&
+      Number(price) === lowestPrice &&
+      Number(compareAtPrice) > lowestPrice,
+  );
+
+  return markedDown ? Number(markedDown.compareAtPrice) : null;
+}
