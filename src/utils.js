@@ -79,10 +79,29 @@ export function isLive() {
   return Date.now() > RELEASE_DATE;
 }
 
-export const TAGS = [
-  {
-    id: "LOWSTOCK",
-    label: "Low Stock",
-    image: `${CDN_URL}/images/low-stock.png`,
-  },
-];
+const saleTag = {
+  id: "SALE",
+  label: "Sale",
+  image: "/images/sale.png",
+  width: 263,
+};
+const lowStockTag = {
+  id: "LOWSTOCK",
+  label: "Low Stock",
+  image: `${CDN_URL}/images/low-stock.png`,
+  width: 389,
+};
+
+export function getProductTag({ tags, variants }) {
+  if (
+    tags?.includes(saleTag.id) ||
+    variants.some(
+      ({ availableForSale, price, compareAtPrice }) =>
+        availableForSale && Number(compareAtPrice) > Number(price),
+    )
+  ) {
+    return saleTag;
+  }
+
+  return tags?.includes(lowStockTag.id) ? lowStockTag : null;
+}

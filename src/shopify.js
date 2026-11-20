@@ -134,6 +134,9 @@ export default class Shopify {
                   amount
                   currencyCode
                 }
+                compareAtPrice {
+                  amount
+                }
                 availableForSale
               }
             }
@@ -183,6 +186,7 @@ export default class Shopify {
               title: node.title,
               sku: node.sku,
               price: node.price.amount,
+              compareAtPrice: node.compareAtPrice?.amount ?? null,
               availableForSale: node.availableForSale,
             }))
           : [],
@@ -235,6 +239,9 @@ export default class Shopify {
                     price {
                       amount
                       currencyCode
+                    }
+                    compareAtPrice {
+                      amount
                     }
                     availableForSale
                   }
@@ -313,6 +320,7 @@ export default class Shopify {
                   title: node.title,
                   availableForSale: node.availableForSale,
                   price: node.price.amount,
+                  compareAtPrice: node.compareAtPrice?.amount ?? null,
                 }))
               : [],
           soldOut,
@@ -391,6 +399,9 @@ export default class Shopify {
                       price {
                         amount
                         currencyCode
+                      }
+                      compareAtPrice {
+                        amount
                       }
                       availableForSale
                     }
@@ -516,6 +527,9 @@ export default class Shopify {
                         amount
                         currencyCode
                       }
+                      compareAtPrice {
+                        amount
+                      }
                       availableForSale
                     }
                   }
@@ -606,6 +620,7 @@ export default class Shopify {
                   title: node.title,
                   availableForSale: node.availableForSale,
                   price: node.price.amount,
+                  compareAtPrice: node.compareAtPrice?.amount ?? null,
                 }))
               : [],
           soldOut,

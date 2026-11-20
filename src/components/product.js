@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
-import { CDN_URL, isSafari, TAGS, shopifyImageUrl } from "@/utils";
+import { CDN_URL, getProductTag, isSafari, shopifyImageUrl } from "@/utils";
 import { productImageAlt } from "@/product-seo";
 
 export default function Product({ product }) {
@@ -114,7 +114,7 @@ export default function Product({ product }) {
       return null;
     }
 
-    const tag = TAGS.find(({ id }) => product.tags.includes(id));
+    const tag = getProductTag(product);
 
     if (!tag) {
       return null;
@@ -125,7 +125,7 @@ export default function Product({ product }) {
         <Image
           className="h-full w-full"
           src={tag.image}
-          width={389}
+          width={tag.width}
           height={145}
           alt={tag.label}
         />

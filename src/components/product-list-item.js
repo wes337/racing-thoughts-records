@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CDN_URL, TAGS } from "@/utils";
+import { CDN_URL, getProductTag } from "@/utils";
 import { productImageAlt } from "@/product-seo";
 
 export default function ProductListItem({ product, theme, showDrafts }) {
@@ -34,13 +34,13 @@ export default function ProductListItem({ product, theme, showDrafts }) {
       );
     }
 
-    const tag = TAGS.find(({ id }) => product.tags.includes(id));
+    const tag = getProductTag(product);
 
     if (!tag) {
       return null;
     }
 
-    if (isGodhandUSA) {
+    if (isGodhandUSA && tag.id === "LOWSTOCK") {
       return (
         <div className="absolute top-3 right-3 z-3 border-2 border-amber-600/60 bg-white/80 px-2 py-1 font-mono font-bold text-xs uppercase tracking-widest text-amber-600 md:top-4 md:right-4 md:text-sm">
           {tag.label}
@@ -49,8 +49,14 @@ export default function ProductListItem({ product, theme, showDrafts }) {
     }
 
     return (
-      <div className="absolute top-0 right-0 mx-2 my-4 md:mx-4 md:my-6 z-3 w-[50%] md:w-[40%] rotate-10 group-hover:scale-[1.1]">
-        <Image src={tag.image} width={389} height={145} alt={tag.label} />
+      <div className="absolute top-0 right-0 mx-2 my-4 md:mx-4 md:my-6 z-3 flex aspect-[389/145] w-[50%] justify-end md:w-[40%] rotate-10 group-hover:scale-[1.1]">
+        <Image
+          className="h-full w-auto"
+          src={tag.image}
+          width={tag.width}
+          height={145}
+          alt={tag.label}
+        />
       </div>
     );
   };

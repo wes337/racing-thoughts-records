@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useShallow } from "zustand/react/shallow";
 import Shopify from "@/shopify";
 import { useCart } from "@/state";
-import { shopifyImageUrl } from "@/utils";
+import { getProductTag, shopifyImageUrl } from "@/utils";
 
 function formatPrice(price) {
   const value = String(price);
@@ -29,7 +29,7 @@ export default function GodhandUSAProduct({ product }) {
   const soldOut =
     product.soldOut ||
     !product.variants.some((variant) => variant.availableForSale);
-  const lowStock = !soldOut && product.tags?.includes("LOWSTOCK");
+  const tag = soldOut ? null : getProductTag(product);
   const purchasable = !soldOut;
 
   const hasImages = product.images.length > 0;
@@ -172,9 +172,18 @@ export default function GodhandUSAProduct({ product }) {
           {formatPrice(product.price)}
         </div>
 
-        {lowStock && (
+        {tag?.id === "SALE" && (
+          <Image
+            className="mt-3 h-9 w-auto self-start"
+            src={tag.image}
+            width={tag.width}
+            height={145}
+            alt={tag.label}
+          />
+        )}
+        {tag?.id === "LOWSTOCK" && (
           <div className="mt-3 inline-flex w-fit items-center border-2 border-amber-600/60 px-3 py-1.5 font-mono font-bold text-sm uppercase tracking-widest text-amber-600 md:text-base">
-            Low Stock
+            {tag.label}
           </div>
         )}
 

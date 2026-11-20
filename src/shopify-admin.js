@@ -39,6 +39,7 @@ export default class ShopifyAdmin {
             id
             title
             price
+            compareAtPrice
             availableForSale
           }
         }
@@ -149,6 +150,7 @@ export default class ShopifyAdmin {
       title: node.title,
       availableForSale: node.availableForSale,
       price: node.price,
+      compareAtPrice: node.compareAtPrice,
     }));
     const minVariantPrice = product.priceRangeV2?.minVariantPrice;
 
